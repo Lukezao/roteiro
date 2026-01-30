@@ -22,50 +22,71 @@
       padding: 32px;
       border-radius: 18px;
       width: 100%;
-      max-width: 460px;
+      max-width: 500px;
       box-shadow: 0 20px 50px rgba(0,0,0,.6);
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 8px;
-    }
+    h1 { text-align: center; margin: 0 0 8px; }
+    p  { text-align: center; opacity: .8; margin: 0 0 18px; }
 
-    p {
+    .admin-badge {
       text-align: center;
-      opacity: 0.8;
-      margin-bottom: 20px;
+      color: #ef4444;
+      font-size: 13px;
+      margin-bottom: 10px;
+      display: none;
     }
 
     .van {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
     .seat {
       background: #2a2a2a;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 16px 6px;
       text-align: center;
       cursor: pointer;
       font-size: 14px;
-      transition: 0.2s;
+      transition: .15s;
+      user-select: none;
     }
 
-    .seat:hover {
-      background: #3a3a3a;
-    }
+    .seat:hover { background: #3a3a3a; }
 
+    /* Reservado por pessoa */
     .seat.reserved {
       background: #7c3aed;
       cursor: default;
     }
 
-    .seat.admin {
-      outline: 2px solid #ef4444;
+    /* Bloqueado pelo admin */
+    .seat.blocked {
+      background: #ef4444;
+      cursor: not-allowed;
     }
+
+    /* Destaque quando admin está ativo */
+    .seat.admin-outline {
+      outline: 2px solid rgba(239, 68, 68, 0.85);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      opacity: .9;
+      margin-bottom: 14px;
+    }
+    .legend span { display:flex; align-items:center; gap:6px; }
+    .box { width: 14px; height: 14px; border-radius: 4px; }
+    .box.free { background:#2a2a2a; }
+    .box.res { background:#7c3aed; }
+    .box.blk { background:#ef4444; }
 
     .btn {
       width: 100%;
@@ -81,30 +102,10 @@
       text-align: center;
     }
 
-    .btn-admin {
-      background: #ef4444;
-      color: #fff;
-    }
+    .btn-admin { background: #ef4444; color: #fff; }
+    .btn-exit  { background: #374151; color: #fff; }
 
-    .btn-exit {
-      background: #374151;
-      color: #fff;
-    }
-
-    .admin-badge {
-      text-align: center;
-      color: #ef4444;
-      font-size: 13px;
-      margin-bottom: 10px;
-      display: none;
-    }
-
-    .footer {
-      margin-top: 16px;
-      text-align: center;
-      font-size: 12px;
-      opacity: 0.6;
-    }
+    .footer { margin-top: 10px; text-align:center; font-size: 12px; opacity:.6; }
   </style>
 </head>
 
@@ -115,17 +116,18 @@
 
     <div id="adminBadge" class="admin-badge">👮‍♂️ MODO ADMIN ATIVO</div>
 
-    <div id="van" class="van"></div>
+    <div class="van" id="van"></div>
+
+    <div class="legend">
+      <span><span class="box free"></span> Livre</span>
+      <span><span class="box res"></span> Reservado</span>
+      <span><span class="box blk"></span> Bloqueado</span>
+    </div>
 
     <button id="adminBtn" class="btn btn-admin">Entrar como Admin</button>
-    <button id="exitAdminBtn" class="btn btn-exit" style="display:none;">
-      Sair do Admin
-    </button>
+    <button id="exitAdminBtn" class="btn btn-exit" style="display:none;">Sair do Admin</button>
 
-    <!-- VOLTAR -->
-    <a href="index.html" class="btn btn-exit">
-      ⬅ Voltar para o site principal
-    </a>
+    <a href="index.html" class="btn btn-exit">⬅ Voltar para o site principal</a>
 
     <div class="footer">WayCompanyGG ©</div>
   </div>
@@ -137,23 +139,48 @@
     const exitAdminBtn = document.getElementById("exitAdminBtn");
     const adminBadge = document.getElementById("adminBadge");
 
+    // seat: { status: "free" | "reserved" | "blocked", name?: string }
+    const defaultSeats = Array.from({ length: TOTAL_SEATS }, () => ({ status: "free" }));
+
     let isAdmin = false;
-    let seats = JSON.parse(localStorage.getItem("vanSeats")) 
-      || Array(TOTAL_SEATS).fill(null);
+    let seats = loadSeats();
+
+    function loadSeats() {
+      const raw = localStorage.getItem("vanSeatsV2");
+      if (!raw) return structuredClone(defaultSeats);
+      try {
+        const parsed = JSON.parse(raw);
+        // fallback básico se vier algo antigo
+        if (!Array.isArray(parsed) || parsed.length !== TOTAL_SEATS) {
+          return structuredClone(defaultSeats);
+        }
+        return parsed;
+      } catch {
+        return structuredClone(defaultSeats);
+      }
+    }
+
+    function saveSeats() {
+      localStorage.setItem("vanSeatsV2", JSON.stringify(seats));
+      render();
+    }
 
     function render() {
       van.innerHTML = "";
-      seats.forEach((name, index) => {
+
+      seats.forEach((s, index) => {
         const seat = document.createElement("div");
         seat.className = "seat";
 
-        if (name) {
-          seat.classList.add("reserved");
-          seat.textContent = name;
-          if (isAdmin) seat.classList.add("admin");
-        } else {
-          seat.textContent = `Lugar ${index + 1}`;
-        }
+        // estilos por status
+        if (s.status === "reserved") seat.classList.add("reserved");
+        if (s.status === "blocked") seat.classList.add("blocked");
+        if (isAdmin) seat.classList.add("admin-outline");
+
+        // texto
+        if (s.status === "reserved") seat.textContent = s.name || "Reservado";
+        else if (s.status === "blocked") seat.textContent = "Bloqueado";
+        else seat.textContent = `Lugar ${index + 1}`;
 
         seat.onclick = () => handleSeatClick(index);
         van.appendChild(seat);
@@ -161,28 +188,55 @@
     }
 
     function handleSeatClick(index) {
-      if (seats[index] && !isAdmin) return;
+      const s = seats[index];
 
-      if (isAdmin && seats[index]) {
-        if (confirm(`Liberar o lugar de ${seats[index]}?`)) {
-          seats[index] = null;
-          save();
+      // Usuário normal
+      if (!isAdmin) {
+        if (s.status !== "free") return; // não clica em reservado/bloqueado
+        const name = prompt(`Digite seu nome para reservar o lugar ${index + 1}:`);
+        if (!name) return;
+        seats[index] = { status: "reserved", name: name.trim() };
+        saveSeats();
+        return;
+      }
+
+      // Admin
+      if (s.status === "free") {
+        const action = prompt(
+          `Admin - Lugar ${index + 1}\n` +
+          `Digite:\n` +
+          `1 = Reservar (com nome)\n` +
+          `2 = Bloquear\n` +
+          `3 = Cancelar`
+        );
+
+        if (action === "1") {
+          const name = prompt("Nome para reservar:");
+          if (!name) return;
+          seats[index] = { status: "reserved", name: name.trim() };
+          saveSeats();
+        } else if (action === "2") {
+          seats[index] = { status: "blocked" };
+          saveSeats();
         }
         return;
       }
 
-      if (!seats[index]) {
-        const name = prompt("Digite seu nome para reservar:");
-        if (name) {
-          seats[index] = name;
-          save();
-        }
+      if (s.status === "reserved") {
+        const ok = confirm(`Liberar o lugar reservado por "${s.name || "alguém"}"?`);
+        if (!ok) return;
+        seats[index] = { status: "free" };
+        saveSeats();
+        return;
       }
-    }
 
-    function save() {
-      localStorage.setItem("vanSeats", JSON.stringify(seats));
-      render();
+      if (s.status === "blocked") {
+        const ok = confirm("Desbloquear este lugar?");
+        if (!ok) return;
+        seats[index] = { status: "free" };
+        saveSeats();
+        return;
+      }
     }
 
     adminBtn.onclick = () => {

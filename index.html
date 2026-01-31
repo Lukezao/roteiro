@@ -6,14 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    /* ===== FONTE ROKIEST ===== */
+    @font-face {
+      font-family: "Rokiest";
+      src: url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root{
       --bg1:#0b0f19;
       --bg2:#0f172a;
-      --card:#0b1220cc;
-      --stroke:rgba(255,255,255,.10);
+      --card: rgba(11,18,32,.78);
+      --stroke: rgba(255,255,255,.10);
       --text:#e5e7eb;
-      --muted:rgba(229,231,235,.75);
-      --shadow:0 20px 60px rgba(0,0,0,.6);
+      --muted: rgba(229,231,235,.72);
+      --shadow: 0 20px 60px rgba(0,0,0,.6);
 
       --purple:#7c3aed;
       --green:#25D366;
@@ -29,8 +38,8 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       color:var(--text);
       background:
-        radial-gradient(800px 400px at 10% 10%, rgba(124,58,237,.25), transparent 60%),
-        radial-gradient(800px 400px at 90% 20%, rgba(37,99,235,.22), transparent 60%),
+        radial-gradient(800px 420px at 10% 10%, rgba(124,58,237,.25), transparent 60%),
+        radial-gradient(800px 420px at 90% 20%, rgba(37,99,235,.22), transparent 60%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
       display:flex;
       justify-content:center;
@@ -40,7 +49,7 @@
 
     .card{
       width:100%;
-      max-width:420px;
+      max-width:440px;
       background:var(--card);
       border:1px solid var(--stroke);
       border-radius:18px;
@@ -48,23 +57,30 @@
       text-align:center;
       box-shadow:var(--shadow);
       backdrop-filter: blur(10px);
+      animation: fadeUp .5s ease both;
+    }
+
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(10px); }
+      to{ opacity:1; transform:translateY(0); }
     }
 
     .logo{
       max-width:170px;
-      margin-bottom:22px;
+      margin-bottom:20px;
     }
 
     h1{
-      font-size:22px;
+      font-family:"Rokiest", sans-serif;
+      font-size:30px;
       margin:0 0 6px;
-      letter-spacing:.3px;
+      letter-spacing:.6px;
     }
 
     p{
+      margin:0 0 24px;
       font-size:14px;
       color:var(--muted);
-      margin:0 0 26px;
     }
 
     .btn{
@@ -74,36 +90,21 @@
       margin-bottom:14px;
       border-radius:12px;
       font-size:15px;
-      font-weight:800;
+      font-weight:900;
       text-decoration:none;
       color:#fff;
-      transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+      transition:.15s;
     }
 
     .btn:hover{
-      transform:translateY(-1px);
+      transform:translateY(-2px);
       opacity:.95;
     }
 
-    .btn-pdf{
-      background:var(--purple);
-      box-shadow:0 10px 28px rgba(124,58,237,.35);
-    }
-
-    .btn-whatsapp{
-      background:var(--green);
-      box-shadow:0 10px 28px rgba(37,211,102,.35);
-    }
-
-    .btn-van{
-      background:var(--red);
-      box-shadow:0 10px 28px rgba(239,68,68,.35);
-    }
-
-    .btn-ajuste{
-      background:var(--blue);
-      box-shadow:0 10px 28px rgba(37,99,235,.35);
-    }
+    .btn-pdf{ background:var(--purple); box-shadow:0 10px 28px rgba(124,58,237,.35); }
+    .btn-whatsapp{ background:var(--green); box-shadow:0 10px 28px rgba(37,211,102,.35); }
+    .btn-van{ background:var(--red); box-shadow:0 10px 28px rgba(239,68,68,.35); }
+    .btn-ajuste{ background:var(--blue); box-shadow:0 10px 28px rgba(37,99,235,.35); }
 
     .footer{
       margin-top:18px;
@@ -133,7 +134,6 @@
       🚐 Reserva de Lugar na Van
     </a>
 
-    <!-- BOTÃO EQUIPE -->
     <a href="ajustar-cronograma.html" class="btn btn-ajuste">
       🛠️ Ajustar Cronograma (Equipe)
     </a>

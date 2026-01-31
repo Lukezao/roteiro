@@ -71,10 +71,37 @@
       font-size: 12px;
       opacity: 0.6;
     }
+
+    /* HOME FIXO (aparece em todas as páginas — aqui também) */
+    .home-fab{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 9999;
+      background: rgba(17, 24, 39, .92);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(8px);
+    }
+    .home-fab:hover{
+      opacity: .92;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 
 <body>
+  <a class="home-fab" href="index.html" aria-label="Voltar para Home">🏠 Home</a>
+
   <div class="card">
     <img src="logo-lalaia.png" alt="Lalaiá Music" class="logo">
 
@@ -93,7 +120,6 @@
       🚐 Reserva de Lugar na Van
     </a>
 
-    <!-- NOVO BOTÃO (só equipe) -->
     <a href="ajustar-cronograma.html" class="btn btn-ajuste">
       🛠️ Ajustar Cronograma (Equipe)
     </a>

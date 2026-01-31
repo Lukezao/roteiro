@@ -1,110 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ajustar Cronograma | Equipe</title>
+  <meta charset="UTF-8">
+  <title>Lalaiá Music | WayCompanyGG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#0f0f0f,#1b1b1b);color:#fff;font-family:Arial;padding:16px}
-    .card{width:100%;max-width:560px;background:#121212;border-radius:16px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
-    h1{margin:0 0 8px;text-align:center;font-size:20px}
-    p{margin:0 0 14px;text-align:center;opacity:.8;font-size:14px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    label{font-size:12px;opacity:.8}
-    input{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0b0b0b;color:#fff;box-sizing:border-box}
-    .full{grid-column:1/-1}
-    .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
-    button,a{border:none;border-radius:10px;padding:12px 14px;font-weight:800;cursor:pointer;text-decoration:none;color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:200px}
-    .btn-save{background:#2563eb}
-    .btn-pdf{background:#16a34a}
-    .btn-home{background:#374151}
-    .msg{margin-top:10px;font-size:13px;opacity:.9;text-align:center;line-height:1.4}
-    .hint{margin-top:10px;font-size:12px;opacity:.65;text-align:center}
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: #121212;
+      padding: 40px 32px;
+      border-radius: 16px;
+      text-align: center;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.6);
+    }
+
+    .logo {
+      max-width: 180px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 15px;
+      opacity: 0.85;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
+    .btn-pdf { background: #7c3aed; }
+    .btn-whatsapp { background: #25D366; }
+    .btn-van { background: #ef4444; }
+    .btn-ajuste { background: #2563eb; }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
   </style>
 </head>
+
 <body>
   <div class="card">
-    <h1>🛠️ Ajustar Cronograma (Equipe)</h1>
-    <p>Preencha, salvará na planilha e gerará o PDF atualizado.</p>
+    <img src="logo-lalaia.png" alt="Lalaiá Music" class="logo">
 
-    <div class="grid full">
-      <div class="full">
-        <label>SENHA EQUIPE</label>
-        <input id="PASS" type="password" placeholder="Senha da equipe" />
-      </div>
+    <h1>Lalaiá Music</h1>
+    <p>Informações oficiais & produção</p>
 
-      <!-- 👇 CAMPOS DO CRONOGRAMA (precisam existir como Intervalo Nomeado) -->
-      <div>
-        <label>CIDADE (range: CIDADE)</label>
-        <input id="CIDADE" placeholder="Manaus / AM" />
-      </div>
+    <a href="cronograma-matheusinho.pdf" target="_blank" class="btn btn-pdf">
+      📄 Abrir Cronograma (PDF)
+    </a>
 
-      <div>
-        <label>DATA (range: DATA)</label>
-        <input id="DATA" placeholder="31/01/25" />
-      </div>
+    <a href="https://wa.me/5521983764623" target="_blank" class="btn btn-whatsapp">
+      💬 Falar com Produção
+    </a>
 
-      <div class="full">
-        <label>LOCAL (range: LOCAL)</label>
-        <input id="LOCAL" placeholder="Quintal do Pagode" />
-      </div>
+    <a href="van.html" class="btn btn-van">
+      🚐 Reserva de Lugar na Van
+    </a>
 
-      <div>
-        <label>DIA DA SEMANA (range: DIA_SEMANA)</label>
-        <input id="DIA_SEMANA" placeholder="SÁBADO" />
-      </div>
+    <!-- NOVO BOTÃO (só equipe) -->
+    <a href="ajustar-cronograma.html" class="btn btn-ajuste">
+      🛠️ Ajustar Cronograma (Equipe)
+    </a>
 
-      <div>
-        <label>SHOWTIME (range: SHOWTIME)</label>
-        <input id="SHOWTIME" placeholder="22:30" />
-      </div>
-
-      <div class="full">
-        <label>CLIMA (range: CLIMA)</label>
-        <input id="CLIMA" placeholder="18° | 27° NÃO CHOVE" />
-      </div>
-
-      <div class="full">
-        <label>OBS (range: OBS)</label>
-        <input id="OBS" placeholder="observações internas..." />
-      </div>
+    <div class="footer">
+      Desenvolvido por WayCompanyGG<br>
+      © Lalaiá Music
     </div>
-
-    <div class="row">
-      <button class="btn-save" onclick="salvarGerar()">💾 Salvar + Gerar PDF</button>
-      <a class="btn-home" href="https://waycompanygg.github.io/roteiro/" target="_blank">🏠 Abrir Home</a>
-    </div>
-
-    <div id="msg" class="msg"></div>
-    <div class="hint">Dica: se algum campo não atualizar, é porque o Intervalo Nomeado não existe com aquele nome.</div>
   </div>
-
-<script>
-  function payload() {
-    // nomes devem bater com os intervalos nomeados no Sheets
-    const keys = ["CIDADE","DATA","LOCAL","DIA_SEMANA","SHOWTIME","CLIMA","OBS"];
-    const p = {};
-    keys.forEach(k => p[k] = document.getElementById(k).value);
-    return p;
-  }
-
-  function salvarGerar() {
-    const pass = document.getElementById("PASS").value || "";
-    const msg = document.getElementById("msg");
-    msg.textContent = "Atualizando planilha e gerando PDF...";
-
-    google.script.run
-      .withSuccessHandler((res) => {
-        msg.innerHTML =
-          `✅ PDF atualizado! ` +
-          `<a href="${res.viewUrl}" target="_blank" style="color:#a78bfa">Abrir</a> | ` +
-          `<a href="${res.downloadUrl}" target="_blank" style="color:#a78bfa">Baixar</a>`;
-      })
-      .withFailureHandler((err) => {
-        msg.textContent = "❌ Erro: " + err.message;
-      })
-      .updateAndGenerate(payload(), pass);
-  }
-</script>
 </body>
 </html>

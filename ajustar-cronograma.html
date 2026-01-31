@@ -2,119 +2,184 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Lalaiá Music | Cronograma</title>
+  <title>Ajustar Cronograma | Equipe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
-      font-family: Arial, sans-serif;
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#0f0f0f,#1b1b1b);
+      font-family:Arial, sans-serif;
+      color:#fff;
+      padding:16px;
+    }
+    .card{
+      width:100%;
+      max-width:560px;
+      background:#121212;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 20px 50px rgba(0,0,0,.6);
+      text-align:center;
+    }
+    h1{ margin:0 0 8px; font-size:20px; }
+    p{ margin:0 0 14px; opacity:.8; font-size:14px; }
+
+    .input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0b0b0b;
+      color:#fff;
+      margin-top:10px;
+      box-sizing:border-box;
+    }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px; }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:800;
+      background:#374151;
+      border:none;
+      cursor:pointer;
+      min-width:220px;
+    }
+    .btn:hover{ opacity:.92; }
+    .btn-open{ background:#2563eb; }
+    .btn-sheet{ background:#16a34a; }
+    .btn-logout{ background:#ef4444; }
+    .small{ font-size:12px; opacity:.7; margin-top:10px; line-height:1.35; }
+
+    .box{
+      margin-top:12px;
+      padding:12px;
+      border-radius:12px;
+      background:#0b0b0b;
+      border:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      display:none;
+    }
+
+    /* HOME FIXO */
+    .home-fab{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 9999;
+      background: rgba(17, 24, 39, .92);
+      border: 1px solid rgba(255,255,255,.12);
       color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .card {
-      background: #121212;
-      padding: 40px 32px;
-      border-radius: 16px;
-      text-align: center;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.6);
-    }
-
-    .logo {
-      max-width: 180px;
-      margin-bottom: 24px;
-    }
-
-    h1 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    p {
-      font-size: 15px;
-      opacity: 0.85;
-      margin-bottom: 28px;
-    }
-
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 14px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
       text-decoration: none;
-      color: #fff;
-      transition: transform .15s ease, opacity .15s ease;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(8px);
     }
-
-    .btn:hover {
-      transform: scale(1.02);
-      opacity: 0.9;
-    }
-
-    .btn-pdf {
-      background: #7c3aed;
-    }
-
-    .btn-whatsapp {
-      background: #25D366;
-    }
-
-    .btn-ajuste {
-      background: #2563eb;
-    }
-
-    .footer {
-      margin-top: 18px;
-      font-size: 12px;
-      opacity: 0.6;
+    .home-fab:hover{
+      opacity: .92;
+      transform: translateY(-1px);
     }
   </style>
 </head>
 
 <body>
+  <a class="home-fab" href="index.html" aria-label="Voltar para Home">🏠 Home</a>
+
   <div class="card">
+    <h1>🛠️ Ajustar Cronograma (Equipe)</h1>
+    <p>Entre uma vez e abra a planilha ou o formulário do cronograma.</p>
 
-    <!-- LOGO -->
-    <img src="logo-lalaia.png" alt="Lalaiá Music" class="logo" />
-
-    <h1>Cronograma do Show</h1>
-    <p>Visualize o cronograma oficial e fale com a produção</p>
-
-    <!-- PDF -->
-    <a href="cronograma-matheusinho.pdf" target="_blank" class="btn btn-pdf">
-      📄 Abrir Cronograma (PDF)
-    </a>
-
-    <!-- WHATSAPP -->
-    <a href="https://wa.me/5521983764623" target="_blank" class="btn btn-whatsapp">
-      💬 Falar com Produção
-    </a>
-
-    <!-- AJUSTAR CRONOGRAMA (EQUIPE) -->
-    <a
-      href="https://script.google.com/macros/s/AKfycbzOBfcv09wJdxM7uIvsS4EVvOJCkhu5ptY5gYY_-PI/exec"
-      target="_blank"
-      rel="noopener"
-      class="btn btn-ajuste"
-    >
-      🛠️ Ajustar Cronograma (Equipe)
-    </a>
-
-    <div class="footer">
-      Desenvolvido por <b>WayCompanyGG</b><br />
-      © Lalaiá Music
+    <div id="login">
+      <input id="pass" class="input" type="password" placeholder="Senha da equipe" />
+      <div class="row">
+        <button class="btn btn-open" onclick="entrar()">Entrar</button>
+        <a class="btn" href="index.html">⬅ Voltar</a>
+      </div>
+      <div class="small">
+        ✅ Depois de entrar, a sessão fica salva (não pede senha de novo até você sair).
+      </div>
     </div>
 
+    <div id="area" class="box">
+      <p style="margin:0 0 10px;"><b>✅ Acesso liberado</b></p>
+
+      <div class="row">
+        <a class="btn btn-sheet" id="sheetLink" href="#" target="_blank" rel="noopener">
+          📊 Abrir Planilha (Sheets)
+        </a>
+
+        <a class="btn btn-open" id="formLink" href="#" target="_blank" rel="noopener">
+          📝 Abrir Formulário (Web App)
+        </a>
+
+        <button class="btn btn-logout" onclick="sair()">Sair</button>
+      </div>
+
+      <div class="small">
+        Se algum botão não abrir, é porque o link ainda está vazio no código (SHEETS_URL).
+      </div>
+    </div>
   </div>
+
+<script>
+  // ✅ TROQUE A SENHA AQUI (portal do site)
+  const TEAM_PASSWORD = "1234";
+
+  // ✅ COLE AQUI O LINK DA SUA PLANILHA (Sheets)
+  const SHEETS_URL = "COLE_AQUI_O_LINK_DA_SUA_PLANILHA";
+
+  // ✅ LINK DO SEU WEB APP (FORMULÁRIO) - use /exec
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzOBfcv09wJdxM7uIvsS4EVvOJCkhu5ptY5gYY_-PI/exec";
+
+  function setLinks(){
+    document.getElementById("sheetLink").href = SHEETS_URL;
+    document.getElementById("formLink").href = WEBAPP_URL;
+  }
+
+  function showArea(){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("area").style.display = "block";
+    setLinks();
+  }
+
+  function entrar(){
+    const p = document.getElementById("pass").value || "";
+    if(p !== TEAM_PASSWORD){
+      alert("Senha incorreta");
+      return;
+    }
+    sessionStorage.setItem("cronograma_autorizado", "1");
+    showArea();
+  }
+
+  function sair(){
+    sessionStorage.removeItem("cronograma_autorizado");
+    document.getElementById("pass").value = "";
+    document.getElementById("area").style.display = "none";
+    document.getElementById("login").style.display = "block";
+  }
+
+  // ✅ se já entrou antes nessa sessão, não pede senha de novo
+  if(sessionStorage.getItem("cronograma_autorizado") === "1"){
+    showArea();
+  }
+</script>
 </body>
 </html>

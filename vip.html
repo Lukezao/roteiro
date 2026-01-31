@@ -249,13 +249,28 @@
   }
 
   async function api(fn, payload){
+  const controller = new AbortController();
+  const timeout = setTimeout(()=>controller.abort(), 15000); // 15s
+
+  try{
     const res = await fetch(API_URL, {
       method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ fn, payload })
+      // ⚠️ NÃO coloque Content-Type application/json
+      // isso evita preflight (OPTIONS) e mata o CORS
+      body: JSON.stringify({ fn, payload }),
+      signal: controller.signal
     });
-    return await res.json();
+
+    const text = await res.text();
+    try { return JSON.parse(text); }
+    catch { return { ok:false, error:"Resposta inválida: " + text.slice(0,160) }; }
+
+  } catch (err){
+    return { ok:false, error:(err.name==="AbortError" ? "Timeout (15s). Confira o /exec." : String(err)) };
+  } finally {
+    clearTimeout(timeout);
   }
+}
 
   async function entrar(){
     const code = (document.getElementById("code").value||"").trim().toUpperCase();

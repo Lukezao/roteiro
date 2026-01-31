@@ -1,761 +1,397 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Diária | Lalaiá</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Diária | Lalaiá</title>
 
-  <style>
-    @font-face{
-      font-family: "Rokiest";
-      src: url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
-      font-weight: 800;
-      font-style: normal;
-      font-display: swap;
-    }
+<style>
+@font-face{
+  font-family:"Rokiest";
+  src:url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
+  font-weight:800;
+}
 
-    :root{
-      --bg1:#0b0f19;
-      --bg2:#0f172a;
-      --card: rgba(11,18,32,.78);
-      --stroke: rgba(255,255,255,.10);
-      --text:#e5e7eb;
-      --muted: rgba(229,231,235,.72);
-      --shadow: 0 20px 60px rgba(0,0,0,.6);
+:root{
+  --bg1:#0b0f19;
+  --bg2:#0f172a;
+  --card:rgba(11,18,32,.85);
+  --stroke:rgba(255,255,255,.12);
+  --text:#e5e7eb;
+  --muted:rgba(229,231,235,.65);
+  --blue:#2563eb;
+  --amber:#f59e0b;
+  --danger:#ef4444;
+}
 
-      --amber:#f59e0b;
-      --blue:#2563eb;
-      --ghost: rgba(255,255,255,.06);
-      --success: rgba(22,163,74,.10);
-      --danger: rgba(239,68,68,.10);
-    }
+*{box-sizing:border-box}
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(800px 420px at 10% 10%, rgba(245,158,11,.18), transparent 60%),
-        radial-gradient(800px 420px at 90% 20%, rgba(37,99,235,.22), transparent 60%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:22px;
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:
+    radial-gradient(800px 420px at 10% 10%, rgba(245,158,11,.18), transparent 60%),
+    radial-gradient(800px 420px at 90% 20%, rgba(37,99,235,.22), transparent 60%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:22px;
+}
 
-    .home-fab{
-      position: fixed;
-      top: 16px; left: 16px;
-      z-index: 9999;
-      background: rgba(17, 24, 39, .92);
-      border: 1px solid rgba(255,255,255,.12);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 900;
-      font-size: 14px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(8px);
-      transition:.15s;
-    }
-    .home-fab:hover{ transform: translateY(-1px); opacity:.92; }
+.home{
+  position:fixed;
+  top:16px; left:16px;
+  background:rgba(17,24,39,.9);
+  border:1px solid var(--stroke);
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:900;
+  text-decoration:none;
+  color:#fff;
+}
 
-    .card{
-      width:100%;
-      max-width:980px;
-      background:var(--card);
-      border:1px solid var(--stroke);
-      border-radius:18px;
-      padding:22px;
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(10px);
-      animation: fadeUp .5s ease both;
-    }
-    @keyframes fadeUp{
-      from{ opacity:0; transform:translateY(10px); }
-      to{ opacity:1; transform:translateY(0); }
-    }
+.card{
+  width:100%;
+  max-width:1000px;
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
 
-    h1{
-      font-family:"Rokiest", sans-serif;
-      font-size:28px;
-      margin:0 0 6px;
-      letter-spacing:.6px;
-    }
-    .sub{
-      margin:0 0 14px;
-      color:var(--muted);
-      font-size:13px;
-    }
+h1{
+  font-family:"Rokiest";
+  margin:0;
+  letter-spacing:.8px;
+}
 
-    .topbar{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:end;
-      justify-content:space-between;
-      margin-top: 10px;
-    }
+.sub{
+  margin:6px 0 14px;
+  color:var(--muted);
+  font-size:13px;
+}
 
-    .leftControls{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+/* ===== TOPBAR ===== */
+.topbar{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  margin-top:10px;
+}
 
-    .fieldMini{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width: 160px;
-    }
+.leftControls{
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
 
-    label{
-      font-size:12px;
-      color:rgba(229,231,235,.75);
-    }
+.fieldMini{
+  min-width:220px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-    input, select{
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(2,6,23,.55);
-      color: var(--text);
-      outline:none;
-      transition:.15s;
-    }
+label{font-size:12px;color:var(--muted)}
 
-    input:focus, select:focus{
-      border-color: rgba(245,158,11,.55);
-      box-shadow: 0 0 0 4px rgba(245,158,11,.18);
-    }
+input,select{
+  height:44px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--stroke);
+  background:#020617;
+  color:#fff;
+}
 
-    .btn{
-      border:0;
-      cursor:pointer;
-      border-radius:12px;
-      padding:12px 14px;
-      font-weight:900;
-      font-size:14px;
-      color:#fff;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      transition:.15s;
-      min-width: 160px;
-    }
-    .btn:hover{ transform:translateY(-2px); opacity:.95; }
-    .btn:active{ transform:translateY(0); opacity:.9; }
+.btn{
+  height:44px;
+  padding:0 16px;
+  border-radius:12px;
+  border:0;
+  cursor:pointer;
+  font-weight:900;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
 
-    .btn-primary{ background: var(--amber); box-shadow: 0 10px 28px rgba(245,158,11,.28); }
-    .btn-blue{ background: var(--blue); box-shadow: 0 10px 28px rgba(37,99,235,.22); }
-    .btn-ghost{
-      background: var(--ghost);
-      border:1px solid var(--stroke);
-      color: rgba(229,231,235,.92);
-      min-width: 140px;
-    }
+.btn-blue{background:var(--blue);color:#fff}
+.btn-amber{background:var(--amber);color:#000}
+.btn-ghost{
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  border:1px solid var(--stroke);
+}
 
-    .gridHeader, .gridRow{
-      display:grid;
-      grid-template-columns: 1.1fr .6fr .35fr .25fr;
-      gap:10px;
-      align-items:center;
-    }
+.gridHeader,.gridRow{
+  display:grid;
+  grid-template-columns:1.2fr .6fr .4fr .2fr;
+  gap:10px;
+  align-items:center;
+}
 
-    .gridHeader{
-      margin-top: 14px;
-      padding: 6px 2px;
-      color: rgba(229,231,235,.65);
-      font-size:12px;
-    }
+.gridHeader{
+  margin-top:18px;
+  font-size:12px;
+  color:var(--muted);
+}
 
-    .gridRow{ margin-top:10px; }
+.gridRow{margin-top:10px}
 
-    .money{ font-variant-numeric: tabular-nums; }
+.check{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#020617;
+  border:1px solid var(--stroke);
+  padding:10px 12px;
+  border-radius:12px;
+}
 
-    .checkWrap{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(2,6,23,.45);
-      user-select:none;
-    }
-    .checkWrap input{ width:auto; padding:0; margin:0; box-shadow:none; }
-    .checkWrap span{ font-size:13px; color: rgba(229,231,235,.85); font-weight:900; }
+.remove{
+  background:rgba(239,68,68,.2);
+  border:1px solid rgba(239,68,68,.4);
+  color:#fff;
+  border-radius:12px;
+  height:44px;
+  cursor:pointer;
+}
 
-    .remove{
-      background: rgba(239,68,68,.16);
-      border:1px solid rgba(239,68,68,.28);
-      color: #fff;
-      border-radius: 12px;
-      padding: 10px 12px;
-      cursor:pointer;
-      font-weight:900;
-      transition:.15s;
-    }
-    .remove:hover{ opacity:.92; transform: translateY(-1px); }
+.totalBox{
+  margin-top:20px;
+  border:1px solid var(--stroke);
+  border-radius:16px;
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
 
-    .totalBox{
-      margin-top: 16px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      border-radius: 16px;
-      padding: 14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px resultado;
-      flex-wrap: wrap;
-    }
+.total{
+  font-family:"Rokiest";
+  font-size:30px;
+  cursor:pointer;
+}
 
-    .totalLabel{ color: rgba(229,231,235,.72); font-size:13px; }
-    .totalValue{
-      font-family:"Rokiest", sans-serif;
-      font-size: 28px;
-      letter-spacing:.6px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 8px 10px;
-      border-radius: 14px;
-      transition:.15s;
-    }
-    .totalValue:hover{
-      background: rgba(245,158,11,.10);
-      transform: translateY(-1px);
-    }
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#111827;
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:900;
+  opacity:0;
+  transition:.2s;
+}
+.toast.show{opacity:1}
 
-    .mutedSmall{
-      margin-top: 8px;
-      font-size:12px;
-      color: rgba(229,231,235,.55);
-    }
+/* LOGIN */
+.login{
+  text-align:center;
+}
+.login input{max-width:300px}
 
-    .toast{
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(17,24,39,.95);
-      border:1px solid rgba(255,255,255,.12);
-      padding: 10px 12px;
-      border-radius: 12px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      color: #fff;
-      font-weight: 900;
-      opacity: 0;
-      pointer-events:none;
-      transition: .2s;
-      z-index: 9999;
-      text-align:center;
-    }
-    .toast.show{ opacity: 1; }
+.loader{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+.loader div{
+  width:60px;height:60px;
+  border:4px solid rgba(255,255,255,.2);
+  border-top-color:var(--amber);
+  border-radius:50%;
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ===== LOGIN / LOADING ===== */
-    .center{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding: 10px 0 4px;
-    }
-
-    .loginCard{
-      margin-top: 12px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding: 14px;
-      width: 100%;
-      max-width: 520px;
-    }
-
-    .loadingOverlay{
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(700px 420px at 20% 15%, rgba(245,158,11,.20), transparent 60%),
-        radial-gradient(700px 420px at 80% 20%, rgba(37,99,235,.20), transparent 60%),
-        rgba(0,0,0,.55);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 10000;
-    }
-
-    .loaderCard{
-      width: min(520px, 92vw);
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(11,18,32,.82);
-      box-shadow: 0 20px 60px rgba(0,0,0,.65);
-      padding: 18px;
-      text-align:center;
-      animation: fadeUp .35s ease both;
-    }
-
-    .ring{
-      width: 56px; height: 56px;
-      border-radius: 999px;
-      border: 3px solid rgba(255,255,255,.18);
-      border-top-color: rgba(245,158,11,.95);
-      margin: 10px auto 12px;
-      animation: spin 0.9s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loaderTitle{
-      font-family:"Rokiest", sans-serif;
-      font-size: 22px;
-      margin: 0;
-      letter-spacing: .6px;
-    }
-    .loaderSub{
-      margin: 6px 0 0;
-      color: rgba(229,231,235,.72);
-      font-size: 13px;
-    }
-
-    @media (max-width: 860px){
-      .gridHeader, .gridRow{
-        grid-template-columns: 1fr;
-      }
-      .btn{ min-width: 100%; }
-      .leftControls{ width:100%; }
-      .fieldMini{ min-width: 100%; }
-      .topbar{ justify-content: stretch; }
-    }
-  </style>
+@media(max-width:900px){
+  .topbar{grid-template-columns:1fr}
+  .gridHeader,.gridRow{grid-template-columns:1fr}
+  .btn,input,select{width:100%}
+}
+</style>
 </head>
 
 <body>
-  <a class="home-fab" href="index.html">🏠 Home</a>
 
-  <!-- LOADING OVERLAY -->
-  <div id="loading" class="loadingOverlay">
-    <div class="loaderCard">
-      <div class="ring"></div>
-      <p class="loaderTitle">Carregando área de Admin…</p>
-      <p class="loaderSub">Aguarde um instante</p>
-    </div>
+<a class="home" href="index.html">🏠 Home</a>
+
+<div class="loader" id="loader"><div></div></div>
+
+<div class="card">
+  <h1>Calculadora de Diária</h1>
+  <p class="sub">Somar músicos, aplicar meia diária, multiplicar por dias e copiar total.</p>
+
+  <!-- LOGIN -->
+  <div id="login" class="login">
+    <input id="pass" type="password" placeholder="Senha admin">
+    <br><br>
+    <button class="btn btn-amber" onclick="entrar()">🔑 Entrar</button>
   </div>
 
-  <div class="card">
-    <h1>Calculadora de Diária</h1>
-    <p class="sub">Somar diárias por músico, multiplicar por dias e copiar o total com 1 clique.</p>
+  <!-- APP -->
+  <div id="app" style="display:none">
 
-    <!-- LOGIN ADMIN -->
-    <div id="loginWrap" class="center">
-      <div class="loginCard">
-        <p style="margin:0 0 8px; color:rgba(229,231,235,.8); font-weight:900;">🔒 Acesso Admin</p>
-        <input id="adminPass" type="password" placeholder="Digite a senha de admin">
-        <div class="topbar" style="justify-content:center; margin-top:12px;">
-          <button class="btn btn-primary" onclick="entrar()">🔑 Entrar</button>
-          <a class="btn btn-ghost" href="index.html">⬅ Voltar</a>
+    <div class="topbar">
+      <div class="leftControls">
+        <button class="btn btn-blue" onclick="add()">➕ Adicionar músico</button>
+
+        <div class="fieldMini">
+          <label>Presets</label>
+          <select id="preset" onchange="loadPreset()"></select>
         </div>
-        <p class="mutedSmall">Dica: a sessão fica salva neste navegador.</p>
+
+        <button class="btn btn-ghost" onclick="savePreset()">💾 Salvar</button>
+        <button class="btn btn-ghost" onclick="deletePreset()">🗑️</button>
+      </div>
+
+      <div class="leftControls">
+        <div class="fieldMini" style="min-width:180px">
+          <label>Quantidade de dias</label>
+          <input id="dias" type="number" min="1" value="1" oninput="calc()">
+        </div>
+        <button class="btn btn-ghost" onclick="clearAll()">🧹 Limpar</button>
+        <button class="btn btn-ghost" onclick="logout()">🚪 Sair</button>
       </div>
     </div>
 
-    <!-- APP -->
-    <div id="app" style="display:none;">
-
-  <div class="topbar">
-  <div class="leftControls">
-    <button class="btn btn-blue" onclick="addLinha()">➕ Adicionar músico</button>
-
-    <div class="fieldMini">
-      <label>Presets</label>
-      <select id="presetSelect" onchange="onPresetChange()">
-        <option value="">— Selecionar preset —</option>
-      </select>
+    <div class="gridHeader">
+      <div>Músico</div>
+      <div>Valor</div>
+      <div>Meia diária</div>
+      <div></div>
     </div>
 
-    <button class="btn btn-ghost" onclick="salvarPreset()">💾 Salvar preset</button>
-    <button class="btn btn-ghost" onclick="deletarPreset()">🗑️ Deletar preset</button>
-  </div>
+    <div id="rows"></div>
 
-  <div class="leftControls">
-    <div class="fieldMini" style="min-width:180px;">
-      <label>Quantidade de dias</label>
-      <input id="dias" type="number" min="1" step="1" value="1" oninput="onDias()" />
+    <div class="totalBox">
+      <div>
+        <div style="font-size:13px;color:var(--muted)">Total final</div>
+        <div style="font-size:12px;color:var(--muted)">Clique para copiar</div>
+      </div>
+      <div class="total" onclick="copy()">R$ 0,00</div>
     </div>
-
-    <button class="btn btn-ghost" onclick="limpar()">🧹 Limpar</button>
-    <button class="btn btn-ghost" onclick="sair()">🚪 Sair</button>
   </div>
 </div>
 
-
-      <div class="gridHeader">
-        <div>Nome do músico</div>
-        <div>Valor (R$)</div>
-        <div>Meia diária</div>
-        <div>Ação</div>
-      </div>
-
-      <div id="linhas"></div>
-
-      <div class="totalBox">
-        <div>
-          <div class="totalLabel">Total final</div>
-          <div class="totalLabel" style="font-size:12px; opacity:.75;">
-            Total = (soma dos músicos) × dias. Clique no valor para copiar.
-          </div>
-        </div>
-
-        <div id="total" class="totalValue" onclick="copiarTotal()">
-          R$ 0,00 <span style="font-size:14px; opacity:.9;">📋</span>
-        </div>
-      </div>
-
-      <div class="mutedSmall">
-        ✅ “Meia diária” conta metade do valor daquele músico. <br>
-        ✅ Presets salvam nomes + valores + meia diária + dias.
-      </div>
-    </div>
-  </div>
-
-  <div id="toast" class="toast">✅ Copiado!</div>
+<div class="toast" id="toast">✅ Copiado!</div>
 
 <script>
-  // ===== CONFIG =====
-  const ADMIN_PASSWORD = "1234"; // <- troque aqui
-  const STORE_KEY = "diaria_musicos_v2";
-  const AUTH_KEY = "diaria_admin_ok_v2";
-  const PRESET_KEY = "diaria_presets_v2";
-  const SETTINGS_KEY = "diaria_settings_v2"; // dias etc
+const ADMIN="1234";
+const STORE="diaria_rows";
+const PRESETS="diaria_presets";
 
-  // ===== HELPERS =====
-  const brl = (n) => (Number(n)||0).toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+function entrar(){
+  if(pass.value!==ADMIN) return alert("Senha incorreta");
+  loader.style.display="flex";
+  setTimeout(()=>{
+    loader.style.display="none";
+    login.style.display="none";
+    app.style.display="block";
+    init();
+  },900);
+}
 
-  function toast(msg){
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.classList.add("show");
-    setTimeout(()=> t.classList.remove("show"), 1200);
-  }
+function logout(){location.reload()}
 
-  function showLoading(ms=900){
-    const el = document.getElementById("loading");
-    el.style.display = "flex";
-    setTimeout(()=> el.style.display = "none", ms);
-  }
+function init(){
+  if(!localStorage.getItem(STORE))
+    localStorage.setItem(STORE,JSON.stringify([{n:"",v:"",m:false}]));
+  render();
+  loadPresetList();
+}
 
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, s => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    }[s]));
-  }
+function rows(){return JSON.parse(localStorage.getItem(STORE))}
+function save(r){localStorage.setItem(STORE,JSON.stringify(r));render()}
 
-  function parseMoney(v){
-    const cleaned = String(v ?? "")
-      .replace(/[^\d.,]/g,"")
-      .replace(",", ".");
-    return parseFloat(cleaned) || 0;
-  }
+function add(){const r=rows();r.push({n:"",v:"",m:false});save(r)}
+function remove(i){const r=rows();r.splice(i,1);save(r)}
 
-  // ===== AUTH =====
-  function entrar(){
-    const pass = (document.getElementById("adminPass").value || "").trim();
-    if(pass !== ADMIN_PASSWORD){
-      toast("❌ Senha incorreta");
-      return;
-    }
-    sessionStorage.setItem(AUTH_KEY, "1");
-    showLoading(950);
-    setTimeout(()=>{
-      document.getElementById("loginWrap").style.display = "none";
-      document.getElementById("app").style.display = "block";
-      bootApp();
-      toast("✅ Admin liberado");
-    }, 950);
-  }
+function render(){
+  rowsEl.innerHTML=rows().map((r,i)=>`
+    <div class="gridRow">
+      <input value="${r.n}" oninput="upd(${i},'n',this.value)">
+      <input value="${r.v}" oninput="upd(${i},'v',this.value)">
+      <label class="check">
+        <input type="checkbox" ${r.m?"checked":""} onchange="upd(${i},'m',this.checked)"> Meia
+      </label>
+      <button class="remove" onclick="remove(${i})">🗑️</button>
+    </div>
+  `).join("");
+  calc();
+}
 
-  function sair(){
-    sessionStorage.removeItem(AUTH_KEY);
-    document.getElementById("app").style.display = "none";
-    document.getElementById("loginWrap").style.display = "flex";
-    document.getElementById("adminPass").value = "";
-    toast("Você saiu");
-  }
+function upd(i,k,v){const r=rows();r[i][k]=v;save(r)}
 
-  function isAuthed(){
-    return sessionStorage.getItem(AUTH_KEY) === "1";
-  }
+function calc(){
+  const d=parseInt(dias.value||1);
+  const t=rows().reduce((a,r)=>a+(parseFloat(r.v||0)*(r.m?.5:1)),0)*d;
+  document.querySelector(".total").innerText=t.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+}
 
-  // ===== DATA (linhas) =====
-  function loadData(){
-    try{
-      const raw = localStorage.getItem(STORE_KEY);
-      if(!raw) return [];
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? arr : [];
-    }catch(e){ return []; }
-  }
+function copy(){
+  navigator.clipboard.writeText(document.querySelector(".total").innerText);
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),1200);
+}
 
-  function saveData(arr){
-    localStorage.setItem(STORE_KEY, JSON.stringify(arr));
-  }
+/* PRESETS */
+function loadPresetList(){
+  const p=JSON.parse(localStorage.getItem(PRESETS)||"{}");
+  preset.innerHTML='<option value="">— Preset —</option>'+Object.keys(p).map(k=>`<option>${k}</option>`).join("");
+}
 
-  // ===== SETTINGS (dias) =====
-  function loadSettings(){
-    try{
-      const raw = localStorage.getItem(SETTINGS_KEY);
-      if(!raw) return { dias: 1 };
-      const obj = JSON.parse(raw);
-      return obj && typeof obj === "object" ? obj : { dias: 1 };
-    }catch(e){ return { dias: 1 }; }
-  }
+function savePreset(){
+  const name=prompt("Nome do preset");
+  if(!name) return;
+  const p=JSON.parse(localStorage.getItem(PRESETS)||"{}");
+  p[name]={rows:rows(),dias:dias.value};
+  localStorage.setItem(PRESETS,JSON.stringify(p));
+  loadPresetList();
+}
 
-  function saveSettings(obj){
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(obj));
-  }
+function loadPreset(){
+  const p=JSON.parse(localStorage.getItem(PRESETS)||"{}");
+  if(!preset.value) return;
+  localStorage.setItem(STORE,JSON.stringify(p[preset.value].rows));
+  dias.value=p[preset.value].dias;
+  render();
+}
 
-  function onDias(){
-    const d = Math.max(1, parseInt(document.getElementById("dias").value || "1", 10));
-    document.getElementById("dias").value = d;
-    const s = loadSettings();
-    s.dias = d;
-    saveSettings(s);
-    calcTotal();
-  }
+function deletePreset(){
+  const p=JSON.parse(localStorage.getItem(PRESETS)||"{}");
+  if(!preset.value) return;
+  delete p[preset.value];
+  localStorage.setItem(PRESETS,JSON.stringify(p));
+  loadPresetList();
+}
 
-  // ===== PRESETS =====
-  function loadPresets(){
-    try{
-      const raw = localStorage.getItem(PRESET_KEY);
-      if(!raw) return {};
-      const obj = JSON.parse(raw);
-      return obj && typeof obj === "object" ? obj : {};
-    }catch(e){ return {}; }
-  }
+function clearAll(){
+  localStorage.setItem(STORE,JSON.stringify([{n:"",v:"",m:false}]));
+  render();
+}
 
-  function savePresets(obj){
-    localStorage.setItem(PRESET_KEY, JSON.stringify(obj));
-  }
-
-  function refreshPresetDropdown(selectedName=""){
-    const sel = document.getElementById("presetSelect");
-    const presets = loadPresets();
-
-    const names = Object.keys(presets).sort((a,b)=> a.localeCompare(b));
-    sel.innerHTML = `<option value="">— Selecionar preset —</option>` +
-      names.map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join("");
-
-    if(selectedName && presets[selectedName]) sel.value = selectedName;
-  }
-
-  function salvarPreset(){
-    const presets = loadPresets();
-    const nome = prompt("Nome do preset (ex: 'Manaus Equipe'):");
-    if(!nome) return;
-
-    const data = loadData();
-    const settings = loadSettings();
-
-    presets[nome] = {
-      dias: settings.dias || 1,
-      linhas: data
-    };
-
-    savePresets(presets);
-    refreshPresetDropdown(nome);
-    toast("✅ Preset salvo");
-  }
-
-  function deletarPreset(){
-    const sel = document.getElementById("presetSelect");
-    const nome = sel.value;
-    if(!nome){
-      toast("Escolha um preset");
-      return;
-    }
-    if(!confirm(`Deletar preset "${nome}"?`)) return;
-
-    const presets = loadPresets();
-    delete presets[nome];
-    savePresets(presets);
-    refreshPresetDropdown("");
-    toast("🗑️ Preset deletado");
-  }
-
-  function onPresetChange(){
-    const sel = document.getElementById("presetSelect");
-    const nome = sel.value;
-    if(!nome) return;
-
-    const presets = loadPresets();
-    const p = presets[nome];
-    if(!p) return;
-
-    // aplica preset
-    saveData(Array.isArray(p.linhas) ? p.linhas : []);
-    const s = loadSettings();
-    s.dias = Math.max(1, parseInt(p.dias || 1, 10));
-    saveSettings(s);
-    document.getElementById("dias").value = s.dias;
-
-    render();
-    toast("📦 Preset carregado");
-  }
-
-  // ===== UI =====
-  function linhaTemplate(item, idx){
-    const meia = !!item.meia;
-    return `
-      <div class="gridRow">
-        <input placeholder="Ex: Fulano / Batera / Teclado" value="${escapeHtml(item.nome||"")}"
-               oninput="onNome(${idx}, this.value)">
-        <input class="money" placeholder="Ex: 250" value="${escapeHtml(item.valor ?? "")}"
-               oninput="onValor(${idx}, this.value)">
-
-        <label class="checkWrap" title="Se marcado, conta metade do valor deste músico">
-          <input type="checkbox" ${meia ? "checked" : ""} onchange="onMeia(${idx}, this.checked)">
-          <span>Meia</span>
-        </label>
-
-        <button class="remove" onclick="remover(${idx})">🗑️</button>
-      </div>
-    `;
-  }
-
-  function render(){
-    const linhasEl = document.getElementById("linhas");
-    const data = loadData();
-    linhasEl.innerHTML = data.map((it, i)=> linhaTemplate(it, i)).join("");
-    calcTotal();
-  }
-
-  function bootApp(){
-    // presets dropdown
-    refreshPresetDropdown("");
-
-    // dias
-    const settings = loadSettings();
-    const d = Math.max(1, parseInt(settings.dias || 1, 10));
-    document.getElementById("dias").value = d;
-
-    // linhas default
-    if(loadData().length === 0){
-      saveData([
-        { nome:"", valor:"", meia:false },
-        { nome:"", valor:"", meia:false },
-        { nome:"", valor:"", meia:false }
-      ]);
-    } else {
-      // garante campos
-      const fixed = loadData().map(x => ({
-        nome: x.nome || "",
-        valor: x.valor ?? "",
-        meia: !!x.meia
-      }));
-      saveData(fixed);
-    }
-
-    render();
-  }
-
-  function addLinha(){
-    const data = loadData();
-    data.push({ nome:"", valor:"", meia:false });
-    saveData(data);
-    render();
-  }
-
-  function remover(i){
-    const data = loadData();
-    data.splice(i, 1);
-    saveData(data);
-    render();
-  }
-
-  function limpar(){
-    saveData([{ nome:"", valor:"", meia:false }]);
-    render();
-    toast("🧹 Limpou");
-  }
-
-  function onNome(i, v){
-    const data = loadData();
-    data[i].nome = v;
-    saveData(data);
-  }
-
-  function onValor(i, v){
-    const cleaned = String(v).replace(/[^\d.,]/g,"").replace(",", ".");
-    const data = loadData();
-    data[i].valor = cleaned;
-    saveData(data);
-    calcTotal();
-  }
-
-  function onMeia(i, checked){
-    const data = loadData();
-    data[i].meia = !!checked;
-    saveData(data);
-    calcTotal();
-  }
-
-  function calcTotal(){
-    const data = loadData();
-    const settings = loadSettings();
-    const dias = Math.max(1, parseInt(document.getElementById("dias").value || settings.dias || 1, 10));
-
-    const soma = data.reduce((acc, it)=>{
-      const valor = parseMoney(it.valor);
-      const fator = it.meia ? 0.5 : 1;
-      return acc + (valor * fator);
-    }, 0);
-
-    const total = soma * dias;
-    document.getElementById("total").firstChild.textContent = brl(total) + " ";
-  }
-
-  async function copiarTotal(){
-    const text = document.getElementById("total").innerText.replace("📋","").trim();
-    try{
-      await navigator.clipboard.writeText(text);
-      toast("✅ Copiado: " + text);
-    }catch(e){
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      toast("✅ Copiado: " + text);
-    }
-  }
-
-  // Auto-login se já estiver autenticado
-  (function boot(){
-    if(isAuthed()){
-      document.getElementById("loginWrap").style.display = "none";
-      document.getElementById("app").style.display = "block";
-      bootApp();
-    }
-  })();
+const rowsEl=document.getElementById("rows");
+const pass=document.getElementById("pass");
+const login=document.getElementById("login");
+const app=document.getElementById("app");
+const loader=document.getElementById("loader");
+const toast=document.getElementById("toast");
+const dias=document.getElementById("dias");
+const preset=document.getElementById("preset");
 </script>
+
 </body>
 </html>

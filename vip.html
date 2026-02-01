@@ -1,261 +1,10 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Lista VIP | Lalaiá</title>
-
-<style>
-  @font-face{
-    font-family:"Rokiest";
-    src:url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
-    font-weight:800; font-display:swap;
-  }
-  :root{
-    --bg1:#0b0f19; --bg2:#0f172a;
-    --panel: rgba(11,18,32,.82);
-    --stroke: rgba(255,255,255,.10);
-    --text:#e5e7eb; --muted: rgba(229,231,235,.65);
-    --blue:#2563eb; --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
-    --shadow: 0 24px 70px rgba(0,0,0,.65);
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; min-height:100vh;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    color:var(--text);
-    background:
-      radial-gradient(900px 520px at 10% 10%, rgba(37,99,235,.20), transparent 60%),
-      radial-gradient(900px 520px at 90% 15%, rgba(34,197,94,.14), transparent 60%),
-      linear-gradient(135deg,var(--bg1),var(--bg2));
-    display:flex; align-items:center; justify-content:center;
-    padding:22px;
-  }
-  .home{
-    position:fixed; top:16px; left:16px;
-    background:rgba(17,24,39,.92);
-    border:1px solid rgba(255,255,255,.12);
-    color:#fff; text-decoration:none;
-    font-weight:900; font-size:14px;
-    padding:10px 12px; border-radius:12px;
-    box-shadow:0 12px 30px rgba(0,0,0,.45);
-    z-index: 10;
-    transition:.15s;
-  }
-  .home:hover{transform:translateY(-1px); opacity:.92}
-
-  .wrap{
-    width:min(1050px,100%);
-    background:var(--panel);
-    border:1px solid var(--stroke);
-    border-radius:22px;
-    box-shadow:var(--shadow);
-    padding:18px;
-    backdrop-filter: blur(10px);
-    animation: in .45s ease both;
-  }
-  @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-  h1{font-family:"Rokiest"; margin:0; letter-spacing:.8px; font-size:34px}
-  .sub{margin:6px 0 14px; color:var(--muted); font-size:13px}
-
-  .card{
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--stroke);
-    border-radius:18px;
-    padding:14px;
-  }
-
-  .row{display:flex; gap:10px; flex-wrap:wrap}
-  .field{display:flex; flex-direction:column; gap:6px; flex:1 1 220px}
-  label{font-size:12px; color: rgba(229,231,235,.72)}
-  input, select{
-    height:44px; width:100%;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(2,6,23,.55);
-    color: var(--text);
-    padding: 10px 12px;
-    outline:none;
-  }
-  input:focus{
-    border-color: rgba(37,99,235,.55);
-    box-shadow: 0 0 0 4px rgba(37,99,235,.18);
-  }
-
-  button{
-    height:44px; border-radius:12px; border:0;
-    padding:0 14px; font-weight:900; cursor:pointer;
-    color:#fff;
-    transition:.15s;
-  }
-  button:hover{transform:translateY(-1px); opacity:.95}
-
-  .btnBlue{background:var(--blue)}
-  .btnGhost{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10)}
-  .btnRow{display:flex; gap:10px; margin-top:10px; flex-wrap:wrap}
-
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap:10px;
-    margin-top:12px;
-  }
-  .slot{
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(2,6,23,.45);
-    border-radius:16px;
-    padding:12px;
-    cursor:pointer;
-    transition:.15s;
-    min-height: 86px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-  }
-  .slot:hover{transform:translateY(-1px); opacity:.95}
-
-  .topRow{display:flex; justify-content:space-between; align-items:center; gap:8px}
-  .num{font-weight:900; color:rgba(229,231,235,.9)}
-  .badge{
-    font-size:12px; font-weight:900;
-    padding:6px 10px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.04);
-  }
-  .bLivre{ border-color: rgba(34,197,94,.25); background: rgba(34,197,94,.08); }
-  .bOcup{ border-color: rgba(245,158,11,.22); background: rgba(245,158,11,.08); }
-  .bBloq{ border-color: rgba(239,68,68,.25); background: rgba(239,68,68,.08); }
-
-  .name{ margin-top:10px; font-size:13px; color: rgba(229,231,235,.70); }
-  .blurName{ filter: blur(5px); opacity:.85; user-select:none; }
-
-  /* Modal / Overlay */
-  .overlay{
-    position:fixed; inset:0;
-    display:none;
-    align-items:center; justify-content:center;
-    background: rgba(0,0,0,.55);
-    backdrop-filter: blur(10px);
-    z-index: 99999;
-    padding: 18px;
-  }
-  .modal{
-    width: min(560px, 100%);
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(11,18,32,.92);
-    box-shadow: 0 20px 70px rgba(0,0,0,.70);
-    padding: 16px;
-    animation: pop .22s ease both;
-  }
-  @keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
-
-  .ring{
-    width:56px; height:56px;
-    border-radius:999px;
-    border:3px solid rgba(255,255,255,.18);
-    border-top-color:rgba(37,99,235,.95);
-    margin:10px auto 12px;
-    animation:spin .9s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  .toast{
-    position:fixed; bottom:18px; left:50%;
-    transform:translateX(-50%);
-    background: rgba(17,24,39,.95);
-    border:1px solid rgba(255,255,255,.12);
-    padding:10px 12px;
-    border-radius:12px;
-    font-weight:900;
-    opacity:0; pointer-events:none;
-    transition:.2s;
-    z-index: 100000;
-  }
-  .toast.show{opacity:1}
-
-  @media (max-width: 980px){ .grid{grid-template-columns: repeat(3, 1fr);} }
-  @media (max-width: 560px){ .grid{grid-template-columns: repeat(2, 1fr);} }
-</style>
-</head>
-
-<body>
-<a class="home" href="index.html">🏠 Home</a>
-
-<div class="wrap">
-  <h1>Lista VIP</h1>
-  <div class="sub">Entre com o código de acesso e reserve um slot. Você não vê dados dos outros.</div>
-
-  <div class="card">
-    <div class="row">
-      <div class="field">
-        <label>Código de acesso</label>
-        <input id="code" placeholder="Cole o código (ex: A2F9KQ)" />
-      </div>
-      <div class="field" style="flex:0 0 180px;">
-        <label>&nbsp;</label>
-        <button class="btnBlue" onclick="entrar()">Entrar</button>
-      </div>
-    </div>
-
-    <div id="grid" class="grid" style="margin-top:14px;"></div>
-  </div>
-</div>
-
-<!-- MODAL RESERVA -->
-<div id="overlay" class="overlay">
-  <div class="modal">
-    <h3 style="margin:0; font-family:Rokiest; letter-spacing:.6px;">
-      Reservar slot <span id="slotNum"></span>
-    </h3>
-    <p style="margin:6px 0 12px; color:rgba(229,231,235,.65); font-size:13px;">
-      Preencha seus dados. Outros usuários não veem suas informações.
-    </p>
-
-    <div class="row">
-      <div class="field"><label>Nome</label><input id="nome"></div>
-      <div class="field"><label>RG</label><input id="rg"></div>
-      <div class="field"><label>CPF</label><input id="cpf"></div>
-    </div>
-
-    <div class="row" style="margin-top:10px;">
-      <div class="field" style="flex:0 0 180px;">
-        <label>Vai de veículo?</label>
-        <select id="veiculo" onchange="toggleVeiculo()">
-          <option value="NAO">Não</option>
-          <option value="SIM">Sim</option>
-        </select>
-      </div>
-      <div class="field"><label>Placa</label><input id="placa" disabled></div>
-      <div class="field"><label>Cor</label><input id="cor" disabled></div>
-      <div class="field"><label>Modelo</label><input id="modelo" disabled></div>
-    </div>
-
-    <div class="btnRow">
-      <button class="btnGhost" onclick="fechar()">Cancelar</button>
-      <button class="btnBlue" onclick="confirmar()">Confirmar</button>
-    </div>
-  </div>
-</div>
-
-<!-- OVERLAY LOADER -->
-<div id="loading" class="overlay">
-  <div class="modal" style="text-align:center">
-    <div class="ring"></div>
-    <div style="font-family:Rokiest; font-size:22px; letter-spacing:.6px;">Carregando…</div>
-    <div style="margin-top:6px; color:rgba(229,231,235,.65); font-size:13px;">Aguarde</div>
-  </div>
-</div>
-
-<div id="toast" class="toast">✅</div>
-
 <script>
   // ====== CONFIG ======
   const API_URL = "https://script.google.com/macros/s/AKfycbyjet56tIcHrvvHXpZDC9GcUwi08x6fb8vwhq6MvKF0zaT0O425e-oKj0MAKk3u-byK/exec";
 
   let currentSlots = [];
   let selectedSlot = null;
+  let pollTimer = null;
 
   function toast(msg){
     const t = document.getElementById("toast");
@@ -272,7 +21,7 @@
     document.getElementById("overlay").style.display = show ? "flex" : "none";
   }
 
-  // Extrai só o código: pega a primeira palavra alfanumérica (ex: "ABC123 (expira...)" -> "ABC123")
+  // Extrai só o código: pega a primeira sequência alfanumérica
   function normalizeCode(s){
     s = String(s||"").trim().toUpperCase();
     const m = s.match(/[A-Z0-9]{4,12}/);
@@ -317,7 +66,6 @@
     const code = normalizeCode(raw);
     if(!code) return toast("Digite/cole um código válido");
 
-    // já salva o código normalizado no input
     document.getElementById("code").value = code;
 
     loading(true);
@@ -329,67 +77,53 @@
     currentSlots = r.slots || [];
     renderGrid();
     toast("✅ Acesso liberado");
+
+    // inicia/renova o auto-refresh
+    if(pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(async ()=>{
+      const c = normalizeCode(document.getElementById("code").value || "");
+      if(!c) return;
+      const rr = await api("vipPublicGet", { code: c });
+      if(rr.ok){
+        currentSlots = rr.slots || [];
+        renderGrid();
+      }
+    }, 4000);
   }
 
-function renderGrid(){
-  const grid = document.getElementById("grid");
+  function renderGrid(){
+    const grid = document.getElementById("grid");
 
-  grid.innerHTML = currentSlots.map(s=>{
-    const status = (s.status||"LIVRE").toUpperCase();
+    grid.innerHTML = (currentSlots || []).map(s=>{
+      const status = (s.status||"LIVRE").toUpperCase();
 
-    const cls =
-      status==="LIVRE" ? "bLivre" :
-      status==="BLOQUEADO" ? "bBloq" :
-      status==="CONFIRMADO" ? "bLivre" : "bOcup";
+      const cls =
+        status==="LIVRE" ? "bLivre" :
+        status==="BLOQUEADO" ? "bBloq" :
+        status==="CONFIRMADO" ? "bLivre" : "bOcup";
 
-    const badgeText =
-      status==="LIVRE" ? "Livre" :
-      status==="BLOQUEADO" ? "Bloqueado" :
-      status==="CONFIRMADO" ? "Confirmado" : "Ocupado";
+      const badgeText =
+        status==="LIVRE" ? "Livre" :
+        status==="BLOQUEADO" ? "Bloqueado" :
+        status==="CONFIRMADO" ? "Confirmado" : "Ocupado";
 
-    const codeChip = (s.codeTag && (status==="OCUPADO" || status==="CONFIRMADO"))
-      ? `<span class="badge" style="margin-left:8px; opacity:.95">${s.codeTag}</span>`
-      : "";
+      const codeChip = (s.codeTag && (status==="OCUPADO" || status==="CONFIRMADO"))
+        ? `<span class="badge" style="margin-left:8px; opacity:.95">${s.codeTag}</span>`
+        : "";
 
-    const name =
-      (status==="OCUPADO" || status==="CONFIRMADO")
-        ? `<div class="name blurName">${s.nomeMasked||"Ocupado"}</div>`
-        : `<div class="name">—</div>`;
-
-    return `
-      <div class="slot ${cls}" onclick="clickSlot('${s.slot}','${status}')">
-        <div class="topRow">
-          <div class="num">#${s.slot}</div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <div class="badge">${badgeText}</div>
-            ${codeChip}
-          </div>
-        </div>
-        ${name}
-      </div>
-    `;
-  }).join("");
-}
-setInterval(async ()=>{
-  const code = (document.getElementById("code").value||"").trim().toUpperCase();
-  if(!code) return;
-  const r = await api("vipPublicGet", { code });
-  if(r.ok){ currentSlots = r.slots; renderGrid(); }
-}, 4000);
-    
-    grid.innerHTML = currentSlots.map(s=>{
-      const status = String(s.status||"").toUpperCase();
-      const cls = status==="LIVRE" ? "bLivre" : (status==="BLOQUEADO" ? "bBloq" : "bOcup");
-      const badge = status==="LIVRE" ? "Livre" : (status==="BLOQUEADO" ? "Bloqueado" : "Ocupado");
-      const name = status==="OCUPADO"
-        ? `<div class="name blurName">${s.nomeMasked||"Ocupado"}</div>`
-        : `<div class="name">—</div>`;
+      const name =
+        (status==="OCUPADO" || status==="CONFIRMADO")
+          ? `<div class="name blurName">${s.nomeMasked||"Ocupado"}</div>`
+          : `<div class="name">—</div>`;
 
       return `
-        <div class="slot ${cls}" onclick="clickSlot('${s.slot}','${status}')">
+        <div class="slot ${cls}" onclick="clickSlot('${String(s.slot)}','${status}')">
           <div class="topRow">
-            <div class="num">#${s.slot}</div>
-            <div class="badge">${badge}</div>
+            <div class="num">#${String(s.slot)}</div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="badge">${badgeText}</div>
+              ${codeChip}
+            </div>
           </div>
           ${name}
         </div>
@@ -399,7 +133,7 @@ setInterval(async ()=>{
 
   function clickSlot(slot, status){
     if(status !== "LIVRE"){
-      return toast(status==="BLOQUEADO" ? "⛔ Slot bloqueado" : "⚠️ Slot ocupado");
+      return toast(status==="BLOQUEADO" ? "⛔ Slot bloqueado" : (status==="CONFIRMADO" ? "✅ Já confirmado" : "⚠️ Slot ocupado"));
     }
     selectedSlot = slot;
     document.getElementById("slotNum").textContent = "#" + slot;
@@ -456,5 +190,3 @@ setInterval(async ()=>{
     if(e.target.id==="overlay") fechar();
   });
 </script>
-</body>
-</html>

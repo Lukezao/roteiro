@@ -1,243 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Lalaiá Music | WayCompanyGG</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard | OFF Company</title>
 
-  <!-- Fonte Rokiest -->
-  <style>
-    @font-face{
-      font-family:"Rokiest";
-      src:url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
-      font-weight:800;
-      font-display:swap;
-    }
+  <!-- UI OFF -->
+  <link rel="stylesheet" href="assets/off-ui.css">
+</head>
+<body>
 
-    :root{
-      --bg1:#0b0f19; --bg2:#0f172a;
-      --panel: rgba(11,18,32,.82);
-      --stroke: rgba(255,255,255,.10);
-      --text:#e5e7eb; --muted: rgba(229,231,235,.65);
-      --blue:#2563eb; --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --violet:#7c3aed;
-      --shadow: 0 24px 70px rgba(0,0,0,.65);
-      --radius: 22px;
-    }
+<div class="off-shell">
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: var(--text);
-      background:
-        radial-gradient(900px 520px at 10% 10%, rgba(124,58,237,.18), transparent 60%),
-        radial-gradient(900px 520px at 90% 15%, rgba(37,99,235,.20), transparent 60%),
-        radial-gradient(900px 520px at 50% 95%, rgba(34,197,94,.10), transparent 60%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding: 22px;
-    }
+  <!-- SIDEBAR -->
+  <aside class="off-side">
+    <div class="off-logo">OFF</div>
 
-    /* Container */
-    .wrap{
-      width: min(980px, 100%);
-      background: var(--panel);
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      backdrop-filter: blur(10px);
-      animation: in .45s ease both;
-      overflow:hidden;
-      position: relative;
-    }
-    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    <nav class="off-nav">
+      <a class="off-navbtn active" href="index.html">🏠<span class="tip">Home</span></a>
+      <a class="off-navbtn" href="vip.html">🎟️<span class="tip">Lista VIP</span></a>
+      <a class="off-navbtn" href="vip-admin.html">🧠<span class="tip">VIP Admin</span></a>
+      <a class="off-navbtn" href="pix.html">💸<span class="tip">PIX</span></a>
+      <a class="off-navbtn" href="pix-admin.html">🛡️<span class="tip">PIX Admin</span></a>
+      <a class="off-navbtn" href="pix-cadastro.html">➕<span class="tip">Cadastro PIX</span></a>
+      <a class="off-navbtn" href="ajustar-cronograma.html">🗓️<span class="tip">Cronograma</span></a>
+      <a class="off-navbtn" href="diaria.html">📒<span class="tip">Diária</span></a>
+      <a class="off-navbtn" href="van.html">🚐<span class="tip">Van</span></a>
+    </nav>
+  </aside>
 
-    /* Header */
-    .header{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      justify-content:space-between;
-      padding: 8px 6px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .brand{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      min-width: 0;
-    }
-    .logo{
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      flex: 0 0 auto;
-    }
-    .logo img{ width:100%; height:100%; object-fit:cover; }
-    .brandText{
-      min-width: 0;
-    }
-    .title{
-      font-family: "Rokiest";
-      margin:0;
-      letter-spacing:.8px;
-      font-size: 34px;
-      line-height: 1.1;
-    }
-    .subtitle{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
+  <!-- MAIN -->
+  <main class="off-main">
 
-    .pill{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.10);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      background: rgba(34,197,94,.85);
-      box-shadow: 0 0 0 6px rgba(34,197,94,.12);
-    }
+    <!-- TOPBAR -->
+    <div class="off-topbar">
+      <div class="off-title">
+        <h1>Dashboard</h1>
+        <div class="off-sub">OFF Company • Central de Controle</div>
+      </div>
 
-    /* Tabs */
-    .tabs{
-      display:flex;
-      gap:10px;
-      padding: 14px 6px 0;
-      flex-wrap: wrap;
-    }
-    .tab{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-weight: 900;
-      cursor:pointer;
-      transition:.15s;
-      user-select:none;
-    }
-    .tab:hover{ transform: translateY(-1px); opacity:.95; }
-    .tab.active{
-      background: rgba(37,99,235,.20);
-      border-color: rgba(37,99,235,.30);
-      box-shadow: 0 10px 30px rgba(37,99,235,.12);
-    }
+      <div class="off-actions">
+        <span class="off-pill">⚙️ Sistema</span>
+      </div>
+    </div>
 
-    /* Content */
-    .content{
-      padding: 14px 6px 6px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
+    <!-- ÁREA DO USUÁRIO -->
+    <section class="off-card">
+      <div class="off-cardTitle">
+        <h2>Área do Usuário</h2>
+        <div class="off-muted">Acessos principais</div>
+      </div>
 
-    .card{
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      padding: 14px;
-    }
+      <div class="off-row">
+        <a href="vip.html" class="off-btn purple">🎟️ Lista VIP</a>
+        <a href="pix.html" class="off-btn ghost">💸 PIX</a>
+        <a href="diaria.html" class="off-btn ghost">📒 Diária</a>
+        <a href="van.html" class="off-btn ghost">🚐 Van</a>
+      </div>
+    </section>
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+    <!-- ÁREA ADMIN -->
+    <section class="off-card soft" style="margin-top:16px;">
+      <div class="off-cardTitle">
+        <h2>Área Administrativa</h2>
+        <div class="off-muted">Acesso restrito</div>
+      </div>
 
-    .btn{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      width: 100%;
-      padding: 14px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(2,6,23,.45);
-      color: var(--text);
-      text-decoration:none;
-      cursor:pointer;
-      transition: transform .15s ease, opacity .15s ease, border-color .15s ease;
-      user-select:none;
-      min-height: 58px;
-    }
-    .btn:hover{ transform: translateY(-1px); opacity:.95; border-color: rgba(255,255,255,.18); }
-    .btn:active{ transform: translateY(0px); opacity:.90; }
+      <div class="off-row">
+        <a href="vip-admin.html" class="off-btn purple">🧠 VIP Admin</a>
+        <a href="pix-admin.html" class="off-btn ghost">🛡️ PIX Admin</a>
+        <a href="pix-cadastro.html" class="off-btn ghost">➕ Cadastro PIX</a>
+        <a href="ajustar-cronograma.html" class="off-btn ghost">🗓️ Ajustar Cronograma</a>
+      </div>
+    </section>
 
-    .btnLeft{
-      display:flex; flex-direction:column; gap:4px; min-width:0;
-    }
-    .btnTitle{
-      font-weight: 900;
-      font-size: 15px;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .btnDesc{
-      font-size: 12px;
-      color: rgba(229,231,235,.68);
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .chip{
-      font-size: 12px;
-      font-weight: 900;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      flex: 0 0 auto;
-    }
+    <!-- INFORMAÇÕES -->
+    <section class="off-card soft" style="margin-top:16px;">
+      <div class="off-cardTitle">
+        <h2>Status do Sistema</h2>
+        <div class="off-muted">Resumo rápido</div>
+      </div>
 
-    .chip.violet{ border-color: rgba(124,58,237,.30); background: rgba(124,58,237,.15); }
-    .chip.green{ border-color: rgba(34,197,94,.30); background: rgba(34,197,94,.14); }
-    .chip.blue{ border-color: rgba(37,99,235,.30); background: rgba(37,99,235,.15); }
-    .chip.red{ border-color: rgba(239,68,68,.30); background: rgba(239,68,68,.14); }
-    .chip.amber{ border-color: rgba(245,158,11,.30); background: rgba(245,158,11,.14); color:#111827; }
+      <div class="off-grid">
+        <div class="off-stat">
+          <div class="label">Sistema</div>
+          <div class="value green">Online</div>
+        </div>
+        <div class="off-stat">
+          <div class="label">VIP</div>
+          <div class="value">Ativo</div>
+        </div>
+        <div class="off-stat">
+          <div class="label">PIX</div>
+          <div class="value">Disponível</div>
+        </div>
+        <div class="off-stat">
+          <div class="label">Versão</div>
+          <div class="value">OFF v1.0</div>
+        </div>
+      </div>
+    </section>
 
-    /* Footer */
-    .footer{
-      margin-top: 10px;
-      text-align:center;
-      color: rgba(229,231,235,.55);
-      font-size: 12px;
-      padding: 8px 6px 4px;
-    }
+    <!-- FOOTER -->
+    <footer class="off-footer">
+      <div>© OFF Company</div>
+      <div>Desenvolvido por Lucas Santos</div>
+    </footer>
 
-    /* Overlay / Modal */
-    .overlay{
-      position: fixed;
-      inset: 0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(10px);
-      z-index: 99999;
-      padding: 18px;
-    }
+  </main>
+</div>
+
+<!-- OVERLAY -->
+<div class="off-overlay" id="loadingOverlay">
+  <div class="off-modal" style="max-width:520px;text-align:center">
+    <div class="off-loading"></div>
+    <div style="font-family:Rokiest;letter-spacing:.7px;font-size:20px">Carregando…</div>
+    <div class="off-muted" style="margin-top:6px">Aguarde</div>
+  </div>
+</div>
+
+<div class="off-toast" id="toast">✅</div>
+
+<script src="assets/off-ui.js"></script>
+</body>
+</html>
+
     .modal{
       width: min(520px, 100%);
       border-radius: 20px;

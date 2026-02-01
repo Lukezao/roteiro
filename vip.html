@@ -1,27 +1,34 @@
 <script>
-  // ====== CONFIG ======
   const API_URL = "https://script.google.com/macros/s/AKfycbyjet56tIcHrvvHXpZDC9GcUwi08x6fb8vwhq6MvKF0zaT0O425e-oKj0MAKk3u-byK/exec";
 
   let currentSlots = [];
   let selectedSlot = null;
   let pollTimer = null;
 
+  // Mostra qualquer erro JS na tela (evita "tela branca sem saber pq")
+  window.addEventListener("error", (e)=>{
+    console.error("JS ERROR:", e.error || e.message);
+    try{ toast("❌ Erro JS: " + (e.message || "ver console")); }catch{}
+  });
+
   function toast(msg){
     const t = document.getElementById("toast");
+    if(!t){ alert(msg); return; }
     t.textContent = msg;
     t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"), 1400);
+    setTimeout(()=>t.classList.remove("show"), 2000);
   }
 
   function loading(on){
-    document.getElementById("loading").style.display = on ? "flex" : "none";
+    const el = document.getElementById("loading");
+    if(el) el.style.display = on ? "flex" : "none";
   }
 
   function showOverlay(show){
-    document.getElementById("overlay").style.display = show ? "flex" : "none";
+    const el = document.getElementById("overlay");
+    if(el) el.style.display = show ? "flex" : "none";
   }
 
-  // Extrai só o código: pega a primeira sequência alfanumérica
   function normalizeCode(s){
     s = String(s||"").trim().toUpperCase();
     const m = s.match(/[A-Z0-9]{4,12}/);
@@ -38,6 +45,8 @@
   }
 
   async function api(fn, payload){
+    console.log("API call:", fn, payload);
+
     const controller = new AbortController();
     const timeout = setTimeout(()=>controller.abort(), 20000);
 
@@ -45,17 +54,22 @@
       const res = await fetch(API_URL, {
         method: "POST",
         cache: "no-store",
-        redirect: "follow",
         body: JSON.stringify({ fn, payload }),
         signal: controller.signal
       });
 
       const text = await res.text();
-      try { return JSON.parse(text); }
-      catch { return { ok:false, error:"Resposta inválida: " + text.slice(0,180) }; }
+      console.log("API raw response:", text.slice(0, 200));
+
+      let json;
+      try { json = JSON.parse(text); }
+      catch { return { ok:false, error:"Resposta não é JSON (provável link errado /exec). Veja o console." }; }
+
+      return json;
 
     } catch (err){
-      return { ok:false, error:(err.name==="AbortError" ? "Timeout. API não respondeu." : String(err)) };
+      console.error("FETCH ERROR:", err);
+      return { ok:false, error:(err.name==="AbortError" ? "Timeout (20s)" : "Failed to fetch / CORS") };
     } finally {
       clearTimeout(timeout);
     }
@@ -64,7 +78,7 @@
   async function entrar(){
     const raw = document.getElementById("code").value || "";
     const code = normalizeCode(raw);
-    if(!code) return toast("Digite/cole um código válido");
+    if(!code) return toast("Cole um código válido");
 
     document.getElementById("code").value = code;
 
@@ -72,13 +86,12 @@
     const r = await api("vipPublicGet", { code });
     loading(false);
 
-    if(!r.ok) return toast("❌ " + r.error);
+    if(!r.ok) return toast("❌ " + (r.error || "Erro"));
 
     currentSlots = r.slots || [];
     renderGrid();
     toast("✅ Acesso liberado");
 
-    // inicia/renova o auto-refresh
     if(pollTimer) clearInterval(pollTimer);
     pollTimer = setInterval(async ()=>{
       const c = normalizeCode(document.getElementById("code").value || "");
@@ -93,9 +106,10 @@
 
   function renderGrid(){
     const grid = document.getElementById("grid");
+    if(!grid) return;
 
     grid.innerHTML = (currentSlots || []).map(s=>{
-      const status = (s.status||"LIVRE").toUpperCase();
+      const status = String(s.status || "LIVRE").toUpperCase();
 
       const cls =
         status==="LIVRE" ? "bLivre" :
@@ -133,7 +147,7 @@
 
   function clickSlot(slot, status){
     if(status !== "LIVRE"){
-      return toast(status==="BLOQUEADO" ? "⛔ Slot bloqueado" : (status==="CONFIRMADO" ? "✅ Já confirmado" : "⚠️ Slot ocupado"));
+      return toast(status==="BLOQUEADO" ? "⛔ Bloqueado" : (status==="CONFIRMADO" ? "✅ Confirmado" : "⚠️ Ocupado"));
     }
     selectedSlot = slot;
     document.getElementById("slotNum").textContent = "#" + slot;
@@ -152,7 +166,7 @@
     const nome = (document.getElementById("nome").value||"").trim();
     const rg   = (document.getElementById("rg").value||"").trim();
     const cpf  = (document.getElementById("cpf").value||"").trim();
-    if(!nome || !rg || !cpf) return toast("Preencha Nome, RG e CPF");
+    if(!nome || !rg || !cpf) return toast("Preencha Nome, RG, CPF");
 
     const veiculo = document.getElementById("veiculo").value === "SIM";
 
@@ -170,23 +184,28 @@
     const r = await api("vipReserve", payload);
     loading(false);
 
-    if(!r.ok) return toast("❌ " + r.error);
+    if(!r.ok) return toast("❌ " + (r.error || "Erro"));
 
     showOverlay(false);
     selectedSlot = null;
 
-    // recarrega slots
-    loading(true);
     const g = await api("vipPublicGet", { code });
-    loading(false);
-
-    if(g.ok){ currentSlots = g.slots || []; renderGrid(); }
+    if(g.ok){
+      currentSlots = g.slots || [];
+      renderGrid();
+    }
 
     toast("✅ Reservado!");
   }
 
-  // Fecha modal clicando fora
   document.getElementById("overlay").addEventListener("click", (e)=>{
     if(e.target.id==="overlay") fechar();
   });
+
+  // deixa funções disponíveis pro onclick do HTML
+  window.entrar = entrar;
+  window.confirmar = confirmar;
+  window.fechar = fechar;
+  window.clickSlot = clickSlot;
+  window.toggleVeiculo = toggleVeiculo;
 </script>

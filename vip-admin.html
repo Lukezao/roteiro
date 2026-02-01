@@ -224,7 +224,7 @@
     <div class="row">
       <div class="field">
         <label>Senha Admin</label>
-        <input id="adminPass" type="password" placeholder="Sua senha admin">
+        <input id="adminPass" type="password" placeholder="Sua senha admin" autocomplete="current-password">
       </div>
 
       <div class="field" style="flex:0 0 220px;">
@@ -266,49 +266,61 @@
 
 <script>
   // ====== CONFIG ======
-  // COLE AQUI SUA URL /exec (Apps Script Web App)
   const API_URL = "https://script.google.com/macros/s/AKfycbyyEqjBItPdYc6WuwAliP6G9shJxtEPABUKCPHDsv-yhahM-QkY2ye7jl99kg9EuCNQ/exec";
 
   function toast(msg){
     const t=document.getElementById("toast");
     t.textContent=msg;
     t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"), 1400);
+    setTimeout(()=>t.classList.remove("show"), 1600);
   }
 
   function overlay(on){
     document.getElementById("overlay").style.display = on ? "flex" : "none";
   }
 
-  // API com timeout + parse robusto (para não travar infinito)
-async function api(fn, payload){
-  const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(), 15000); // 15s
-
-  try{
-    const res = await fetch(API_URL, {
-      method: "POST",
-      // ⚠️ NÃO coloque Content-Type application/json
-      // isso evita preflight (OPTIONS) e mata o CORS
-      body: JSON.stringify({ fn, payload }),
-      signal: controller.signal
-    });
-
-    const text = await res.text();
-    try { return JSON.parse(text); }
-    catch { return { ok:false, error:"Resposta inválida: " + text.slice(0,160) }; }
-
-  } catch (err){
-    return { ok:false, error:(err.name==="AbortError" ? "Timeout (15s). Confira o /exec." : String(err)) };
-  } finally {
-    clearTimeout(timeout);
+  function getAdminPass(){
+    return (document.getElementById("adminPass").value || "").trim();
   }
-}
 
+  function requirePass(){
+    const pass = getAdminPass();
+    if(!pass){
+      toast("❌ Digite a senha admin");
+      return null;
+    }
+    return pass;
+  }
+
+  async function api(fn, payload){
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(), 15000);
+
+    try{
+      const res = await fetch(API_URL, {
+        method: "POST",
+        // ✅ evita preflight
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ fn, payload }),
+        signal: controller.signal
+      });
+
+      const text = await res.text();
+      try { return JSON.parse(text); }
+      catch { return { ok:false, error:"Resposta inválida: " + text.slice(0,180) }; }
+
+    } catch(err){
+      return { ok:false, error: (err.name==="AbortError" ? "Timeout. Confira o /exec e o deploy." : String(err)) };
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
 
   async function criarSlots(){
-    const adminPass = document.getElementById("adminPass").value||"";
-    const count = document.getElementById("slotCount").value||0;
+    const adminPass = requirePass();
+    if(!adminPass) return;
+
+    const count = Math.max(0, parseInt(document.getElementById("slotCount").value || "0", 10));
 
     overlay(true);
     const r = await api("vipAdminSetSlotCount", { adminPass, count });
@@ -320,8 +332,10 @@ async function api(fn, payload){
   }
 
   async function gerarCode(){
-    const adminPass = document.getElementById("adminPass").value||"";
-    const minutes = document.getElementById("mins").value||60;
+    const adminPass = requirePass();
+    if(!adminPass) return;
+
+    const minutes = Math.max(1, parseInt(document.getElementById("mins").value || "60", 10));
 
     overlay(true);
     const r = await api("vipAdminCreateTempCode", { adminPass, minutes });
@@ -334,7 +348,6 @@ async function api(fn, payload){
     toast("✅ Código gerado");
   }
 
-  // clicar no campo copia APENAS o código
   document.getElementById("codeOut").addEventListener("click", async ()=>{
     const v = document.getElementById("codeOut").value || "";
     if(!v) return;
@@ -348,7 +361,8 @@ async function api(fn, payload){
   });
 
   async function carregar(){
-    const adminPass = document.getElementById("adminPass").value||"";
+    const adminPass = requirePass();
+    if(!adminPass) return;
 
     overlay(true);
     const r = await api("vipAdminGet", { adminPass });
@@ -357,7 +371,7 @@ async function api(fn, payload){
     if(!r.ok) return toast("❌ " + r.error);
 
     const el = document.getElementById("rows");
-    el.innerHTML = r.rows.map(row => `
+    el.innerHTML = (r.rows || []).map(row => `
       <div class="trow">
         <div>#${row.slot}</div>
         <div>${row.status}</div>
@@ -379,10 +393,11 @@ async function api(fn, payload){
   }
 
   async function toggleBlock(slot){
-    const adminPass = document.getElementById("adminPass").value||"";
+    const adminPass = requirePass();
+    if(!adminPass) return;
 
     overlay(true);
-    const r = await api("vipAdminToggleBlock", { adminPass, slotId: slot });
+    const r = await api("vipAdminToggleBlock", { adminPass, slotId: String(slot).trim() });
     overlay(false);
 
     if(!r.ok) return toast("❌ " + r.error);
@@ -391,10 +406,11 @@ async function api(fn, payload){
   }
 
   async function clearSlot(slot){
-    const adminPass = document.getElementById("adminPass").value||"";
+    const adminPass = requirePass();
+    if(!adminPass) return;
 
     overlay(true);
-    const r = await api("vipAdminClearSlot", { adminPass, slotId: slot });
+    const r = await api("vipAdminClearSlot", { adminPass, slotId: String(slot).trim() });
     overlay(false);
 
     if(!r.ok) return toast("❌ " + r.error);

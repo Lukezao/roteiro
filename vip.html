@@ -202,13 +202,14 @@
   }
 
   // ✅ EVENTOS (NUNCA MAIS DÁ NULL)
-  document.addEventListener("DOMContentLoaded", ()=>{
-    const overlayEl = document.getElementById("overlay");
-    if(overlayEl){
-      overlayEl.onclick = (e)=>{
-        if(e.target && e.target.id === "overlay") fechar();
-      };
-    }
+document.addEventListener("DOMContentLoaded", ()=>{
+  const overlayEl = document.getElementById("overlay");
+  if(overlayEl){
+    overlayEl.onclick = (e)=>{
+      if(e.target && e.target.id === "overlay") fechar();
+    };
+  }
+});
 
     // expõe pro HTML (se ainda usa onclick nos botões)
     window.entrar = entrar;

@@ -5,123 +5,375 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Dashboard | OFF Company</title>
 
-  <!-- UI OFF -->
-  <link rel="stylesheet" href="assets/off-ui.css">
+  <style>
+    @font-face{
+      font-family:"Rokiest";
+      src:url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
+      font-weight:800;
+      font-display:swap;
+    }
+
+    :root{
+      --bg1:#050611; --bg2:#0b1220;
+      --panel: rgba(10,16,28,.70);
+      --stroke: rgba(255,255,255,.10);
+      --text: #e5e7eb;
+      --muted: rgba(229,231,235,.62);
+      --shadow: 0 24px 90px rgba(0,0,0,.70);
+
+      --purple:#8b5cf6;
+      --cyan:#06b6d4;
+      --blue:#2563eb;
+      --green:#22c55e;
+      --amber:#f59e0b;
+      --red:#ef4444;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 14% 12%, rgba(139,92,246,.18), transparent 60%),
+        radial-gradient(900px 520px at 86% 18%, rgba(6,182,212,.14), transparent 60%),
+        radial-gradient(900px 520px at 70% 90%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* ===== SHELL ===== */
+    .shell{
+      display:flex;
+      min-height:100vh;
+      gap:18px;
+      padding:18px;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .side{
+      width:78px;
+      flex:0 0 78px;
+      position:sticky;
+      top:18px;
+      align-self:flex-start;
+      height: calc(100vh - 36px);
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(10,16,28,.40);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 70px rgba(0,0,0,.55);
+      padding:10px 10px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      overflow:hidden;
+    }
+
+    .logo{
+      width:52px;height:52px;
+      border-radius:16px;
+      display:grid;place-items:center;
+      font-family:"Rokiest";
+      letter-spacing:.9px;
+      color:#fff;
+      background:
+        radial-gradient(90px 90px at 30% 30%, rgba(139,92,246,.75), transparent 60%),
+        radial-gradient(90px 90px at 80% 70%, rgba(6,182,212,.55), transparent 65%),
+        rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 14px 40px rgba(0,0,0,.55);
+      user-select:none;
+    }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+      width:100%;
+      align-items:center;
+    }
+
+    .nav a{
+      width:54px;height:54px;
+      border-radius:18px;
+      display:grid;place-items:center;
+      text-decoration:none;
+      color:rgba(229,231,235,.88);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      position:relative;
+      transition: .18s;
+      overflow:hidden;
+    }
+    .nav a:hover{
+      transform: translateY(-1px);
+      border-color: rgba(139,92,246,.25);
+      background: rgba(139,92,246,.10);
+    }
+    .nav a.active{
+      border-color: rgba(139,92,246,.35);
+      background:
+        radial-gradient(80px 80px at 30% 30%, rgba(139,92,246,.30), transparent 60%),
+        rgba(255,255,255,.05);
+      box-shadow: 0 14px 40px rgba(139,92,246,.15);
+    }
+
+    /* ===== MAIN ===== */
+    .main{
+      flex:1 1 auto;
+      min-width:0;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.10);
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      padding:18px;
+      animation: in .45s ease both;
+    }
+
+    @keyframes in{
+      from{opacity:0; transform: translateY(10px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      padding:8px 8px 14px;
+    }
+
+    .title h1{
+      margin:0;
+      font-family: "Rokiest";
+      letter-spacing:.9px;
+      font-size:42px;
+    }
+    .subtitle{
+      margin-top:6px;
+      color: var(--muted);
+      font-size:13px;
+    }
+
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color:rgba(229,231,235,.82);
+      font-weight:900;
+      font-size:12px;
+      user-select:none;
+    }
+
+    /* ===== CARDS ===== */
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(2,6,23,.28);
+      border-radius:22px;
+      padding:14px;
+      margin-top:14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(420px 180px at 10% 0%, rgba(139,92,246,.10), transparent 60%),
+        radial-gradient(420px 180px at 90% 10%, rgba(6,182,212,.08), transparent 62%);
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+
+    .cardHead{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .cardHead h2{
+      margin:0;
+      font-size:16px;
+      letter-spacing:.3px;
+    }
+    .hint{
+      color: rgba(229,231,235,.55);
+      font-size:12px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .btn{
+      height:44px;
+      border-radius:14px;
+      padding:0 14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      transition:.18s;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn:hover{transform: translateY(-1px); opacity:.95}
+
+    .btn.primary{
+      background:
+        radial-gradient(120px 120px at 20% 20%, rgba(139,92,246,.65), transparent 60%),
+        radial-gradient(120px 120px at 80% 60%, rgba(6,182,212,.40), transparent 65%),
+        rgba(255,255,255,.06);
+      border-color: rgba(139,92,246,.35);
+      box-shadow: 0 18px 50px rgba(139,92,246,.18);
+    }
+
+    .btn.ghost{
+      background: rgba(255,255,255,.05);
+    }
+
+    /* ===== STATS ===== */
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    @media(max-width:980px){ .stats{grid-template-columns: 1fr 1fr;} }
+    @media(max-width:560px){ .stats{grid-template-columns: 1fr;} }
+
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(2,6,23,.25);
+      border-radius:18px;
+      padding:12px;
+      transform: translateZ(0);
+      transition:.18s;
+    }
+    .stat:hover{transform: translateY(-1px)}
+    .stat .k{font-size:12px; color: rgba(229,231,235,.62); font-weight:900}
+    .stat .v{margin-top:6px; font-size:20px; font-weight:900}
+    .green{color: var(--green)}
+    .footer{
+      margin-top:16px;
+      padding:10px 8px 0;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      color:rgba(229,231,235,.55);
+      font-size:12px;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="shell">
 
-<div class="off-shell">
+    <aside class="side">
+      <div class="logo">OFF</div>
 
-  <!-- SIDEBAR -->
-  <aside class="off-side">
-    <div class="off-logo">OFF</div>
+      <nav class="nav">
+        <a class="active" href="index.html" title="Home">🏠</a>
+        <a href="vip.html" title="Lista VIP">🎟️</a>
+        <a href="vip-admin.html" title="VIP Admin">🧠</a>
+        <a href="pix.html" title="PIX">💸</a>
+        <a href="pix-admin.html" title="PIX Admin">🛡️</a>
+        <a href="pix-cadastro.html" title="Cadastro PIX">➕</a>
+        <a href="ajustar-cronograma.html" title="Cronograma">🗓️</a>
+        <a href="diaria.html" title="Diária">📒</a>
+        <a href="van.html" title="Van">🚐</a>
+      </nav>
+    </aside>
 
-    <nav class="off-nav">
-      <a class="off-navbtn active" href="index.html">🏠<span class="tip">Home</span></a>
-      <a class="off-navbtn" href="vip.html">🎟️<span class="tip">Lista VIP</span></a>
-      <a class="off-navbtn" href="vip-admin.html">🧠<span class="tip">VIP Admin</span></a>
-      <a class="off-navbtn" href="pix.html">💸<span class="tip">PIX</span></a>
-      <a class="off-navbtn" href="pix-admin.html">🛡️<span class="tip">PIX Admin</span></a>
-      <a class="off-navbtn" href="pix-cadastro.html">➕<span class="tip">Cadastro PIX</span></a>
-      <a class="off-navbtn" href="ajustar-cronograma.html">🗓️<span class="tip">Cronograma</span></a>
-      <a class="off-navbtn" href="diaria.html">📒<span class="tip">Diária</span></a>
-      <a class="off-navbtn" href="van.html">🚐<span class="tip">Van</span></a>
-    </nav>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="off-main">
-
-    <!-- TOPBAR -->
-    <div class="off-topbar">
-      <div class="off-title">
-        <h1>Dashboard</h1>
-        <div class="off-sub">OFF Company • Central de Controle</div>
-      </div>
-
-      <div class="off-actions">
-        <span class="off-pill">⚙️ Sistema</span>
-      </div>
-    </div>
-
-    <!-- ÁREA DO USUÁRIO -->
-    <section class="off-card">
-      <div class="off-cardTitle">
-        <h2>Área do Usuário</h2>
-        <div class="off-muted">Acessos principais</div>
-      </div>
-
-      <div class="off-row">
-        <a href="vip.html" class="off-btn purple">🎟️ Lista VIP</a>
-        <a href="pix.html" class="off-btn ghost">💸 PIX</a>
-        <a href="diaria.html" class="off-btn ghost">📒 Diária</a>
-        <a href="van.html" class="off-btn ghost">🚐 Van</a>
-      </div>
-    </section>
-
-    <!-- ÁREA ADMIN -->
-    <section class="off-card soft" style="margin-top:16px;">
-      <div class="off-cardTitle">
-        <h2>Área Administrativa</h2>
-        <div class="off-muted">Acesso restrito</div>
-      </div>
-
-      <div class="off-row">
-        <a href="vip-admin.html" class="off-btn purple">🧠 VIP Admin</a>
-        <a href="pix-admin.html" class="off-btn ghost">🛡️ PIX Admin</a>
-        <a href="pix-cadastro.html" class="off-btn ghost">➕ Cadastro PIX</a>
-        <a href="ajustar-cronograma.html" class="off-btn ghost">🗓️ Ajustar Cronograma</a>
-      </div>
-    </section>
-
-    <!-- INFORMAÇÕES -->
-    <section class="off-card soft" style="margin-top:16px;">
-      <div class="off-cardTitle">
-        <h2>Status do Sistema</h2>
-        <div class="off-muted">Resumo rápido</div>
-      </div>
-
-      <div class="off-grid">
-        <div class="off-stat">
-          <div class="label">Sistema</div>
-          <div class="value green">Online</div>
+    <main class="main">
+      <div class="topbar">
+        <div class="title">
+          <h1>Dashboard</h1>
+          <div class="subtitle">OFF Company • Central de Controle</div>
         </div>
-        <div class="off-stat">
-          <div class="label">VIP</div>
-          <div class="value">Ativo</div>
-        </div>
-        <div class="off-stat">
-          <div class="label">PIX</div>
-          <div class="value">Disponível</div>
-        </div>
-        <div class="off-stat">
-          <div class="label">Versão</div>
-          <div class="value">OFF v1.0</div>
-        </div>
+        <div class="pill">⚙️ Sistema</div>
       </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="off-footer">
-      <div>© OFF Company</div>
-      <div>Desenvolvido por Lucas Santos</div>
-    </footer>
+      <section class="card">
+        <div class="cardHead">
+          <h2>Área do Usuário</h2>
+          <div class="hint">Acessos principais</div>
+        </div>
+        <div class="row">
+          <a class="btn primary" href="vip.html">🎟️ Lista VIP</a>
+          <a class="btn ghost" href="pix.html">💸 PIX</a>
+          <a class="btn ghost" href="diaria.html">📒 Diária</a>
+          <a class="btn ghost" href="van.html">🚐 Van</a>
+        </div>
+      </section>
 
-  </main>
-</div>
+      <section class="card">
+        <div class="cardHead">
+          <h2>Área Administrativa</h2>
+          <div class="hint">Acesso restrito</div>
+        </div>
+        <div class="row">
+          <a class="btn primary" href="vip-admin.html">🧠 VIP Admin</a>
+          <a class="btn ghost" href="pix-admin.html">🛡️ PIX Admin</a>
+          <a class="btn ghost" href="pix-cadastro.html">➕ Cadastro PIX</a>
+          <a class="btn ghost" href="ajustar-cronograma.html">🗓️ Ajustar Cronograma</a>
+        </div>
+      </section>
 
-<!-- OVERLAY -->
-<div class="off-overlay" id="loadingOverlay">
-  <div class="off-modal" style="max-width:520px;text-align:center">
-    <div class="off-loading"></div>
-    <div style="font-family:Rokiest;letter-spacing:.7px;font-size:20px">Carregando…</div>
-    <div class="off-muted" style="margin-top:6px">Aguarde</div>
+      <section class="card">
+        <div class="cardHead">
+          <h2>Status do Sistema</h2>
+          <div class="hint">Resumo rápido</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="k">Sistema</div>
+            <div class="v green">Online</div>
+          </div>
+          <div class="stat">
+            <div class="k">VIP</div>
+            <div class="v">Ativo</div>
+          </div>
+          <div class="stat">
+            <div class="k">PIX</div>
+            <div class="v">Disponível</div>
+          </div>
+          <div class="stat">
+            <div class="k">Versão</div>
+            <div class="v">OFF v1.0</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <div>© OFF Company</div>
+        <div>Desenvolvido por Lucas Santos</div>
+      </div>
+
+    </main>
   </div>
-</div>
-
-<div class="off-toast" id="toast">✅</div>
-
-<script src="assets/off-ui.js"></script>
 </body>
 </html>
 

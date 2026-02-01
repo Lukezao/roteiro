@@ -9,16 +9,19 @@
   @font-face{
     font-family:"Rokiest";
     src:url("https://waycompanygg.github.io/roteiro/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
-    font-weight:800; font-display:swap;
+    font-weight:800;
+    font-display:swap;
   }
+
   :root{
     --bg1:#0b0f19; --bg2:#0f172a;
-    --panel:rgba(11,18,32,.82);
-    --stroke:rgba(255,255,255,.10);
-    --text:#e5e7eb; --muted:rgba(229,231,235,.65);
+    --panel: rgba(11,18,32,.82);
+    --stroke: rgba(255,255,255,.10);
+    --text:#e5e7eb; --muted: rgba(229,231,235,.65);
     --blue:#2563eb; --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
-    --shadow:0 24px 70px rgba(0,0,0,.65);
+    --shadow: 0 24px 70px rgba(0,0,0,.65);
   }
+
   *{box-sizing:border-box}
   body{
     margin:0; min-height:100vh;
@@ -31,6 +34,7 @@
     display:flex; align-items:center; justify-content:center;
     padding:22px;
   }
+
   .home{
     position:fixed; top:16px; left:16px;
     background:rgba(17,24,39,.92);
@@ -41,11 +45,12 @@
     border-radius:12px;
     box-shadow:0 12px 30px rgba(0,0,0,.45);
     transition:.15s;
+    z-index: 10;
   }
   .home:hover{transform:translateY(-1px); opacity:.92}
 
   .wrap{
-    width:min(1100px,100%);
+    width:min(1200px,100%);
     background:var(--panel);
     border:1px solid var(--stroke);
     border-radius:22px;
@@ -54,10 +59,23 @@
     backdrop-filter:blur(10px);
     animation: in .45s ease both;
   }
-  @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes in{
+    from{opacity:0; transform:translateY(10px)}
+    to{opacity:1; transform:translateY(0)}
+  }
 
-  h1{font-family:"Rokiest"; margin:0; letter-spacing:.8px}
-  .sub{margin:6px 0 14px; color:var(--muted); font-size:13px}
+  h1{
+    font-family:"Rokiest";
+    margin:0;
+    letter-spacing:.8px;
+    font-size:34px;
+    line-height:1.1;
+  }
+  .sub{
+    margin:8px 0 14px;
+    color:var(--muted);
+    font-size:13px;
+  }
 
   .card{
     background:rgba(255,255,255,.04);
@@ -67,20 +85,31 @@
   }
 
   .row{
-    display:flex; gap:10px; flex-wrap:wrap;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
     align-items:end;
   }
+
   .field{
-    display:flex; flex-direction:column;
-    gap:6px; flex:1 1 220px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1 1 220px;
+    min-width: 180px;
   }
-  label{font-size:12px; color:rgba(229,231,235,.72)}
+
+  label{
+    font-size:12px;
+    color: rgba(229,231,235,.72);
+  }
+
   input{
     height:44px;
     border-radius:12px;
     border:1px solid rgba(255,255,255,.12);
-    background:rgba(2,6,23,.55);
-    color:var(--text);
+    background: rgba(2,6,23,.55);
+    color: var(--text);
     padding:10px 12px;
     outline:none;
     transition:.15s;
@@ -107,7 +136,13 @@
   .b{background:var(--blue); box-shadow:0 10px 26px rgba(37,99,235,.24)}
   .g{background:var(--green); box-shadow:0 10px 26px rgba(34,197,94,.18)}
   .a{background:var(--amber); color:#111827; box-shadow:0 10px 26px rgba(245,158,11,.20)}
-  .r{background:rgba(239,68,68,.18); border:1px solid rgba(239,68,68,.35)}
+  .ghost{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12)}
+
+  .hint{
+    margin-top:10px;
+    font-size:12px;
+    color:rgba(229,231,235,.55);
+  }
 
   .table{
     margin-top:12px;
@@ -116,32 +151,45 @@
     overflow:hidden;
     background:rgba(2,6,23,.35);
   }
+
   .thead,.trow{
     display:grid;
-    grid-template-columns: .4fr .7fr 1fr 1fr 1fr .6fr .6fr .8fr .9fr auto;
+    grid-template-columns: .5fr .9fr 1.2fr .9fr .9fr .8fr .8fr .8fr 1fr auto;
     gap:10px;
     align-items:center;
     padding:10px 12px;
   }
+
   .thead{
     background:rgba(255,255,255,.03);
     color:rgba(229,231,235,.65);
     font-size:12px;
     font-weight:900;
   }
+
   .trow{
     border-top:1px solid rgba(255,255,255,.06);
     font-size:12px;
     color:rgba(229,231,235,.88);
   }
 
+  .actions{
+    display:flex; gap:8px; flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
   .miniBtn{
-    width:44px; height:36px;
+    width:44px;
+    height:36px;
     border-radius:10px;
     padding:0;
     font-weight:900;
   }
+  .miniRed{background:rgba(239,68,68,.18); border:1px solid rgba(239,68,68,.35)}
+  .miniBlue{background:rgba(37,99,235,.18); border:1px solid rgba(37,99,235,.35)}
+  .miniBtn:hover{opacity:.95}
 
+  /* Toast */
   .toast{
     position:fixed;
     bottom:18px;
@@ -160,6 +208,7 @@
   }
   .toast.show{opacity:1}
 
+  /* Overlay loader */
   .overlay{
     position:fixed;
     inset:0;
@@ -182,6 +231,7 @@
     animation: pop .22s ease both;
   }
   @keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+
   .ring{
     width:56px; height:56px;
     border-radius:999px;
@@ -192,14 +242,9 @@
   }
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  .hint{
-    margin-top:10px;
-    font-size:12px;
-    color:rgba(229,231,235,.55);
-  }
-
   @media(max-width:1100px){
     .thead,.trow{grid-template-columns:1fr}
+    .actions{justify-content:flex-start}
     .miniBtn{width:100%; height:42px}
   }
 </style>
@@ -218,13 +263,13 @@
 
 <div class="wrap">
   <h1>VIP Admin</h1>
-  <div class="sub">Gerar código temporário, criar slots, bloquear/limpar e ver dados completos.</div>
+  <div class="sub">Liberar quantidade de VIPs (slots), gerar código temporário e controlar bloqueio/limpeza.</div>
 
   <div class="card">
     <div class="row">
       <div class="field">
         <label>Senha Admin</label>
-        <input id="adminPass" type="password" placeholder="Sua senha admin" autocomplete="current-password">
+        <input id="adminPass" type="password" placeholder="Sua senha admin">
       </div>
 
       <div class="field" style="flex:0 0 220px;">
@@ -242,7 +287,7 @@
         <input id="mins" type="number" min="1" value="60">
       </div>
 
-      <button class="a" onclick="gerarCode()">Gerar Código</button>
+      <button class="a" onclick="gerarCodigo()">Gerar Código</button>
 
       <div class="field" style="flex:1 1 320px;">
         <label>Código atual (clique para copiar)</label>
@@ -250,7 +295,10 @@
       </div>
     </div>
 
-    <div class="hint">Dica: use a URL do Apps Script no formato <b>/exec</b> dentro do <code>API_URL</code> (não use googleusercontent).</div>
+    <div class="hint">
+      Dica: use a URL do Apps Script no formato <b>/exec</b> OU a URL do <b>script.googleusercontent.com/macros/echo</b>.
+      Não use <code>/dev</code>.
+    </div>
   </div>
 
   <div class="table">
@@ -266,41 +314,32 @@
 
 <script>
   // ====== CONFIG ======
-  const API_URL = "https://script.google.com/macros/s/AKfycbyyEqjBItPdYc6WuwAliP6G9shJxtEPABUKCPHDsv-yhahM-QkY2ye7jl99kg9EuCNQ/exec";
+  // COLE AQUI SUA URL DO VIP (Web App)
+  // Ex1: https://script.google.com/macros/s/XXXX/exec
+  // Ex2: https://script.googleusercontent.com/macros/echo?user_content_key=...&lib=...
+  const API_URL = "https://script.google.com/macros/s/AKfycbw0sJdBmagVPPZ4QRQ3dPAWeGRuXuUbV2egxeWRi-691WsN45wRSJsyScbdWJM3n2HQ/exec";
 
   function toast(msg){
     const t=document.getElementById("toast");
     t.textContent=msg;
     t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"), 1600);
+    setTimeout(()=>t.classList.remove("show"), 1500);
   }
 
   function overlay(on){
     document.getElementById("overlay").style.display = on ? "flex" : "none";
   }
 
-  function getAdminPass(){
-    return (document.getElementById("adminPass").value || "").trim();
-  }
-
-  function requirePass(){
-    const pass = getAdminPass();
-    if(!pass){
-      toast("❌ Digite a senha admin");
-      return null;
-    }
-    return pass;
-  }
-
+  // API robusta (sem preflight) + timeout
   async function api(fn, payload){
     const controller = new AbortController();
-    const timeout = setTimeout(()=>controller.abort(), 15000);
+    const timeout = setTimeout(()=>controller.abort(), 20000);
 
     try{
       const res = await fetch(API_URL, {
         method: "POST",
-        // ✅ evita preflight
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        cache: "no-store",
+        redirect: "follow",
         body: JSON.stringify({ fn, payload }),
         signal: controller.signal
       });
@@ -309,33 +348,29 @@
       try { return JSON.parse(text); }
       catch { return { ok:false, error:"Resposta inválida: " + text.slice(0,180) }; }
 
-    } catch(err){
-      return { ok:false, error: (err.name==="AbortError" ? "Timeout. Confira o /exec e o deploy." : String(err)) };
+    } catch (err){
+      return { ok:false, error:(err.name==="AbortError" ? "Timeout. API não respondeu." : String(err)) };
     } finally {
       clearTimeout(timeout);
     }
   }
 
   async function criarSlots(){
-    const adminPass = requirePass();
-    if(!adminPass) return;
-
-    const count = Math.max(0, parseInt(document.getElementById("slotCount").value || "0", 10));
+    const adminPass = document.getElementById("adminPass").value || "";
+    const count = document.getElementById("slotCount").value || 0;
 
     overlay(true);
     const r = await api("vipAdminSetSlotCount", { adminPass, count });
     overlay(false);
 
     if(!r.ok) return toast("❌ " + r.error);
-    toast("✅ Slots criados");
+    toast("✅ Slots criados/resetados");
     carregar();
   }
 
-  async function gerarCode(){
-    const adminPass = requirePass();
-    if(!adminPass) return;
-
-    const minutes = Math.max(1, parseInt(document.getElementById("mins").value || "60", 10));
+  async function gerarCodigo(){
+    const adminPass = document.getElementById("adminPass").value || "";
+    const minutes = document.getElementById("mins").value || 60;
 
     overlay(true);
     const r = await api("vipAdminCreateTempCode", { adminPass, minutes });
@@ -348,6 +383,7 @@
     toast("✅ Código gerado");
   }
 
+  // Clicar no campo copia SÓ o código
   document.getElementById("codeOut").addEventListener("click", async ()=>{
     const v = document.getElementById("codeOut").value || "";
     if(!v) return;
@@ -356,13 +392,12 @@
       await navigator.clipboard.writeText(onlyCode);
       toast("📋 Código copiado: " + onlyCode);
     }catch{
-      toast("❌ Não deu pra copiar (use Ctrl+C)");
+      toast("❌ Não deu pra copiar (Ctrl+C)");
     }
   });
 
   async function carregar(){
-    const adminPass = requirePass();
-    if(!adminPass) return;
+    const adminPass = document.getElementById("adminPass").value || "";
 
     overlay(true);
     const r = await api("vipAdminGet", { adminPass });
@@ -371,20 +406,22 @@
     if(!r.ok) return toast("❌ " + r.error);
 
     const el = document.getElementById("rows");
-    el.innerHTML = (r.rows || []).map(row => `
+    const rows = r.rows || [];
+
+    el.innerHTML = rows.map(row => `
       <div class="trow">
         <div>#${row.slot}</div>
-        <div>${row.status}</div>
-        <div>${row.nome||""}</div>
-        <div>${row.rg||""}</div>
-        <div>${row.cpf||""}</div>
-        <div>${row.veiculo||""}</div>
-        <div>${row.placa||""}</div>
-        <div>${row.cor||""}</div>
-        <div>${row.modelo||""}</div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="miniBtn r" onclick="toggleBlock('${row.slot}')">⛔</button>
-          <button class="miniBtn b" onclick="clearSlot('${row.slot}')">🧹</button>
+        <div>${row.status || ""}</div>
+        <div>${row.nome || ""}</div>
+        <div>${row.rg || ""}</div>
+        <div>${row.cpf || ""}</div>
+        <div>${row.veiculo || ""}</div>
+        <div>${row.placa || ""}</div>
+        <div>${row.cor || ""}</div>
+        <div>${row.modelo || ""}</div>
+        <div class="actions">
+          <button class="miniBtn miniRed" onclick="toggleBlock('${row.slot}')">⛔</button>
+          <button class="miniBtn miniBlue" onclick="clearSlot('${row.slot}')">🧹</button>
         </div>
       </div>
     `).join("");
@@ -393,11 +430,10 @@
   }
 
   async function toggleBlock(slot){
-    const adminPass = requirePass();
-    if(!adminPass) return;
+    const adminPass = document.getElementById("adminPass").value || "";
 
     overlay(true);
-    const r = await api("vipAdminToggleBlock", { adminPass, slotId: String(slot).trim() });
+    const r = await api("vipAdminToggleBlock", { adminPass, slotId: slot });
     overlay(false);
 
     if(!r.ok) return toast("❌ " + r.error);
@@ -406,11 +442,10 @@
   }
 
   async function clearSlot(slot){
-    const adminPass = requirePass();
-    if(!adminPass) return;
+    const adminPass = document.getElementById("adminPass").value || "";
 
     overlay(true);
-    const r = await api("vipAdminClearSlot", { adminPass, slotId: String(slot).trim() });
+    const r = await api("vipAdminClearSlot", { adminPass, slotId: slot });
     overlay(false);
 
     if(!r.ok) return toast("❌ " + r.error);

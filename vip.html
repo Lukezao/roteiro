@@ -5,12 +5,9 @@
   let selectedSlot = null;
   let pollTimer = null;
 
-  // Mostra qualquer erro JS na tela (evita "tela branca sem saber pq")
-  window.addEventListener("error", (e)=>{
-    console.error("JS ERROR:", e.error || e.message);
-    try{ toast("❌ Erro JS: " + (e.message || "ver console")); }catch{}
-  });
-
+  // ========================
+  // UTIL
+  // ========================
   function toast(msg){
     const t = document.getElementById("toast");
     if(!t){ alert(msg); return; }
@@ -24,9 +21,9 @@
     if(el) el.style.display = on ? "flex" : "none";
   }
 
-  function showOverlay(show){
+  function showOverlay(on){
     const el = document.getElementById("overlay");
-    if(el) el.style.display = show ? "flex" : "none";
+    if(el) el.style.display = on ? "flex" : "none";
   }
 
   function normalizeCode(s){
@@ -39,14 +36,16 @@
     const yes = document.getElementById("veiculo").value === "SIM";
     ["placa","cor","modelo"].forEach(id=>{
       const el = document.getElementById(id);
+      if(!el) return;
       el.disabled = !yes;
       if(!yes) el.value = "";
     });
   }
 
+  // ========================
+  // API
+  // ========================
   async function api(fn, payload){
-    console.log("API call:", fn, payload);
-
     const controller = new AbortController();
     const timeout = setTimeout(()=>controller.abort(), 20000);
 
@@ -59,26 +58,27 @@
       });
 
       const text = await res.text();
-      console.log("API raw response:", text.slice(0, 200));
-
       let json;
       try { json = JSON.parse(text); }
-      catch { return { ok:false, error:"Resposta não é JSON (provável link errado /exec). Veja o console." }; }
-
+      catch {
+        return { ok:false, error:"Resposta inválida da API (não é JSON)" };
+      }
       return json;
 
     } catch (err){
-      console.error("FETCH ERROR:", err);
-      return { ok:false, error:(err.name==="AbortError" ? "Timeout (20s)" : "Failed to fetch / CORS") };
+      return { ok:false, error:(err.name==="AbortError" ? "Timeout da API" : "Erro de conexão") };
     } finally {
       clearTimeout(timeout);
     }
   }
 
+  // ========================
+  // AÇÕES
+  // ========================
   async function entrar(){
     const raw = document.getElementById("code").value || "";
     const code = normalizeCode(raw);
-    if(!code) return toast("Cole um código válido");
+    if(!code) return toast("Digite um código válido");
 
     document.getElementById("code").value = code;
 
@@ -86,7 +86,7 @@
     const r = await api("vipPublicGet", { code });
     loading(false);
 
-    if(!r.ok) return toast("❌ " + (r.error || "Erro"));
+    if(!r.ok) return toast("❌ " + r.error);
 
     currentSlots = r.slots || [];
     renderGrid();
@@ -109,20 +109,20 @@
     if(!grid) return;
 
     grid.innerHTML = (currentSlots || []).map(s=>{
-      const status = String(s.status || "LIVRE").toUpperCase();
+      const status = String(s.status||"LIVRE").toUpperCase();
 
       const cls =
         status==="LIVRE" ? "bLivre" :
         status==="BLOQUEADO" ? "bBloq" :
         status==="CONFIRMADO" ? "bLivre" : "bOcup";
 
-      const badgeText =
+      const badge =
         status==="LIVRE" ? "Livre" :
         status==="BLOQUEADO" ? "Bloqueado" :
         status==="CONFIRMADO" ? "Confirmado" : "Ocupado";
 
       const codeChip = (s.codeTag && (status==="OCUPADO" || status==="CONFIRMADO"))
-        ? `<span class="badge" style="margin-left:8px; opacity:.95">${s.codeTag}</span>`
+        ? `<span class="badge" style="margin-left:8px">${s.codeTag}</span>`
         : "";
 
       const name =
@@ -131,11 +131,11 @@
           : `<div class="name">—</div>`;
 
       return `
-        <div class="slot ${cls}" onclick="clickSlot('${String(s.slot)}','${status}')">
+        <div class="slot ${cls}" onclick="clickSlot('${s.slot}','${status}')">
           <div class="topRow">
-            <div class="num">#${String(s.slot)}</div>
-            <div style="display:flex; gap:8px; align-items:center;">
-              <div class="badge">${badgeText}</div>
+            <div class="num">#${s.slot}</div>
+            <div style="display:flex; gap:8px;">
+              <div class="badge">${badge}</div>
               ${codeChip}
             </div>
           </div>
@@ -147,7 +147,11 @@
 
   function clickSlot(slot, status){
     if(status !== "LIVRE"){
-      return toast(status==="BLOQUEADO" ? "⛔ Bloqueado" : (status==="CONFIRMADO" ? "✅ Confirmado" : "⚠️ Ocupado"));
+      return toast(
+        status==="BLOQUEADO" ? "⛔ Slot bloqueado" :
+        status==="CONFIRMADO" ? "✅ Slot confirmado" :
+        "⚠️ Slot ocupado"
+      );
     }
     selectedSlot = slot;
     document.getElementById("slotNum").textContent = "#" + slot;
@@ -163,10 +167,10 @@
     const code = normalizeCode(document.getElementById("code").value || "");
     if(!code) return toast("Código inválido");
 
-    const nome = (document.getElementById("nome").value||"").trim();
-    const rg   = (document.getElementById("rg").value||"").trim();
-    const cpf  = (document.getElementById("cpf").value||"").trim();
-    if(!nome || !rg || !cpf) return toast("Preencha Nome, RG, CPF");
+    const nome = document.getElementById("nome").value.trim();
+    const rg   = document.getElementById("rg").value.trim();
+    const cpf  = document.getElementById("cpf").value.trim();
+    if(!nome || !rg || !cpf) return toast("Preencha Nome, RG e CPF");
 
     const veiculo = document.getElementById("veiculo").value === "SIM";
 
@@ -184,7 +188,7 @@
     const r = await api("vipReserve", payload);
     loading(false);
 
-    if(!r.ok) return toast("❌ " + (r.error || "Erro"));
+    if(!r.ok) return toast("❌ " + r.error);
 
     showOverlay(false);
     selectedSlot = null;
@@ -198,11 +202,19 @@
     toast("✅ Reservado!");
   }
 
-  document.getElementById("overlay").addEventListener("click", (e)=>{
-    if(e.target.id==="overlay") fechar();
+  // ========================
+  // EVENTOS SEGURANÇA
+  // ========================
+  document.addEventListener("DOMContentLoaded", ()=>{
+    const overlayEl = document.getElementById("overlay");
+    if(overlayEl){
+      overlayEl.addEventListener("click", (e)=>{
+        if(e.target.id === "overlay") fechar();
+      });
+    }
   });
 
-  // deixa funções disponíveis pro onclick do HTML
+  // expõe funções pro HTML
   window.entrar = entrar;
   window.confirmar = confirmar;
   window.fechar = fechar;

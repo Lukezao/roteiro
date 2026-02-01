@@ -5,15 +5,12 @@
   let selectedSlot = null;
   let pollTimer = null;
 
-  // ========================
-  // UTIL
-  // ========================
   function toast(msg){
     const t = document.getElementById("toast");
     if(!t){ alert(msg); return; }
     t.textContent = msg;
     t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"), 2000);
+    setTimeout(()=>t.classList.remove("show"), 1800);
   }
 
   function loading(on){
@@ -33,7 +30,8 @@
   }
 
   function toggleVeiculo(){
-    const yes = document.getElementById("veiculo").value === "SIM";
+    const veic = document.getElementById("veiculo");
+    const yes = veic && veic.value === "SIM";
     ["placa","cor","modelo"].forEach(id=>{
       const el = document.getElementById(id);
       if(!el) return;
@@ -42,9 +40,6 @@
     });
   }
 
-  // ========================
-  // API
-  // ========================
   async function api(fn, payload){
     const controller = new AbortController();
     const timeout = setTimeout(()=>controller.abort(), 20000);
@@ -58,35 +53,29 @@
       });
 
       const text = await res.text();
-      let json;
-      try { json = JSON.parse(text); }
-      catch {
-        return { ok:false, error:"Resposta inválida da API (não é JSON)" };
-      }
-      return json;
+      try { return JSON.parse(text); }
+      catch { return { ok:false, error:"Resposta inválida da API (não é JSON)" }; }
 
     } catch (err){
-      return { ok:false, error:(err.name==="AbortError" ? "Timeout da API" : "Erro de conexão") };
+      return { ok:false, error:(err.name==="AbortError" ? "Timeout da API" : "Erro de conexão (Failed to fetch)") };
     } finally {
       clearTimeout(timeout);
     }
   }
 
-  // ========================
-  // AÇÕES
-  // ========================
   async function entrar(){
-    const raw = document.getElementById("code").value || "";
+    const raw = (document.getElementById("code")?.value || "");
     const code = normalizeCode(raw);
-    if(!code) return toast("Digite um código válido");
+    if(!code) return toast("Digite/cole um código válido");
 
-    document.getElementById("code").value = code;
+    const codeInput = document.getElementById("code");
+    if(codeInput) codeInput.value = code;
 
     loading(true);
     const r = await api("vipPublicGet", { code });
     loading(false);
 
-    if(!r.ok) return toast("❌ " + r.error);
+    if(!r.ok) return toast("❌ " + (r.error || "Erro"));
 
     currentSlots = r.slots || [];
     renderGrid();
@@ -94,7 +83,7 @@
 
     if(pollTimer) clearInterval(pollTimer);
     pollTimer = setInterval(async ()=>{
-      const c = normalizeCode(document.getElementById("code").value || "");
+      const c = normalizeCode(document.getElementById("code")?.value || "");
       if(!c) return;
       const rr = await api("vipPublicGet", { code: c });
       if(rr.ok){
@@ -131,9 +120,9 @@
           : `<div class="name">—</div>`;
 
       return `
-        <div class="slot ${cls}" onclick="clickSlot('${s.slot}','${status}')">
+        <div class="slot ${cls}" data-slot="${String(s.slot)}" data-status="${status}">
           <div class="topRow">
-            <div class="num">#${s.slot}</div>
+            <div class="num">#${String(s.slot)}</div>
             <div style="display:flex; gap:8px;">
               <div class="badge">${badge}</div>
               ${codeChip}
@@ -143,6 +132,15 @@
         </div>
       `;
     }).join("");
+
+    // eventos de clique (sem inline onclick)
+    [...grid.querySelectorAll(".slot")].forEach(el=>{
+      el.onclick = ()=>{
+        const slot = el.getAttribute("data-slot");
+        const status = el.getAttribute("data-status");
+        clickSlot(slot, status);
+      };
+    });
   }
 
   function clickSlot(slot, status){
@@ -154,7 +152,8 @@
       );
     }
     selectedSlot = slot;
-    document.getElementById("slotNum").textContent = "#" + slot;
+    const slotNum = document.getElementById("slotNum");
+    if(slotNum) slotNum.textContent = "#" + slot;
     showOverlay(true);
   }
 
@@ -164,31 +163,31 @@
   }
 
   async function confirmar(){
-    const code = normalizeCode(document.getElementById("code").value || "");
+    const code = normalizeCode(document.getElementById("code")?.value || "");
     if(!code) return toast("Código inválido");
 
-    const nome = document.getElementById("nome").value.trim();
-    const rg   = document.getElementById("rg").value.trim();
-    const cpf  = document.getElementById("cpf").value.trim();
+    const nome = (document.getElementById("nome")?.value || "").trim();
+    const rg   = (document.getElementById("rg")?.value || "").trim();
+    const cpf  = (document.getElementById("cpf")?.value || "").trim();
     if(!nome || !rg || !cpf) return toast("Preencha Nome, RG e CPF");
 
-    const veiculo = document.getElementById("veiculo").value === "SIM";
+    const veiculo = (document.getElementById("veiculo")?.value === "SIM");
 
     const payload = {
       code,
       slot: selectedSlot,
       nome, rg, cpf,
       veiculo,
-      placa: document.getElementById("placa").value||"",
-      cor: document.getElementById("cor").value||"",
-      modelo: document.getElementById("modelo").value||""
+      placa: document.getElementById("placa")?.value || "",
+      cor: document.getElementById("cor")?.value || "",
+      modelo: document.getElementById("modelo")?.value || ""
     };
 
     loading(true);
     const r = await api("vipReserve", payload);
     loading(false);
 
-    if(!r.ok) return toast("❌ " + r.error);
+    if(!r.ok) return toast("❌ " + (r.error || "Erro"));
 
     showOverlay(false);
     selectedSlot = null;
@@ -202,22 +201,19 @@
     toast("✅ Reservado!");
   }
 
-  // ========================
-  // EVENTOS SEGURANÇA
-  // ========================
+  // ✅ EVENTOS (NUNCA MAIS DÁ NULL)
   document.addEventListener("DOMContentLoaded", ()=>{
     const overlayEl = document.getElementById("overlay");
     if(overlayEl){
-      overlayEl.addEventListener("click", (e)=>{
-        if(e.target.id === "overlay") fechar();
-      });
+      overlayEl.onclick = (e)=>{
+        if(e.target && e.target.id === "overlay") fechar();
+      };
     }
-  });
 
-  // expõe funções pro HTML
-  window.entrar = entrar;
-  window.confirmar = confirmar;
-  window.fechar = fechar;
-  window.clickSlot = clickSlot;
-  window.toggleVeiculo = toggleVeiculo;
+    // expõe pro HTML (se ainda usa onclick nos botões)
+    window.entrar = entrar;
+    window.confirmar = confirmar;
+    window.fechar = fechar;
+    window.toggleVeiculo = toggleVeiculo;
+  });
 </script>

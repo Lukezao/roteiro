@@ -835,15 +835,14 @@
     </div>
 
     <div class="van-container">
-      <!-- Top View (Vista de cima) - IMAGEM REAL -->
+      <!-- Vista Superior - APENAS A IMAGEM PNG -->
       <div style="margin-bottom:40px">
-        <h3 style="text-align:center; font-size:16px; margin-bottom:20px; color:var(--text-dim); font-weight:700">VISÃO SUPERIOR DA VAN</h3>
+        <h3 style="text-align:center; font-size:16px; margin-bottom:20px; color:var(--text-dim); font-weight:700">SELECIONE SEU ASSENTO</h3>
         <div style="max-width:600px; margin:0 auto; position:relative">
           <img src="assets/images/van.png" alt="Vista superior da van" style="width:100%; height:auto; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,.8)">
           
           <!-- Overlay clicável nos assentos -->
           <div style="position:absolute; inset:0; display:grid; padding:15% 8% 8% 8%">
-            <!-- Grid matching the van image layout -->
             <div style="display:grid; grid-template-rows:auto auto auto auto auto; gap:3%">
               
               <!-- Motorista + F1 + F2 (frente) -->
@@ -888,30 +887,10 @@
         </div>
       </div>
 
-      <h3 style="text-align:center; font-size:16px; margin-bottom:20px; color:var(--text-dim); font-weight:700">SELECIONE SEU ASSENTO</h3>
+      <!-- Cards interativos embaixo -->
+      <h3 style="text-align:center; font-size:16px; margin-bottom:20px; color:var(--text-dim); font-weight:700">DETALHES DOS ASSENTOS</h3>
 
-      <h3 style="text-align:center; font-size:16px; margin-bottom:20px; color:var(--text-dim); font-weight:700">RESERVA DE ASSENTOS</h3>
-
-      <div class="van-body">
-        <div class="van-headlight-right"></div>
-        <div class="van-mirror-left"></div>
-        <div class="van-mirror-right"></div>
-        <div class="van-wheel-left"></div>
-        <div class="van-wheel-right"></div>
-        
-        <div class="driver-area">
-          <div class="steering-wheel"></div>
-          <div class="driver-label">Driver</div>
-        </div>
-
-        <div class="front-passengers" id="frontPassengers">
-          <!-- Front 2 seats -->
-        </div>
-
-        <div class="seats-layout" id="seatsLayout">
-          <!-- Back seats in 3x5 grid -->
-        </div>
-      </div>
+      <!-- Você vai criar seus próprios cards de assentos aqui -->
 
       <div class="legend">
         <div class="legend-item">
@@ -949,45 +928,6 @@
 <div id="toast" class="toast">✅ Sucesso</div>
 
 <script>
-  // Front seats (2 seats next to driver)
-  const frontSeatData = [
-    { seat: 'F1', status: 'LIVRE', nome: '' },
-    { seat: 'F2', status: 'OCUPADO', nome: 'Carlos R•••••' },
-  ];
-
-  // FILA 1: 3 assentos (1, 2, 3)
-  const row1 = [
-    { seat: 1, status: 'LIVRE', nome: '' },
-    { seat: 2, status: 'LIVRE', nome: '' },
-    { seat: 3, status: 'OCUPADO', nome: 'Ana S•••••' },
-  ];
-
-  // FILA 2: 2 esquerda + 1 direita (4, 5 | corredor | 6)
-  const row2Left = [
-    { seat: 4, status: 'LIVRE', nome: '' },
-    { seat: 5, status: 'LIVRE', nome: '' },
-  ];
-  const row2Right = [
-    { seat: 6, status: 'OCUPADO', nome: 'João M•••••' },
-  ];
-
-  // FILA 3: 2 esquerda + 1 direita (7, 8 | corredor | 9)
-  const row3Left = [
-    { seat: 7, status: 'LIVRE', nome: '' },
-    { seat: 8, status: 'LIVRE', nome: '' },
-  ];
-  const row3Right = [
-    { seat: 9, status: 'LIVRE', nome: '' },
-  ];
-
-  // FILA 4: 4 assentos (10, 11, 12, 13)
-  const row4 = [
-    { seat: 10, status: 'LIVRE', nome: '' },
-    { seat: 11, status: 'LIVRE', nome: '' },
-    { seat: 12, status: 'LIVRE', nome: '' },
-    { seat: 13, status: 'OCUPADO', nome: 'Maria L•••••' },
-  ];
-
   function toast(msg){
     const t = document.getElementById("toast");
     t.textContent = msg;
@@ -1003,98 +943,11 @@
     document.getElementById("modalOverlay").style.display = "none";
   }
 
-  function renderFrontSeats(){
-    const container = document.getElementById("frontPassengers");
-    
-    const html = frontSeatData.map(s => {
-      const isTaken = s.status === 'OCUPADO';
-      const statusClass = isTaken ? 'status-ocupado' : 'status-livre';
-      const seatClass = isTaken ? 'front-seat taken' : 'front-seat';
-      const nameClass = isTaken ? 'front-seat-name blur' : 'front-seat-name';
-      
-      return `
-        <div class="${seatClass}" onclick="openModal()">
-          <div class="front-seat-header">
-            <div class="front-seat-number">#${s.seat}</div>
-            <div class="front-seat-status ${statusClass}">${s.status === 'OCUPADO' ? 'Ocupado' : 'Livre'}</div>
-          </div>
-          <div class="${nameClass}">${isTaken ? s.nome : 'Livre'}</div>
-        </div>
-      `;
-    }).join('');
-
-    container.innerHTML = html;
-  }
-
-  function renderSeat(s){
-    const isTaken = s.status === 'OCUPADO';
-    const statusClass = isTaken ? 'status-ocupado' : 'status-livre';
-    const seatClass = isTaken ? 'seat taken' : 'seat';
-    const nameClass = isTaken ? 'seat-name blur' : 'seat-name';
-    
-    return `
-      <div class="${seatClass}" onclick="openModal()">
-        <div class="seat-header">
-          <div class="seat-number">#${s.seat}</div>
-          <div class="seat-status ${statusClass}">${s.status === 'OCUPADO' ? 'Ocupado' : 'Livre'}</div>
-        </div>
-        <div class="${nameClass}">${isTaken ? s.nome : '—'}</div>
-      </div>
-    `;
-  }
-
-  function renderSeats(){
-    const layout = document.getElementById("seatsLayout");
-    
-    let html = '';
-
-    // FILA 1: 3 assentos (#1, #2, #3)
-    html += `<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px">`;
-    row1.forEach(s => html += renderSeat(s));
-    html += `</div>`;
-
-    // FILA 2: 2 esquerda + corredor + 1 direita (#4, #5 | CORREDOR | #6)
-    html += `<div style="display:grid; grid-template-columns:1fr 1fr 60px 1fr; gap:12px; margin-bottom:16px">`;
-    row2Left.forEach(s => html += renderSeat(s));
-    html += `<div class="aisle"><div class="aisle-label">CORREDOR</div></div>`;
-    row2Right.forEach(s => html += renderSeat(s));
-    html += `</div>`;
-
-    // FILA 3: 2 esquerda + corredor + 1 direita (#7, #8 | CORREDOR | #9)
-    html += `<div style="display:grid; grid-template-columns:1fr 1fr 60px 1fr; gap:12px; margin-bottom:16px">`;
-    row3Left.forEach(s => html += renderSeat(s));
-    html += `<div class="aisle"><div class="aisle-label">CORREDOR</div></div>`;
-    row3Right.forEach(s => html += renderSeat(s));
-    html += `</div>`;
-
-    // FILA 4: 4 assentos (#10, #11, #12, #13)
-    html += `<div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px">`;
-    row4.forEach(s => html += renderSeat(s));
-    html += `</div>`;
-
-    layout.innerHTML = html;
-
-    // Update stats
-    const allSeats = [...frontSeatData, ...row1, ...row2Left, ...row2Right, ...row3Left, ...row3Right, ...row4];
-    const total = allSeats.length;
-    const taken = allSeats.filter(s => s.status === 'OCUPADO').length;
-    const free = total - taken;
-
-    document.getElementById('totalSeats').textContent = total;
-    document.getElementById('takenSeats').textContent = taken;
-    document.getElementById('freeSeats').textContent = free;
-  }
-
   // Close modal when clicking outside
   document.getElementById("modalOverlay").addEventListener("click", (e) => {
     if(e.target.id === "modalOverlay") closeModal();
   });
 
-  // Initialize
-  window.addEventListener("DOMContentLoaded", () => {
-    renderFrontSeats();
-    renderSeats();
-  });
 </script>
 </body>
 </html>

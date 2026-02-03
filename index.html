@@ -262,6 +262,20 @@
       transition:opacity .3s;
     }
 
+    .action-card::after{
+      content:attr(data-icon);
+      position:absolute;
+      right:-30px;
+      bottom:-40px;
+      font-size:180px;
+      opacity:0;
+      transform:rotate(-15deg) scale(0.8);
+      transition:all .4s cubic-bezier(.34,1.56,.64,1);
+      pointer-events:none;
+      z-index:0;
+      filter:blur(1px);
+    }
+
     .action-card:hover{
       transform:translateY(-4px);
       border-color:var(--border-hover);
@@ -272,9 +286,20 @@
       opacity:1;
     }
 
+    .action-card:hover::after{
+      opacity:.08;
+      transform:rotate(-15deg) scale(1);
+      right:-20px;
+      bottom:-30px;
+    }
+
     .action-card.featured{
       background:linear-gradient(135deg, rgba(167,139,250,.12), rgba(34,211,238,.08));
       border-color:var(--border-hover);
+    }
+
+    .action-card.featured:hover::after{
+      opacity:.12;
     }
 
     .action-header{
@@ -509,7 +534,7 @@
           </div>
 
           <div class="quick-actions">
-            <a href="agenda-fixed.html" class="action-card featured">
+            <a href="agenda-fixed.html" class="action-card featured" data-icon="📅">
               <div class="action-header">
                 <div class="action-icon">📅</div>
                 <div class="action-badge badge-primary">Destaque</div>
@@ -524,7 +549,7 @@
               </div>
             </a>
 
-            <a href="vip.html" class="action-card">
+            <a href="vip.html" class="action-card" data-icon="🎟️">
               <div class="action-header">
                 <div class="action-icon">🎟️</div>
                 <div class="action-badge badge-accent">Usuário</div>
@@ -539,7 +564,7 @@
               </div>
             </a>
 
-            <a href="pix.html" class="action-card">
+            <a href="pix.html" class="action-card" data-icon="💸">
               <div class="action-header">
                 <div class="action-icon">💸</div>
                 <div class="action-badge badge-accent">Usuário</div>
@@ -554,7 +579,7 @@
               </div>
             </a>
 
-            <a href="vip-admin.html" class="action-card">
+            <a href="vip-admin.html" class="action-card" data-icon="🧠">
               <div class="action-header">
                 <div class="action-icon">🧠</div>
                 <div class="action-badge badge-success">Admin</div>
@@ -569,7 +594,7 @@
               </div>
             </a>
 
-            <a href="diaria.html" class="action-card">
+            <a href="diaria.html" class="action-card" data-icon="📒">
               <div class="action-header">
                 <div class="action-icon">📒</div>
                 <div class="action-badge badge-accent">Usuário</div>
@@ -584,7 +609,7 @@
               </div>
             </a>
 
-            <a href="van.html" class="action-card">
+            <a href="van.html" class="action-card" data-icon="🚐">
               <div class="action-header">
                 <div class="action-icon">🚐</div>
                 <div class="action-badge badge-accent">Usuário</div>

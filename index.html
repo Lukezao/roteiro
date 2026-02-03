@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Dashboard | Nobreak Company</title>
+  <title>Nobreak Company | Dashboard</title>
 
   <style>
-    /* ===== FONT ===== */
     @font-face{
       font-family:"Rokiest";
       src:url("https://raw.githubusercontent.com/WAYCOMPANYGG/roteiro/main/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
@@ -14,612 +13,618 @@
       font-display:swap;
     }
 
-    /* ===== THEME ===== */
     :root{
-      --bg-dark:#020614;
-      --bg-medium:#0a0f1e;
-      --bg-light:#121829;
+      --bg:#0a0e1a;
+      --surface:#141825;
+      --elevated:#1a1f2e;
       
-      --glass-bg:rgba(15,23,42,.65);
-      --glass-border:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.06);
+      --border-hover:rgba(167,139,250,.3);
       
-      --text-primary:#f8fafc;
-      --text-secondary:#cbd5e1;
+      --text:#f1f5f9;
+      --text-dim:#94a3b8;
       --text-muted:#64748b;
       
-      --purple:#a78bfa;
-      --purple-bright:#c4b5fd;
-      --cyan:#22d3ee;
-      --amber:#fbbf24;
-      --green:#4ade80;
+      --primary:#a78bfa;
+      --primary-light:#c4b5fd;
+      --accent:#22d3ee;
+      --success:#10b981;
+      --warning:#f59e0b;
       
-      --glow-purple:rgba(167,139,250,.4);
-      --glow-cyan:rgba(34,211,238,.35);
-      --glow-pink:rgba(244,114,182,.3);
-      
-      --r:24px;
+      --shadow:0 20px 50px rgba(0,0,0,.5);
+      --glow:0 0 30px rgba(167,139,250,.15);
     }
 
     *{box-sizing:border-box; margin:0; padding:0}
     
-    html,body{
-      height:100%;
-      font-family:'Rokiest','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-      color:var(--text-primary);
-      background:var(--bg-dark);
-      overflow-x:hidden;
-    }
-
-    body::before{
-      content:'';
-      position:fixed;
-      inset:0;
-      background:
-        radial-gradient(ellipse 1000px 600px at 10% 20%, var(--glow-purple), transparent 50%),
-        radial-gradient(ellipse 1000px 600px at 90% 10%, var(--glow-cyan), transparent 50%),
-        radial-gradient(ellipse 1000px 700px at 50% 90%, var(--glow-pink), transparent 50%),
-        linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-medium) 50%, var(--bg-light) 100%);
-      animation:bgShift 15s ease-in-out infinite alternate;
-      z-index:-1;
-    }
-
-    @keyframes bgShift{
-      0%{ opacity:.85; filter:hue-rotate(0deg) blur(80px); }
-      100%{ opacity:1; filter:hue-rotate(10deg) blur(100px); }
-    }
-
-    .shell{
-      display:flex;
+    body{
+      font-family:'Rokiest','Inter',system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
       min-height:100vh;
-      gap:20px;
-      padding:20px;
+      line-height:1.6;
     }
 
-    .side{
-      width:90px; 
-      flex:0 0 90px;
-      position:sticky; 
-      top:20px; 
-      align-self:flex-start;
-      height:calc(100vh - 40px);
-      border-radius:var(--r);
-      border:1px solid var(--glass-border);
-      background:var(--glass-bg);
-      backdrop-filter:blur(40px);
-      box-shadow:0 25px 50px -12px rgba(0,0,0,.8);
-      padding:12px;
-      display:flex; 
-      flex-direction:column; 
-      gap:12px;
+    .dashboard{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      min-height:100vh;
+      max-width:1800px;
+      margin:0 auto;
     }
 
-    .brandMark{
+    /* SIDEBAR */
+    .sidebar{
+      background:var(--surface);
+      border-right:1px solid var(--border);
+      padding:32px 24px;
+      display:flex;
+      flex-direction:column;
+      gap:40px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+    }
+
+    .logo-area{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:24px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .logo{
       display:flex;
       align-items:center;
-      gap:1px;
-      padding:6px 8px;
-      font-size:13px;
+      gap:3px;
+      font-size:24px;
       letter-spacing:-0.5px;
-      height:50px;
-      margin-bottom:8px;
-      color:var(--text-primary);
-      text-shadow:0 2px 8px rgba(0,0,0,.3);
     }
 
-    .logo-k-side{
-      position:relative;
-      margin-right:-3px;
-    }
+    .logo-k{position:relative; margin-right:-4px}
 
-    .logo-lightning-side{
+    .lightning{
       position:absolute;
-      right:-5px;
+      right:-7px;
       top:50%;
       transform:translateY(-50%);
-      width:14px;
-      filter:drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+      width:18px;
+      filter:drop-shadow(0 0 8px #ffd700);
     }
 
-    .nav{
-      width:100%;
-      display:flex; 
-      flex-direction:column; 
-      gap:10px;
+    .company-tag{
+      font-size:11px;
+      color:var(--text-muted);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-weight:700;
     }
 
-    .nav a{
-      width:100%; 
-      height:64px;
-      border-radius:16px;
-      display:grid; 
-      place-items:center;
+    .nav-section{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .nav-label{
+      font-size:11px;
+      color:var(--text-muted);
+      text-transform:uppercase;
+      letter-spacing:1.5px;
+      font-weight:700;
+      padding:8px 12px;
+      margin-bottom:4px;
+    }
+
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 16px;
+      border-radius:10px;
       text-decoration:none;
-      font-size:24px;
-      border:1px solid var(--glass-border);
-      background:rgba(255,255,255,.04);
-      transition:all .3s;
+      color:var(--text-dim);
+      font-size:14px;
+      font-weight:600;
+      transition:all .2s;
+      border:1px solid transparent;
     }
 
-    .nav a:hover{
-      transform:translateY(-3px);
-      border-color:var(--purple);
-      background:rgba(167,139,250,.1);
-      box-shadow:0 12px 32px rgba(167,139,250,.3);
+    .nav-item:hover{
+      background:var(--elevated);
+      color:var(--text);
+      border-color:var(--border);
     }
 
-    .nav a.active{
-      border-color:var(--purple);
-      background:rgba(167,139,250,.15);
-      box-shadow:0 0 0 3px rgba(167,139,250,.15);
+    .nav-item.active{
+      background:linear-gradient(135deg, rgba(167,139,250,.15), rgba(34,211,238,.1));
+      color:var(--primary-light);
+      border-color:var(--border-hover);
+      box-shadow:var(--glow);
     }
 
-    .main{
-      flex:1;
-      border-radius:var(--r);
-      border:1px solid var(--glass-border);
-      background:var(--glass-bg);
-      backdrop-filter:blur(40px);
-      box-shadow:0 25px 50px -12px rgba(0,0,0,.8);
+    .nav-icon{
+      font-size:20px;
+      width:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* MAIN */
+    .main-content{
+      background:var(--bg);
+      overflow-y:auto;
+      height:100vh;
+    }
+
+    .header{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:24px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:24px;
+      flex-wrap:wrap;
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter:blur(20px);
+    }
+
+    .header-title h1{
+      font-size:28px;
+      letter-spacing:0.5px;
+      margin-bottom:4px;
+    }
+
+    .breadcrumb{
+      font-size:13px;
+      color:var(--text-muted);
+      font-weight:600;
+    }
+
+    .status-badge{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 16px;
+      border-radius:20px;
+      background:var(--elevated);
+      border:1px solid var(--border);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .status-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--success);
+      box-shadow:0 0 12px var(--success);
+      animation:pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse{
+      0%, 100%{opacity:1}
+      50%{opacity:.6}
+    }
+
+    .content{
+      padding:40px;
+      display:flex;
+      flex-direction:column;
+      gap:32px;
+    }
+
+    .quick-actions{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:20px;
+    }
+
+    .action-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      text-decoration:none;
+      color:inherit;
+      transition:all .3s cubic-bezier(.4,0,.2,1);
+      position:relative;
       overflow:hidden;
     }
 
-    .topbar{
-      padding:24px 28px;
+    .action-card::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 0%, rgba(167,139,250,.08), transparent 70%);
+      opacity:0;
+      transition:opacity .3s;
+    }
+
+    .action-card:hover{
+      transform:translateY(-4px);
+      border-color:var(--border-hover);
+      box-shadow:var(--shadow), var(--glow);
+    }
+
+    .action-card:hover::before{
+      opacity:1;
+    }
+
+    .action-card.featured{
+      background:linear-gradient(135deg, rgba(167,139,250,.12), rgba(34,211,238,.08));
+      border-color:var(--border-hover);
+    }
+
+    .action-header{
       display:flex;
       justify-content:space-between;
-      gap:20px;
-      flex-wrap:wrap;
-      border-bottom:1px solid var(--glass-border);
+      align-items:flex-start;
+      position:relative;
+      z-index:1;
     }
 
-    .titleWrap h1{
-      font-size:48px;
-      line-height:1;
-      margin-bottom:8px;
-      letter-spacing:1px;
-    }
-
-    .subtitle{
-      color:var(--text-muted);
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .topRight{
+    .action-icon{
+      width:56px;
+      height:56px;
+      border-radius:14px;
+      background:var(--elevated);
+      border:1px solid var(--border);
       display:flex;
-      gap:12px;
-      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      box-shadow:0 8px 24px rgba(0,0,0,.3);
     }
 
-    .pill{
-      padding:10px 16px;
-      border-radius:999px;
-      border:1px solid var(--glass-border);
-      background:rgba(255,255,255,.06);
-      font-size:12px;
+    .action-badge{
+      padding:4px 10px;
+      border-radius:12px;
+      font-size:10px;
       font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      border:1px solid var(--border);
     }
 
-    .tabs{
-      padding:16px 28px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .badge-primary{background:rgba(167,139,250,.15); color:var(--primary-light); border-color:var(--primary)}
+    .badge-accent{background:rgba(34,211,238,.15); color:var(--accent); border-color:var(--accent)}
+    .badge-success{background:rgba(16,185,129,.15); color:var(--success); border-color:var(--success)}
 
-    .tab{
-      height:44px;
-      padding:0 20px;
-      border-radius:999px;
-      border:1px solid var(--glass-border);
-      background:rgba(255,255,255,.04);
-      font-size:13px;
-      font-weight:700;
-      cursor:pointer;
-      transition:all .3s;
-    }
-
-    .tab:hover{
-      transform:translateY(-2px);
-      border-color:var(--purple);
-    }
-
-    .tab.active{
-      border-color:var(--purple);
-      background:rgba(167,139,250,.15);
-      box-shadow:0 0 0 3px rgba(167,139,250,.15);
-    }
-
-    .content{padding:28px}
-
-    .grid{
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:20px;
-    }
-
-    @media(max-width:1100px){.grid{grid-template-columns:1fr}}
-
-    .card{
-      border:1px solid var(--glass-border);
-      background:rgba(2,6,23,.3);
-      border-radius:20px;
-      padding:24px;
-    }
-
-    .cardHead{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:20px;
-      padding-bottom:16px;
-      border-bottom:1px solid var(--glass-border);
-    }
-
-    .cardHead h2{font-size:20px}
-    .hint{color:var(--text-muted); font-size:12px; font-weight:700}
-
-    .tiles{
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
-      gap:16px;
-    }
-
-    @media(max-width:520px){.tiles{grid-template-columns:1fr}}
-
-    .tile{
-      border-radius:20px;
-      border:1px solid var(--glass-border);
-      background:rgba(255,255,255,.04);
-      padding:20px;
-      min-height:140px;
+    .action-content{
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      gap:14px;
-      text-decoration:none;
-      color:var(--text-primary);
-      transition:all .3s;
+      gap:8px;
+      position:relative;
+      z-index:1;
     }
 
-    .tile:hover{
-      transform:translateY(-4px);
-      border-color:var(--purple);
-      box-shadow:0 16px 40px rgba(167,139,250,.2);
+    .action-title{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:0.3px;
     }
 
-    .tileTop{display:flex; justify-content:space-between; gap:12px}
-
-    .tileIcon{
-      width:48px; 
-      height:48px;
-      border-radius:14px;
-      display:grid; 
-      place-items:center;
-      background:rgba(2,6,23,.6);
-      border:1px solid var(--glass-border);
-      font-size:22px;
+    .action-desc{
+      font-size:13px;
+      color:var(--text-dim);
+      font-weight:600;
+      line-height:1.5;
     }
 
-    .tileTag{
-      padding:6px 12px;
-      border-radius:999px;
-      border:1px solid var(--glass-border);
-      background:rgba(255,255,255,.05);
-      font-size:11px;
+    .action-footer{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      color:var(--primary-light);
+      font-weight:700;
+      position:relative;
+      z-index:1;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:16px;
+    }
+
+    .stat-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--text-muted);
+      text-transform:uppercase;
+      letter-spacing:1px;
       font-weight:700;
     }
 
-    .tileTitle{font-weight:900; font-size:16px}
-    .tileDesc{color:var(--text-secondary); font-size:12px; font-weight:600}
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:14px;
+    .stat-value{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:0.5px;
     }
 
-    @media(max-width:520px){.stats{grid-template-columns:1fr}}
-
-    .stat{
-      border-radius:20px;
-      border:1px solid var(--glass-border);
-      background:rgba(2,6,23,.3);
-      padding:16px;
-      transition:all .3s;
+    .stat-trend{
+      font-size:11px;
+      color:var(--success);
+      font-weight:700;
     }
 
-    .stat:hover{transform:translateY(-2px)}
-    .stat .k{font-size:11px; color:var(--text-muted); font-weight:700; text-transform:uppercase}
-    .stat .v{margin-top:8px; font-size:24px; font-weight:900}
-
-    .green{color:var(--green)}
-    .purple{color:var(--purple)}
-    .cyan{color:var(--cyan)}
-    .amber{color:var(--amber)}
-
-    .footer{
-      padding:20px 28px;
+    .section-header{
       display:flex;
       justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
-      color:var(--text-muted);
-      font-size:12px;
-      font-weight:700;
-      border-top:1px solid var(--glass-border);
+      align-items:center;
+      margin-bottom:20px;
     }
 
-    [data-view]{display:none}
-    [data-view].show{display:block}
+    .section-title{
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:0.5px;
+    }
+
+    .section-subtitle{
+      font-size:13px;
+      color:var(--text-muted);
+      font-weight:600;
+    }
+
+    @media(max-width:1024px){
+      .dashboard{grid-template-columns:1fr}
+      .sidebar{position:static; height:auto; border-right:none; border-bottom:1px solid var(--border)}
+      .main-content{height:auto}
+    }
 
     @media(max-width:768px){
-      .shell{flex-direction:column; gap:16px; padding:16px}
-      .side{width:100%; height:auto; flex-direction:row; position:static; overflow-x:auto}
-      .nav{flex-direction:row}
-      .titleWrap h1{font-size:36px}
+      .header{padding:20px 24px}
+      .content{padding:24px}
+      .quick-actions{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:repeat(2, 1fr)}
+    }
+
+    @media(max-width:480px){
+      .stats-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
-  <div class="shell">
-    <aside class="side">
-      <div class="brandMark">
-        <span>NOBREA</span>
-        <span class="logo-k-side">
-          K
-          <svg class="logo-lightning-side" viewBox="0 0 100 180" fill="none">
-            <path d="M50 0L14 90H40L25 180L75 63H50L65 18L50 0Z" fill="#ffd700"/>
-          </svg>
-        </span>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo-area">
+        <div class="logo">
+          <span>NOBREA</span>
+          <span class="logo-k">
+            K
+            <svg class="lightning" viewBox="0 0 100 180" fill="none">
+              <path d="M50 0L14 90H40L25 180L75 63H50L65 18L50 0Z" fill="#ffd700"/>
+            </svg>
+          </span>
+        </div>
+        <div class="company-tag">Company</div>
       </div>
 
-      <nav class="nav">
-        <a class="active" href="index.html">🏠</a>
-        <a href="vip.html">🎟️</a>
-        <a href="vip-admin.html">🧠</a>
-        <a href="pix.html">💸</a>
-        <a href="pix-admin.html">🛡️</a>
-        <a href="pix-cadastro.html">➕</a>
-        <a href="ajustar-cronograma.html">🗓️</a>
-        <a href="diaria.html">📒</a>
-        <a href="van.html">🚐</a>
-        <a href="agenda-fixed.html">📅</a>
+      <nav class="nav-section">
+        <div class="nav-label">Principal</div>
+        <a href="index.html" class="nav-item active">
+          <span class="nav-icon">🏠</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="agenda-fixed.html" class="nav-item">
+          <span class="nav-icon">📅</span>
+          <span>Agenda</span>
+        </a>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-label">Usuário</div>
+        <a href="vip.html" class="nav-item">
+          <span class="nav-icon">🎟️</span>
+          <span>Lista VIP</span>
+        </a>
+        <a href="pix.html" class="nav-item">
+          <span class="nav-icon">💸</span>
+          <span>PIX</span>
+        </a>
+        <a href="diaria.html" class="nav-item">
+          <span class="nav-icon">📒</span>
+          <span>Diária</span>
+        </a>
+        <a href="van.html" class="nav-item">
+          <span class="nav-icon">🚐</span>
+          <span>Van</span>
+        </a>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-label">Administração</div>
+        <a href="vip-admin.html" class="nav-item">
+          <span class="nav-icon">🧠</span>
+          <span>VIP Admin</span>
+        </a>
+        <a href="pix-admin.html" class="nav-item">
+          <span class="nav-icon">🛡️</span>
+          <span>PIX Admin</span>
+        </a>
+        <a href="pix-cadastro.html" class="nav-item">
+          <span class="nav-icon">➕</span>
+          <span>Cadastro PIX</span>
+        </a>
+        <a href="ajustar-cronograma.html" class="nav-item">
+          <span class="nav-icon">🗓️</span>
+          <span>Cronograma</span>
+        </a>
       </nav>
     </aside>
 
-    <main class="main">
-      <div class="topbar">
-        <div class="titleWrap">
-          <h1>DASHBOARD</h1>
-          <div class="subtitle">Nobreak Company • Central de Controle Premium</div>
+    <main class="main-content">
+      <header class="header">
+        <div class="header-title">
+          <h1>BEM-VINDO</h1>
+          <div class="breadcrumb">Nobreak Company • Central de Controle</div>
         </div>
-        <div class="topRight">
-          <div class="pill">⚙️ Sistema</div>
-          <div class="pill">🟢 Online</div>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Sistema Online</span>
         </div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" data-tab="overview">OVERVIEW</button>
-        <button class="tab" data-tab="user">ÁREA DO USUÁRIO</button>
-        <button class="tab" data-tab="admin">ÁREA ADMIN</button>
-      </div>
+      </header>
 
       <div class="content">
-        <div class="grid">
-          <section class="card">
-            <div class="cardHead">
-              <h2>MENU INICIAL</h2>
-              <div class="hint">Acesso rápido por área</div>
+        <section>
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">ACESSO RÁPIDO</h2>
+              <p class="section-subtitle">Ferramentas mais usadas</p>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <a href="agenda-fixed.html" class="action-card featured">
+              <div class="action-header">
+                <div class="action-icon">📅</div>
+                <div class="action-badge badge-primary">Destaque</div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">AGENDA</h3>
+                <p class="action-desc">Visualize e gerencie todos os shows e compromissos em um calendário interativo</p>
+              </div>
+              <div class="action-footer">
+                <span>Acessar Agenda</span>
+                <span>→</span>
+              </div>
+            </a>
+
+            <a href="vip.html" class="action-card">
+              <div class="action-header">
+                <div class="action-icon">🎟️</div>
+                <div class="action-badge badge-accent">Usuário</div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">LISTA VIP</h3>
+                <p class="action-desc">Entre com seu código e reserve seu slot para eventos exclusivos</p>
+              </div>
+              <div class="action-footer">
+                <span>Acessar VIP</span>
+                <span>→</span>
+              </div>
+            </a>
+
+            <a href="pix.html" class="action-card">
+              <div class="action-header">
+                <div class="action-icon">💸</div>
+                <div class="action-badge badge-accent">Usuário</div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">PIX</h3>
+                <p class="action-desc">Consulte informações de pagamento e gerencie transações</p>
+              </div>
+              <div class="action-footer">
+                <span>Acessar PIX</span>
+                <span>→</span>
+              </div>
+            </a>
+
+            <a href="vip-admin.html" class="action-card">
+              <div class="action-header">
+                <div class="action-icon">🧠</div>
+                <div class="action-badge badge-success">Admin</div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">VIP ADMIN</h3>
+                <p class="action-desc">Gerencie pool de convites, códigos e confirmações</p>
+              </div>
+              <div class="action-footer">
+                <span>Acessar Admin</span>
+                <span>→</span>
+              </div>
+            </a>
+
+            <a href="diaria.html" class="action-card">
+              <div class="action-header">
+                <div class="action-icon">📒</div>
+                <div class="action-badge badge-accent">Usuário</div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">DIÁRIA</h3>
+                <p class="action-desc">Consulte e controle informações de diária</p>
+              </div>
+              <div class="action-footer">
+                <span>Acessar Diária</span>
+                <span>→</span>
+              </div>
+            </a>
+
+            <a href="van.html" class="action-card">
+              <div class="action-header">
+                <div class="action-icon">🚐</div>
+                <div class="action-badge badge-accent">Usuário</div>
+              </div>
+              <div class="action-content">
+                <h3 class="action-title">VAN</h3>
+                <p class="action-desc">Acesse o módulo de controle da van</p>
+              </div>
+              <div class="action-footer">
+                <span>Acessar Van</span>
+                <span>→</span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">STATUS DO SISTEMA</h2>
+              <p class="section-subtitle">Monitoramento em tempo real</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Sistema</div>
+              <div class="stat-value" style="color:var(--success)">ONLINE</div>
+              <div class="stat-trend">✓ Operacional</div>
             </div>
 
-            <div data-view="overview" class="show">
-              <div class="tiles">
-                <a class="tile" href="vip.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">🎟️</div>
-                    <div class="tileTag">Usuário</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">Lista VIP</div>
-                    <div class="tileDesc">Entrar com código e reservar slot</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="pix.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">💸</div>
-                    <div class="tileTag">Usuário</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">PIX</div>
-                    <div class="tileDesc">Acesso à área PIX</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="diaria.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">📒</div>
-                    <div class="tileTag">Usuário</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">Diária</div>
-                    <div class="tileDesc">Consulta e controle</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="van.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">🚐</div>
-                    <div class="tileTag">Usuário</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">Van</div>
-                    <div class="tileDesc">Módulo da van</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="agenda-fixed.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">📅</div>
-                    <div class="tileTag">Destaque</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">Agenda</div>
-                    <div class="tileDesc">Calendário premium</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="vip-admin.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">🧠</div>
-                    <div class="tileTag">Admin</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">VIP Admin</div>
-                    <div class="tileDesc">Pool e confirmações</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="pix-admin.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">🛡️</div>
-                    <div class="tileTag">Admin</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">PIX Admin</div>
-                    <div class="tileDesc">Gestão de dados</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="pix-cadastro.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">➕</div>
-                    <div class="tileTag">Admin</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">Cadastro PIX</div>
-                    <div class="tileDesc">Cadastrar favorecido</div>
-                  </div>
-                </a>
-
-                <a class="tile" href="ajustar-cronograma.html">
-                  <div class="tileTop">
-                    <div class="tileIcon">🗓️</div>
-                    <div class="tileTag">Admin</div>
-                  </div>
-                  <div>
-                    <div class="tileTitle">Cronograma</div>
-                    <div class="tileDesc">Gerar PDF</div>
-                  </div>
-                </a>
-              </div>
+            <div class="stat-card">
+              <div class="stat-label">Módulo VIP</div>
+              <div class="stat-value" style="color:var(--primary)">ATIVO</div>
+              <div class="stat-trend">✓ Funcionando</div>
             </div>
 
-            <div data-view="user">
-              <div class="tiles">
-                <a class="tile" href="vip.html">
-                  <div class="tileTop"><div class="tileIcon">🎟️</div></div>
-                  <div><div class="tileTitle">Lista VIP</div></div>
-                </a>
-                <a class="tile" href="pix.html">
-                  <div class="tileTop"><div class="tileIcon">💸</div></div>
-                  <div><div class="tileTitle">PIX</div></div>
-                </a>
-                <a class="tile" href="diaria.html">
-                  <div class="tileTop"><div class="tileIcon">📒</div></div>
-                  <div><div class="tileTitle">Diária</div></div>
-                </a>
-                <a class="tile" href="van.html">
-                  <div class="tileTop"><div class="tileIcon">🚐</div></div>
-                  <div><div class="tileTitle">Van</div></div>
-                </a>
-                <a class="tile" href="agenda-fixed.html">
-                  <div class="tileTop"><div class="tileIcon">📅</div></div>
-                  <div><div class="tileTitle">Agenda</div></div>
-                </a>
-              </div>
+            <div class="stat-card">
+              <div class="stat-label">PIX</div>
+              <div class="stat-value" style="color:var(--accent)">OK</div>
+              <div class="stat-trend">✓ Disponível</div>
             </div>
 
-            <div data-view="admin">
-              <div class="tiles">
-                <a class="tile" href="vip-admin.html">
-                  <div class="tileTop"><div class="tileIcon">🧠</div></div>
-                  <div><div class="tileTitle">VIP Admin</div></div>
-                </a>
-                <a class="tile" href="pix-admin.html">
-                  <div class="tileTop"><div class="tileIcon">🛡️</div></div>
-                  <div><div class="tileTitle">PIX Admin</div></div>
-                </a>
-                <a class="tile" href="pix-cadastro.html">
-                  <div class="tileTop"><div class="tileIcon">➕</div></div>
-                  <div><div class="tileTitle">Cadastro PIX</div></div>
-                </a>
-                <a class="tile" href="ajustar-cronograma.html">
-                  <div class="tileTop"><div class="tileIcon">🗓️</div></div>
-                  <div><div class="tileTitle">Cronograma</div></div>
-                </a>
-              </div>
+            <div class="stat-card">
+              <div class="stat-label">Versão</div>
+              <div class="stat-value" style="color:var(--warning)">2.0</div>
+              <div class="stat-trend">✓ Atualizado</div>
             </div>
-          </section>
-
-          <section class="card">
-            <div class="cardHead">
-              <h2>STATUS</h2>
-              <div class="hint">Resumo</div>
-            </div>
-
-            <div class="stats">
-              <div class="stat">
-                <div class="k">Sistema</div>
-                <div class="v green">ONLINE</div>
-              </div>
-              <div class="stat">
-                <div class="k">VIP</div>
-                <div class="v purple">ATIVO</div>
-              </div>
-              <div class="stat">
-                <div class="k">PIX</div>
-                <div class="v cyan">OK</div>
-              </div>
-              <div class="stat">
-                <div class="k">Versão</div>
-                <div class="v amber">v2.0</div>
-              </div>
-            </div>
-
-            <div style="margin-top:20px; border-top:1px solid var(--glass-border); padding-top:20px;">
-              <div class="hint" style="margin-bottom:12px;">ACESSO RÁPIDO</div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <a href="vip.html" class="pill" style="text-decoration:none; color:inherit;">🎟️ VIP</a>
-                <a href="pix.html" class="pill" style="text-decoration:none; color:inherit;">💸 PIX</a>
-                <a href="agenda-fixed.html" class="pill" style="text-decoration:none; color:inherit;">📅 Agenda</a>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <div class="footer">
-        <div>© Nobreak Company</div>
-        <div>Desenvolvido por Lucas Santos</div>
+          </div>
+        </section>
       </div>
     </main>
   </div>
-
-  <script>
-    const tabs = Array.from(document.querySelectorAll(".tab"));
-    const views = Array.from(document.querySelectorAll("[data-view]"));
-
-    function setTab(name){
-      tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-      views.forEach(v => v.classList.toggle("show", v.getAttribute("data-view") === name));
-    }
-
-    tabs.forEach(t => t.addEventListener("click", ()=> setTab(t.dataset.tab)));
-    setTab("overview");
-  </script>
 </body>
 </html>

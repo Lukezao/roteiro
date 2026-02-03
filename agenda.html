@@ -597,6 +597,39 @@
     transition:opacity .3s;
   }
 
+  /* Cells with events - BRIGHT COLORS */
+  .cell.hasEvents{
+    background:linear-gradient(135deg, rgba(167,139,250,.25), rgba(34,211,238,.2));
+    border:2px solid rgba(167,139,250,.4);
+    box-shadow:inset 0 0 30px rgba(167,139,250,.15), 
+               0 0 20px rgba(167,139,250,.2);
+  }
+
+  .cell.hasEvents::before{
+    background:radial-gradient(circle at center, rgba(167,139,250,.2), rgba(34,211,238,.15), transparent 70%);
+    opacity:1;
+  }
+
+  .cell.hasEvents .dayNum{
+    color:var(--purple-bright);
+    text-shadow:0 0 10px rgba(167,139,250,.5);
+  }
+
+  /* Hover effect for cells with events */
+  .cell.hasEvents:hover{
+    background:linear-gradient(135deg, rgba(167,139,250,.35), rgba(34,211,238,.3));
+    border-color:var(--purple-bright);
+    box-shadow:inset 0 0 40px rgba(167,139,250,.25), 
+               0 0 30px rgba(167,139,250,.4),
+               0 8px 32px rgba(167,139,250,.3);
+    transform:scale(1.02);
+  }
+
+  .cell.hasEvents:hover::before{
+    opacity:1;
+    background:radial-gradient(circle at center, rgba(167,139,250,.3), rgba(34,211,238,.2), transparent 60%);
+  }
+
   .cell:hover{
     background:rgba(167,139,250,.08);
   }
@@ -2029,7 +2062,8 @@
     }
 
     gridEl.innerHTML = cells.map(c=>{
-      const cls = ["cell", (!c.inMonth ? "mutedDay" : "")].join(" ");
+      const hasEvents = c.dayEvents.length > 0;
+      const cls = ["cell", (!c.inMonth ? "mutedDay" : ""), (hasEvents ? "hasEvents" : "")].filter(x=>x).join(" ");
       const dayNum = c.dateObj.getDate();
       const todayTag = c.isToday ? `<span class="tagToday">hoje</span>` : "";
 

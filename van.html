@@ -1566,6 +1566,12 @@ async function exportAsPDF(){
     const hintDisplay = hint ? hint.style.display : 'none';
     if(hint) hint.style.display = 'none';
     
+    // IMPORTANT: Get real canvas dimensions BEFORE capture
+    const canvasRect = canvas.getBoundingClientRect();
+    const realWidth = canvasRect.width;
+    const realHeight = canvasRect.height;
+    const realAspectRatio = realWidth / realHeight;
+    
     const canvasData = await html2canvas(canvas, {
       backgroundColor: '#1a1f2e',
       scale: 2,
@@ -1573,8 +1579,10 @@ async function exportAsPDF(){
       useCORS: true,
       allowTaint: true,
       removeContainer: true,
-      width: canvas.offsetWidth,
-      height: canvas.offsetHeight
+      width: realWidth,
+      height: realHeight,
+      windowWidth: realWidth,
+      windowHeight: realHeight
     });
     
     // Restore hint
@@ -1582,47 +1590,40 @@ async function exportAsPDF(){
     
     const imgData = canvasData.toDataURL('image/png');
     
-    // Calculate proper dimensions maintaining aspect ratio
-    const imgWidth = canvasData.width;
-    const imgHeight = canvasData.height;
-    const aspectRatio = imgWidth / imgHeight;
-    
-    // Available space in PDF
-    const maxWidth = 180; // mm
-    const maxHeight = 200; // mm (increased space for taller canvas)
+    // Available space in PDF - MORE VERTICAL for van layouts
+    const maxPdfWidth = 140; // mm - narrower
+    const maxPdfHeight = 220; // mm - taller for vertical layouts
     
     let pdfWidth, pdfHeight;
     
-    // Fit to width or height depending on aspect ratio
-    if(aspectRatio > (maxWidth / maxHeight)){
-      // Image is wider - fit to width
-      pdfWidth = maxWidth;
-      pdfHeight = maxWidth / aspectRatio;
+    // Use REAL aspect ratio from canvas, not from captured image
+    if(realAspectRatio > 1){
+      // Canvas is landscape (wider than tall)
+      pdfWidth = maxPdfWidth;
+      pdfHeight = pdfWidth / realAspectRatio;
     }else{
-      // Image is taller - fit to height
-      pdfHeight = maxHeight;
-      pdfWidth = maxHeight * aspectRatio;
+      // Canvas is portrait (taller than wide) - TYPICAL FOR VANS
+      pdfHeight = Math.min(maxPdfHeight, realHeight / 2.5); // Proper scaling
+      pdfWidth = pdfHeight * realAspectRatio;
     }
     
-    // Center the image horizontally
+    // Center horizontally
     const xOffset = (210 - pdfWidth) / 2;
-    
-    // Add image to PDF
     const yPosition = 72;
+    
     doc.addImage(imgData, 'PNG', xOffset, yPosition, pdfWidth, pdfHeight);
 
-    // Check if we need a new page for passenger list
-    const afterImageY = yPosition + pdfHeight + 10;
-    if(afterImageY > 250){
+    // Passenger list positioning
+    const afterImageY = yPosition + pdfHeight + 15;
+    const needsNewPage = afterImageY > 240;
+    
+    if(needsNewPage){
       doc.addPage();
     }
 
-    // Passenger list
-    const listStartPage = afterImageY > 250;
-    let y = listStartPage ? 20 : afterImageY;
+    let y = needsNewPage ? 20 : afterImageY;
     
-    if(!listStartPage){
-      // Separator line
+    if(!needsNewPage){
       doc.setDrawColor(58, 58, 111);
       doc.setLineWidth(0.5);
       doc.line(15, y - 5, 195, y - 5);
@@ -1631,13 +1632,10 @@ async function exportAsPDF(){
     doc.setTextColor(167, 139, 250);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text('Lista de Passageiros', listStartPage ? 105 : 15, y, { align: listStartPage ? 'center' : 'left' });
+    doc.text('Lista de Passageiros', needsNewPage ? 105 : 15, y, { align: needsNewPage ? 'center' : 'left' });
     
     y += 12;
 
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    
     const sortedSeats = [...seats].sort((a, b) => a.number - b.number);
 
     // Table header
@@ -2074,36 +2072,39 @@ async function shareWhatsApp(){
     const hintDisplay = hint ? hint.style.display : 'none';
     if(hint) hint.style.display = 'none';
     
+    // Get real canvas dimensions
+    const canvasRect = canvas.getBoundingClientRect();
+    const realWidth = canvasRect.width;
+    const realHeight = canvasRect.height;
+    const realAspectRatio = realWidth / realHeight;
+    
     const canvasData = await html2canvas(canvas, {
       backgroundColor: '#1a1f2e',
       scale: 2,
       logging: false,
       useCORS: true,
       allowTaint: true,
-      width: canvas.offsetWidth,
-      height: canvas.offsetHeight
+      width: realWidth,
+      height: realHeight,
+      windowWidth: realWidth,
+      windowHeight: realHeight
     });
     
     if(hint) hint.style.display = hintDisplay;
     
     const imgData = canvasData.toDataURL('image/png');
     
-    // Calculate proper dimensions
-    const imgWidth = canvasData.width;
-    const imgHeight = canvasData.height;
-    const aspectRatio = imgWidth / imgHeight;
-    
-    const maxWidth = 180;
-    const maxHeight = 200;
+    const maxPdfWidth = 140;
+    const maxPdfHeight = 220;
     
     let pdfWidth, pdfHeight;
     
-    if(aspectRatio > (maxWidth / maxHeight)){
-      pdfWidth = maxWidth;
-      pdfHeight = maxWidth / aspectRatio;
+    if(realAspectRatio > 1){
+      pdfWidth = maxPdfWidth;
+      pdfHeight = pdfWidth / realAspectRatio;
     }else{
-      pdfHeight = maxHeight;
-      pdfWidth = maxHeight * aspectRatio;
+      pdfHeight = Math.min(maxPdfHeight, realHeight / 2.5);
+      pdfWidth = pdfHeight * realAspectRatio;
     }
     
     const xOffset = (210 - pdfWidth) / 2;
@@ -2111,10 +2112,10 @@ async function shareWhatsApp(){
     doc.addImage(imgData, 'PNG', xOffset, yPosition, pdfWidth, pdfHeight);
 
     // Passenger list
-    const afterImageY = yPosition + pdfHeight + 10;
-    const listStartPage = afterImageY > 250;
+    const afterImageY = yPosition + pdfHeight + 15;
+    const listStartPage = afterImageY > 240;
     
-    if(afterImageY > 250){
+    if(afterImageY > 240){
       doc.addPage();
     }
     

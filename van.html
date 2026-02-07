@@ -1499,7 +1499,7 @@ async function exportAsPDF(){
     doc.setTextColor(245, 158, 11);
     doc.text(`OCUPADOS: ${ocupados}`, 130, 59);
 
-    // Canvas screenshot with better quality
+    // Canvas screenshot with proper sizing
     const canvas = document.getElementById('canvas');
     
     // Temporarily hide hint if visible
@@ -1509,11 +1509,13 @@ async function exportAsPDF(){
     
     const canvasData = await html2canvas(canvas, {
       backgroundColor: '#1a1f2e',
-      scale: 3, // Higher quality
+      scale: 2,
       logging: false,
       useCORS: true,
       allowTaint: true,
-      removeContainer: true
+      removeContainer: true,
+      width: canvas.offsetWidth,
+      height: canvas.offsetHeight
     });
     
     // Restore hint
@@ -1521,28 +1523,62 @@ async function exportAsPDF(){
     
     const imgData = canvasData.toDataURL('image/png');
     
-    // Calculate aspect ratio to fit properly
-    const canvasAspect = canvasData.width / canvasData.height;
-    const pdfWidth = 180;
-    const pdfHeight = pdfWidth / canvasAspect;
+    // Calculate proper dimensions maintaining aspect ratio
+    const imgWidth = canvasData.width;
+    const imgHeight = canvasData.height;
+    const aspectRatio = imgWidth / imgHeight;
     
-    doc.addImage(imgData, 'PNG', 15, 72, pdfWidth, Math.min(pdfHeight, 140));
+    // Available space in PDF
+    const maxWidth = 180; // mm
+    const maxHeight = 200; // mm (increased space for taller canvas)
+    
+    let pdfWidth, pdfHeight;
+    
+    // Fit to width or height depending on aspect ratio
+    if(aspectRatio > (maxWidth / maxHeight)){
+      // Image is wider - fit to width
+      pdfWidth = maxWidth;
+      pdfHeight = maxWidth / aspectRatio;
+    }else{
+      // Image is taller - fit to height
+      pdfHeight = maxHeight;
+      pdfWidth = maxHeight * aspectRatio;
+    }
+    
+    // Center the image horizontally
+    const xOffset = (210 - pdfWidth) / 2;
+    
+    // Add image to PDF
+    const yPosition = 72;
+    doc.addImage(imgData, 'PNG', xOffset, yPosition, pdfWidth, pdfHeight);
 
-    // Passenger list on new page
-    doc.addPage();
+    // Check if we need a new page for passenger list
+    const afterImageY = yPosition + pdfHeight + 10;
+    if(afterImageY > 250){
+      doc.addPage();
+    }
+
+    // Passenger list
+    const listStartPage = afterImageY > 250;
+    let y = listStartPage ? 20 : afterImageY;
     
-    doc.setFillColor(20, 24, 37);
-    doc.rect(0, 0, 210, 25, 'F');
+    if(!listStartPage){
+      // Separator line
+      doc.setDrawColor(58, 58, 111);
+      doc.setLineWidth(0.5);
+      doc.line(15, y - 5, 195, y - 5);
+    }
     
     doc.setTextColor(167, 139, 250);
-    doc.setFontSize(20);
+    doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text('Lista de Passageiros', 105, 16, { align: 'center' });
+    doc.text('Lista de Passageiros', listStartPage ? 105 : 15, y, { align: listStartPage ? 'center' : 'left' });
+    
+    y += 12;
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     
-    let y = 35;
     const sortedSeats = [...seats].sort((a, b) => a.number - b.number);
 
     // Table header
@@ -1981,33 +2017,63 @@ async function shareWhatsApp(){
     
     const canvasData = await html2canvas(canvas, {
       backgroundColor: '#1a1f2e',
-      scale: 3,
+      scale: 2,
       logging: false,
       useCORS: true,
-      allowTaint: true
+      allowTaint: true,
+      width: canvas.offsetWidth,
+      height: canvas.offsetHeight
     });
     
     if(hint) hint.style.display = hintDisplay;
     
     const imgData = canvasData.toDataURL('image/png');
-    const canvasAspect = canvasData.width / canvasData.height;
-    const pdfWidth = 180;
-    const pdfHeight = pdfWidth / canvasAspect;
     
-    doc.addImage(imgData, 'PNG', 15, 72, pdfWidth, Math.min(pdfHeight, 140));
+    // Calculate proper dimensions
+    const imgWidth = canvasData.width;
+    const imgHeight = canvasData.height;
+    const aspectRatio = imgWidth / imgHeight;
+    
+    const maxWidth = 180;
+    const maxHeight = 200;
+    
+    let pdfWidth, pdfHeight;
+    
+    if(aspectRatio > (maxWidth / maxHeight)){
+      pdfWidth = maxWidth;
+      pdfHeight = maxWidth / aspectRatio;
+    }else{
+      pdfHeight = maxHeight;
+      pdfWidth = maxHeight * aspectRatio;
+    }
+    
+    const xOffset = (210 - pdfWidth) / 2;
+    const yPosition = 72;
+    doc.addImage(imgData, 'PNG', xOffset, yPosition, pdfWidth, pdfHeight);
 
-    // Passenger list on new page
-    doc.addPage();
+    // Passenger list
+    const afterImageY = yPosition + pdfHeight + 10;
+    const listStartPage = afterImageY > 250;
     
-    doc.setFillColor(20, 24, 37);
-    doc.rect(0, 0, 210, 25, 'F');
+    if(afterImageY > 250){
+      doc.addPage();
+    }
+    
+    let y = listStartPage ? 20 : afterImageY;
+    
+    if(!listStartPage){
+      doc.setDrawColor(58, 58, 111);
+      doc.setLineWidth(0.5);
+      doc.line(15, y - 5, 195, y - 5);
+    }
     
     doc.setTextColor(167, 139, 250);
-    doc.setFontSize(20);
+    doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text('Lista de Passageiros', 105, 16, { align: 'center' });
+    doc.text('Lista de Passageiros', listStartPage ? 105 : 15, y, { align: listStartPage ? 'center' : 'left' });
+    
+    y += 12;
 
-    let y = 35;
     const sortedSeats = [...seats].sort((a, b) => a.number - b.number);
 
     // Table header

@@ -40,1254 +40,1938 @@
       padding:20px;
     }
 
-    .container{ max-width:1400px; margin:0 auto; }
+    .container{
+      max-width:1600px; /* ← AJUSTE AQUI A LARGURA MÁXIMA DO SISTEMA (em pixels) */
+      margin:0 auto;
+    }
 
+    /* HEADER */
     .header{
       background:var(--surface);
       border:1px solid var(--border);
       border-radius:16px;
-      padding:24px 32px;
+      padding:28px 36px;
       margin-bottom:24px;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:20px;
+      gap:24px;
       flex-wrap:wrap;
+      position:relative;
+      overflow:hidden;
     }
 
-    .header-title h1{ font-size:32px; letter-spacing:0.5px; margin-bottom:6px; }
+    .header::before{
+      content:"";
+      position:absolute;
+      top:-50%;
+      right:-10%;
+      width:400px;
+      height:400px;
+      background:radial-gradient(circle, rgba(167,139,250,0.15), transparent 70%);
+      pointer-events:none;
+    }
 
-    .header-subtitle{ font-size:13px; color:var(--text-muted); font-weight:600; }
+    .header-content{
+      position:relative;
+      z-index:1;
+    }
+
+    .header-title{
+      font-size:42px;
+      letter-spacing:1px;
+      margin-bottom:8px;
+      background:linear-gradient(135deg, var(--primary-light), var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .header-subtitle{
+      font-size:14px;
+      color:var(--text-dim);
+      font-weight:700;
+      letter-spacing:0.5px;
+    }
+
+    .header-badges{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
 
     .badge{
-      padding:8px 16px;
-      border-radius:20px;
+      padding:10px 18px;
+      border-radius:24px;
       background:var(--elevated);
       border:1px solid var(--border);
-      font-size:12px;
-      font-weight:700;
+      font-size:13px;
+      font-weight:800;
       display:flex;
       align-items:center;
       gap:8px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.2);
     }
 
-    .home-btn{
-      position:fixed;
-      top:20px;
-      left:20px;
-      width:48px;
-      height:48px;
-      border-radius:12px;
-      background:var(--surface);
-      border:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:24px;
-      text-decoration:none;
-      transition:all .2s;
-      z-index:100;
-    }
-
-    .home-btn:hover{
-      transform:translateY(-2px);
-      border-color:var(--primary);
-      box-shadow:0 8px 24px rgba(167,139,250,.3);
-    }
-
-    .card{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:32px;
+    /* STATS BAR */
+    .stats-bar{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:20px;
       margin-bottom:24px;
     }
 
-    .card-title{ font-size:20px; font-weight:700; letter-spacing:0.5px; margin-bottom:8px; }
-
-    .card-desc{ font-size:13px; color:var(--text-dim); margin-bottom:24px; font-weight:600; }
-
-    .stats{
-      display:flex;
-      justify-content:center;
-      gap:20px;
-      margin-bottom:32px;
-      flex-wrap:wrap;
+    .stat-box{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s;
     }
 
-    .stat{
-      background:var(--elevated);
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:16px 24px;
-      text-align:center;
-      min-width:160px;
+    .stat-box:hover{
+      border-color:var(--primary);
+      transform:translateY(-4px);
+      box-shadow:0 12px 32px rgba(167,139,250,0.25);
+    }
+
+    .stat-box::before{
+      content:"";
+      position:absolute;
+      top:-50%;
+      right:-30%;
+      width:200px;
+      height:200px;
+      background:radial-gradient(circle, var(--primary), transparent 60%);
+      opacity:0.08;
+      pointer-events:none;
     }
 
     .stat-label{
-      font-size:11px;
+      font-size:12px;
       color:var(--text-muted);
       text-transform:uppercase;
-      letter-spacing:1px;
-      font-weight:700;
-      margin-bottom:6px;
+      letter-spacing:1.5px;
+      font-weight:800;
+      margin-bottom:12px;
     }
 
-    .stat-value{ font-size:28px; font-weight:900; color:var(--primary-light); }
+    .stat-value{
+      font-size:48px;
+      font-weight:900;
+      line-height:1;
+      background:linear-gradient(135deg, var(--primary-light), var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
 
-    .van-container{
-      max-width:1200px;
-      margin:0 auto;
-      padding:10px 10px 40px;
+    /* MAIN LAYOUT */
+    .main-layout{
       display:grid;
-      grid-template-columns: 1fr 360px;
+      grid-template-columns:1fr 400px; /* ← AJUSTE AQUI: (canvas) (sidebar) */
       gap:24px;
       align-items:start;
     }
 
-    .passenger-side{
+    /* CANVAS SECTION */
+    .canvas-section{
       background:var(--surface);
       border:1px solid var(--border);
       border-radius:16px;
-      padding:18px;
-      position:sticky;
-      top:20px;
-      height:fit-content;
+      padding:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
     }
 
-    .passenger-tools{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-bottom:12px;
-    }
-
-    .passenger-tools .btn{
-      height:38px;
-      padding:0 12px;
-    }
-
-    .passenger-row{
-      display:grid;
-      grid-template-columns:54px 1fr 120px;
-      align-items:center;
-      gap:10px;
-      padding:9px 12px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      box-shadow:0 10px 26px rgba(0,0,0,.18);
-    }
-
-    .passenger-row input{
-      width:100%;
-      background:transparent;
-      border:none;
-      outline:none;
-      color:var(--text);
-      font-weight:700;
-      font-size:13px;
-    }
-
-    .passenger-row select{
-      background:rgba(20,24,37,.75);
-      border:1px solid var(--border);
-      border-radius:10px;
-      color:var(--text);
-      font-weight:800;
-      padding:7px 8px;
-      font-size:12px;
-      outline:none;
-    }
-
-    .passenger-row.status-livre{ background:rgba(37,99,235,.25); border-color:rgba(37,99,235,.6); }
-    .passenger-row.status-reservado{ background:rgba(249,115,22,.28); border-color:rgba(249,115,22,.65); }
-    .passenger-row.status-confirmado{ background:rgba(16,185,129,.28); border-color:rgba(16,185,129,.7); }
-    .passenger-row.status-bloqueado{ background:rgba(220,38,38,.32); border-color:rgba(220,38,38,.8); }
-
-    @media(max-width:980px){
-      .van-container{ grid-template-columns:1fr; }
-      .passenger-side{ position:static; }
-    }
-
-    .seat-editor{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:24px;
-      margin-bottom:40px;
-    }
-
-    .editor-header{
+    .section-header{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      margin-bottom:20px;
+      margin-bottom:18px;
       gap:16px;
       flex-wrap:wrap;
     }
 
-    .editor-tools{ display:flex; gap:12px; flex-wrap:wrap; }
+    .section-title{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:0.5px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-    .editor-canvas{
+    .section-icon{
+      font-size:24px;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      height:42px;
+      padding:0 18px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--elevated);
+      color:var(--text);
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+      transition:all 0.2s;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+      box-shadow:0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      border-color:var(--primary);
+      box-shadow:0 8px 24px rgba(167,139,250,0.3);
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg, var(--primary), var(--accent));
+      border:none;
+      color:#fff;
+    }
+
+    .btn-primary:hover{
+      box-shadow:0 12px 32px rgba(167,139,250,0.5);
+    }
+
+    .btn-success{
+      background:var(--success);
+      border:none;
+      color:#fff;
+    }
+
+    .btn-danger{
+      background:var(--danger);
+      border:none;
+      color:#fff;
+    }
+
+    /* CANVAS */
+    .canvas{
       background:var(--elevated);
       border:2px dashed var(--border);
-      border-radius:12px;
-      min-height:640px;
+      border-radius:14px;
+      min-height:750px; /* ← AJUSTE AQUI A ALTURA DO CANVAS (em pixels) */
       position:relative;
       overflow:hidden;
-      background-image:
-        repeating-linear-gradient(to right, rgba(255,255,255,.05) 0 1px, transparent 1px 2px),
-        repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 1px, transparent 1px 2px);
     }
 
-    .editor-canvas::before{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:2px;
-      height:110%;
-      background:rgba(167,139,250,.18);
-      transform:translate(-50%,-50%);
-      z-index:2;
-      pointer-events:none;
-    }
-
-    .editor-canvas::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:110%;
-      height:2px;
-      background:rgba(34,211,238,.14);
-      transform:translate(-50%,-50%);
-      z-index:2;
-      pointer-events:none;
-    }
-
-    .canvas-background{
+    .canvas-bg{
       position:absolute;
       inset:0;
       margin:auto;
-      width:95%;
-      height:95%;
-      opacity:.35;
+      width:70%;
+      height:90%;
+      opacity:0.3;
       pointer-events:none;
-      z-index:1;
       object-fit:contain;
-      transform:none;
-      filter:contrast(1.05) saturate(1.05);
+      filter:brightness(1.1) contrast(1.05);
     }
 
-    .canvas-placeholder{
+    .canvas-hint{
       position:absolute;
       top:50%;
       left:50%;
       transform:translate(-50%, -50%);
       color:var(--text-muted);
-      font-size:14px;
+      font-size:15px;
       text-align:center;
       pointer-events:none;
-      z-index:3;
-      width:90%;
-      line-height:1.6;
+      z-index:5;
+      line-height:1.8;
     }
 
-    .editor-info{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+    .canvas-hint strong{
+      color:var(--primary-light);
+      font-weight:800;
+    }
+
+    .canvas-info{
       margin-top:16px;
       padding-top:16px;
       border-top:1px solid var(--border);
-      gap:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
       flex-wrap:wrap;
+      gap:12px;
     }
 
-    .info-item{ display:flex; align-items:center; gap:8px; font-size:13px; }
+    .info-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:13px;
+    }
 
-    .info-label{ color:var(--text-dim); font-weight:600; }
+    .info-label{
+      color:var(--text-dim);
+      font-weight:700;
+    }
 
-    .info-value{ color:var(--primary-light); font-weight:900; font-size:16px; }
+    .info-value{
+      color:var(--primary-light);
+      font-weight:900;
+      font-size:18px;
+    }
 
-    .draggable-seat{
+    /* SEAT */
+    .seat{
       position:absolute;
-      width:38px;
-      height:40px;
-      overflow:hidden;
-      background:linear-gradient(135deg, rgba(167,139,250,.18), rgba(34,211,238,.10));
-      border:1px solid rgba(167,139,250,.35);
-      border-radius:7px;
+      width:44px;
+      height:48px;
+      background:linear-gradient(135deg, rgba(167,139,250,.2), rgba(34,211,238,.12));
+      border:2px solid rgba(167,139,250,.4);
+      border-radius:8px;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:1px;
+      gap:2px;
       cursor:grab;
       user-select:none;
-      transition:transform .08s, box-shadow .08s, border-color .08s;
-      box-shadow:0 4px 10px rgba(0,0,0,.25);
+      transition:all 0.12s;
+      box-shadow:0 6px 16px rgba(0,0,0,0.3);
       z-index:10;
     }
 
-    .draggable-seat .seat-num{ font-size:12px; line-height:1; font-weight:900; white-space:nowrap; }
-
-    .draggable-seat .seat-label{ font-size:5px; letter-spacing:.4px; font-weight:800; color:rgba(241,245,249,.55); line-height:1; white-space:nowrap; }
-
-    .draggable-seat:hover{
-      transform:scale(1.04);
+    .seat:hover{
+      transform:scale(1.12);
       border-color:rgba(196,181,253,.8);
-      box-shadow:0 8px 18px rgba(167,139,250,.18);
+      box-shadow:0 10px 28px rgba(167,139,250,0.4);
       z-index:100;
     }
 
-    .draggable-seat.dragging{
+    .seat.dragging{
       cursor:grabbing;
-      opacity:0.95;
-      transform:scale(1.06);
-      z-index:1000;
-      box-shadow:0 12px 28px rgba(167,139,250,.22);
+      opacity:0.9;
+      transform:scale(1.15);
+      z-index:999;
+      box-shadow:0 14px 36px rgba(167,139,250,0.5);
     }
 
-    .draggable-seat .delete-btn{
+    .seat-num{
+      font-size:14px;
+      font-weight:900;
+      line-height:1;
+    }
+
+    .seat-tag{
+      font-size:7px;
+      font-weight:800;
+      color:rgba(241,245,249,.6);
+      letter-spacing:0.5px;
+      line-height:1;
+    }
+
+    .seat-delete{
       position:absolute;
-      top:2px;
-      right:2px;
-      width:14px;
-      height:14px;
-      background:rgba(239,68,68,.95);
-      border:1px solid rgba(20,24,37,.9);
+      top:-8px;
+      right:-8px;
+      width:20px;
+      height:20px;
+      background:var(--danger);
+      border:2px solid var(--bg);
       border-radius:50%;
       display:none;
       align-items:center;
       justify-content:center;
-      font-size:10px;
+      font-size:12px;
       cursor:pointer;
       color:#fff;
       z-index:20;
-      line-height:1;
+      font-weight:900;
     }
 
-    .draggable-seat:hover .delete-btn{ display:flex; }
-
-    .draggable-seat.locked{
-      opacity:.9;
-      border-color:rgba(148,163,184,.55);
-      background:linear-gradient(135deg, rgba(148,163,184,.22), rgba(100,116,139,.14));
-      box-shadow:0 4px 10px rgba(0,0,0,.28);
+    .seat:hover .seat-delete{
+      display:flex;
     }
 
-    .draggable-seat.locked:hover{ transform:none; box-shadow:0 3px 8px rgba(0,0,0,.22); border-color:rgba(148,163,184,.35); }
-
-    .draggable-seat.locked .delete-btn{ display:none !important; }
-
-    .draggable-seat.locked::after{ content:"🔒"; position:absolute; bottom:2px; right:2px; font-size:10px; opacity:.85; pointer-events:none; }
-
-    .draggable-seat.status-livre{
+    .seat.status-livre{
+      background:linear-gradient(135deg, rgba(37,99,235,1), rgba(29,78,216,0.8));
       border-color:rgba(37,99,235,1);
-      background:linear-gradient(135deg, rgba(37,99,235,.9), rgba(29,78,216,.6));
-      color:#eff6ff;
-      box-shadow:0 6px 16px rgba(37,99,235,.45);
+      color:#fff;
+      box-shadow:0 8px 22px rgba(37,99,235,0.5);
     }
 
-    .draggable-seat.status-reservado{
-      border-color:rgba(249,115,22,1);
-      background:linear-gradient(135deg, rgba(249,115,22,.95), rgba(194,65,12,.6));
-      color:#fff7ed;
-      box-shadow:0 6px 16px rgba(249,115,22,.45);
+    .seat.status-reservado{
+      background:linear-gradient(135deg, rgba(245,158,11,1), rgba(217,119,6,0.8));
+      border-color:rgba(245,158,11,1);
+      color:#fff;
+      box-shadow:0 8px 22px rgba(245,158,11,0.5);
     }
 
-    .draggable-seat.status-confirmado{
+    .seat.status-confirmado{
+      background:linear-gradient(135deg, rgba(16,185,129,1), rgba(5,150,105,0.8));
       border-color:rgba(16,185,129,1);
-      background:linear-gradient(135deg, rgba(16,185,129,1), rgba(5,150,105,.7));
-      color:#ecfdf5;
-      box-shadow:0 8px 20px rgba(16,185,129,.55);
+      color:#fff;
+      box-shadow:0 8px 22px rgba(16,185,129,0.5);
     }
 
-    .draggable-seat.status-bloqueado{
-      border-color:rgba(220,38,38,1);
-      background:linear-gradient(135deg, rgba(220,38,38,1), rgba(153,27,27,.75));
-      color:#fef2f2;
-      box-shadow:0 8px 22px rgba(220,38,38,.6);
+    .seat.status-bloqueado{
+      background:linear-gradient(135deg, rgba(239,68,68,1), rgba(220,38,38,0.8));
+      border-color:rgba(239,68,68,1);
+      color:#fff;
+      box-shadow:0 8px 22px rgba(239,68,68,0.5);
+    }
+
+    .seat.locked{
+      opacity:0.7;
+      cursor:not-allowed;
+    }
+
+    .seat.locked::after{
+      content:"🔒";
+      position:absolute;
+      bottom:3px;
+      right:3px;
+      font-size:9px;
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      position:sticky;
+      top:20px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .side-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .side-title{
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:0.5px;
+      margin-bottom:18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--text-dim);
+      text-transform:uppercase;
+    }
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .quick-grid .btn{
+      height:38px;
+      padding:0 12px;
+      font-size:12px;
+      justify-content:center;
+    }
+
+    /* PASSENGER LIST */
+    .passenger-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      max-height:calc(100vh - 420px);
+      overflow-y:auto;
+      padding-right:6px;
+    }
+
+    .passenger-list::-webkit-scrollbar{
+      width:8px;
+    }
+
+    .passenger-list::-webkit-scrollbar-track{
+      background:var(--elevated);
+      border-radius:10px;
+    }
+
+    .passenger-list::-webkit-scrollbar-thumb{
+      background:var(--primary);
+      border-radius:10px;
+    }
+
+    .passenger-card{
+      background:var(--elevated);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px;
+      display:grid;
+      grid-template-columns:56px 1fr 130px;
+      align-items:center;
+      gap:14px;
+      transition:all 0.2s;
+      box-shadow:0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .passenger-card:hover{
+      border-color:var(--primary);
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(167,139,250,0.3);
+    }
+
+    .passenger-num{
+      font-size:24px;
+      font-weight:900;
+      text-align:center;
+      background:linear-gradient(135deg, var(--primary-light), var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .passenger-input{
+      width:100%;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-size:13px;
+      font-weight:700;
+      padding:6px 0;
+    }
+
+    .passenger-input::placeholder{
+      color:var(--text-muted);
+    }
+
+    .passenger-select{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--text);
+      font-weight:800;
+      padding:10px 12px;
+      font-size:12px;
+      outline:none;
+      cursor:pointer;
+    }
+
+    .passenger-card.status-livre{
+      border-left:4px solid rgba(37,99,235,1);
+    }
+
+    .passenger-card.status-reservado{
+      border-left:4px solid rgba(245,158,11,1);
+    }
+
+    .passenger-card.status-confirmado{
+      border-left:4px solid rgba(16,185,129,1);
+    }
+
+    .passenger-card.status-bloqueado{
+      border-left:4px solid rgba(239,68,68,1);
+    }
+
+    /* TOAST */
+    .toast{
+      position:fixed;
+      bottom:28px;
+      right:28px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px 24px;
+      font-size:14px;
+      font-weight:800;
+      box-shadow:0 24px 60px rgba(0,0,0,0.8);
+      transform:translateX(500px);
+      opacity:0;
+      transition:all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .toast.show{
+      transform:translateX(0);
       opacity:1;
     }
 
-    .editor-locked .draggable-seat{ cursor:not-allowed; }
-    .editor-locked .draggable-seat:hover{ transform:none; }
-    .editor-locked .draggable-seat .delete-btn{ display:none !important; }
+    /* RESPONSIVE */
+    @media(max-width:1200px){
+      .main-layout{
+        grid-template-columns:1fr;
+      }
 
-    .btn{
-      height:44px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:var(--elevated);
-      color:var(--text);
-      padding:0 16px;
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      transition:all .15s;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      .sidebar{
+        position:static;
+      }
+
+      .passenger-list{
+        max-height:400px;
+      }
     }
-
-    .btn:hover{ transform:translateY(-2px); border-color:var(--primary); box-shadow:0 10px 26px rgba(0,0,0,.35); }
-
-    .btn-primary{ background:linear-gradient(135deg, var(--primary), var(--accent)); border-color:transparent; color:#fff; }
-
-    .btn-success{ border-color:rgba(16,185,129,.35); }
-
-    .toast{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:16px 20px;
-      font-size:14px;
-      font-weight:700;
-      box-shadow:0 20px 50px rgba(0,0,0,.8);
-      transform:translateY(100px);
-      opacity:0;
-      transition:all .25s;
-      z-index:2000;
-    }
-
-    .toast.show{ transform:translateY(0); opacity:1; }
-
-    .modal-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.7);
-      backdrop-filter:blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      padding:20px;
-    }
-
-    .modal{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:20px;
-      padding:32px;
-      max-width:500px;
-      width:100%;
-      box-shadow:0 40px 100px rgba(0,0,0,.8);
-    }
-
-    .modal-title{ font-size:24px; font-weight:700; margin-bottom:20px; }
-
-    .modal-content{ font-size:14px; color:var(--text-dim); line-height:1.6; margin-bottom:24px; font-weight:600; }
 
     @media(max-width:768px){
-  body{ padding:10px; }
+      body{
+        padding:12px;
+      }
 
-  .header{
-    padding:14px;
-    gap:10px;
-  }
+      .header{
+        padding:20px;
+      }
 
-  .header-title h1{ font-size:22px; }
+      .header-title{
+        font-size:32px;
+      }
 
-  .stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
+      .stats-bar{
+        grid-template-columns:1fr;
+        gap:12px;
+      }
 
-  .stat{ min-width:unset; }
-
-  .van-container{
-    grid-template-columns:1fr;
-    gap:16px;
-  }
-
-  .seat-editor{
-    padding:14px;
-  }
-
-  .editor-header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:12px;
-  }
-
-  .editor-tools{
-    width:100%;
-    overflow-x:auto;
-    flex-wrap:nowrap;
-    padding-bottom:6px;
-  }
-
-  .editor-canvas{
-    min-height:70vh;
-    border-radius:14px;
-  }
-
-  .canvas-background{
-    width:100%;
-    height:100%;
-  }
-
-  .passenger-side{
-    padding:14px;
-  }
-
-  .passenger-tools{
-    overflow-x:auto;
-    flex-wrap:nowrap;
-  }
-
-  .passenger-row{
-    grid-template-columns:44px 1fr 96px;
-    gap:6px;
-    padding:8px 8px;
-  }
-
-  .passenger-row input{ font-size:12px; }
-  .passenger-row select{ font-size:11px; }
-
-  .toast{ bottom:12px; right:12px; }
-}
-
-@media(max-width:420px){
-  .stats{ grid-template-columns:1fr; }
-}
-
-      .home-btn{ top:12px; left:12px; width:44px; height:44px; border-radius:12px; font-size:22px; }
-      .header{ padding:16px 16px; border-radius:14px; gap:12px; }
-      .header-title h1{ font-size:26px; }
-      .badge{ padding:7px 12px; font-size:11px; }
-      .card{ padding:18px; border-radius:14px; }
-      .stats{ gap:12px; margin-bottom:18px; }
-      .stat{ min-width:140px; padding:12px 14px; }
-      .stat-value{ font-size:24px; }
-
-      .van-container{ grid-template-columns:1fr; gap:14px; padding:6px 4px 24px; }
-      .seat-editor{ padding:16px; margin-bottom:0; }
-
-      .editor-header{ gap:10px; }
-      .editor-tools{
+      .toolbar{
         width:100%;
-        overflow-x:auto;
-        -webkit-overflow-scrolling:touch;
-        padding-bottom:6px;
-        flex-wrap:nowrap;
-      }
-      .editor-tools::-webkit-scrollbar{ height:6px; }
-      .editor-tools::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.12); border-radius:999px; }
-
-      .btn{ height:40px; padding:0 12px; font-size:13px; white-space:nowrap; }
-
-      .editor-canvas{
-        min-height:62vh;
-        max-height:72vh;
-        touch-action:none;
       }
 
-      .draggable-seat{ width:42px; height:44px; }
-      .draggable-seat .seat-num{ font-size:13px; }
-      .draggable-seat .seat-label{ font-size:6px; }
-      .draggable-seat .delete-btn{ width:16px; height:16px; font-size:11px; }
+      .btn{
+        flex:1;
+        min-width:0;
+        padding:0 12px;
+      }
 
-      .passenger-side{ padding:14px; border-radius:14px; }
-      .passenger-tools{ overflow-x:auto; flex-wrap:nowrap; padding-bottom:6px; }
-      .passenger-tools::-webkit-scrollbar{ height:6px; }
-      .passenger-tools::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.12); border-radius:999px; }
+      .canvas{
+        min-height:400px;
+      }
 
-      .passenger-row{ grid-template-columns:50px 1fr 110px; gap:8px; padding:9px 10px; }
-      .passenger-row input{ font-size:13px; }
-      .passenger-row select{ font-size:12px; }
-
-      .toast{ right:12px; bottom:12px; }
-    }
-
-    @media(max-width:420px){
-      .stat{ min-width:46%; }
-      .passenger-row{ grid-template-columns:46px 1fr 104px; }
-      .passenger-row select{ padding:6px 7px; }
+      .passenger-card{
+        grid-template-columns:48px 1fr 110px;
+        gap:10px;
+        padding:12px;
+      }
     }
   </style>
 </head>
 
 <body>
-<a class="home-btn" href="index.html">🏠</a>
-
 <div class="container">
+  <!-- HEADER -->
   <header class="header">
-    <div class="header-title">
-      <h1>VAN</h1>
-      <div class="header-subtitle">Nobreak Company • Gestão de Transporte</div>
+    <div class="header-content">
+      <h1 class="header-title">VAN</h1>
+      <p class="header-subtitle">Nobreak Company • Gestão de Transporte</p>
     </div>
-    <div style="display:flex; gap:12px">
+    <div class="header-badges">
       <div class="badge">🚐 Transporte</div>
-      <div class="badge">⚠️ Em Pausa</div>
+      <div class="badge">⚡ Sistema Ativo</div>
     </div>
   </header>
 
-  <div class="card">
-    <h2 class="card-title">STATUS DO MÓDULO</h2>
-    <p class="card-desc">Sistema de van temporariamente em pausa</p>
-
-    <div style="background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3); border-radius:12px; padding:20px; margin-bottom:24px">
-      <strong style="color:var(--warning)">⚠️ MÓDULO EM PAUSA</strong>
-      <p style="margin-top:8px; font-size:13px; line-height:1.6; color:var(--text-dim)">
-        O sistema de van está pausado no momento. Quando você quiser reativar, podemos conectar com o Apps Script
-        para reservas em tempo real, bloqueio de assentos, expiração automática e painel admin.
-      </p>
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-box">
+      <div class="stat-label">Total de Assentos</div>
+      <div class="stat-value" id="statTotal">0</div>
     </div>
-
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-label">Total Assentos</div>
-        <div class="stat-value" id="totalSeats">0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Livres</div>
-        <div class="stat-value" style="color:var(--success)" id="freeSeats">0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Ocupados</div>
-        <div class="stat-value" style="color:var(--warning)" id="takenSeats">0</div>
-      </div>
+    <div class="stat-box" style="background:linear-gradient(135deg, rgba(16,185,129,0.1), rgba(5,150,105,0.05));">
+      <div class="stat-label">Assentos Livres</div>
+      <div class="stat-value" id="statLivres" style="background:linear-gradient(135deg, #10b981, #059669); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">0</div>
     </div>
-
-    <div class="van-container">
-      <div class="seat-editor">
-        <div class="editor-header">
-          <h3 style="margin:0; font-size:18px">EDITOR DE MAPA</h3>
-          <div class="editor-tools">
-            <button class="btn btn-primary" onclick="addSeat()">➕ Adicionar Assento</button>
-            <button class="btn" onclick="toggleSnap()" id="btnSnap">🧲 Snap: ON</button>
-            <button class="btn" onclick="toggleVanOpacity()" id="btnVan">🖼️ Van: 35%</button>
-            <button class="btn" onclick="toggleEditorLock()" id="btnLock">🔓 Destravado</button>
-            <button class="btn" onclick="clearMap()">🗑️ Limpar Tudo</button>
-            <button class="btn btn-success" onclick="saveMap()">💾 Salvar Mapa</button>
-          </div>
-        </div>
-
-        <div class="editor-canvas" id="editorCanvas">
-          <img src="assets/images/van.png" alt="Van" class="canvas-background" id="vanBg">
-          <div class="canvas-placeholder" id="canvasPlaceholder">
-            Clique em <b>“Adicionar Assento”</b> e arraste.<br>
-            Dica: com o <b>Snap</b> ligado, os assentos encaixam certinho na grade.
-          </div>
-        </div>
-
-        <div class="editor-info">
-          <div class="info-item">
-            <span class="info-label">Total de assentos:</span>
-            <span class="info-value" id="totalSeatsEditor">0</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Duplo clique no assento para editar</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="passenger-side">
-        <h3 style="font-size:14px; margin-bottom:12px; color:var(--text-dim); font-weight:700; text-transform:uppercase; letter-spacing:1px">PASSAGEIROS</h3>
-
-        <div class="passenger-tools">
-          <button class="btn" onclick="setAllStatus('livre')">🟢 Livre</button>
-          <button class="btn" onclick="setAllStatus('reservado')">🟠 Reservado</button>
-          <button class="btn" onclick="setAllStatus('confirmado')">✅ Confirmado</button>
-          <button class="btn" onclick="setAllStatus('bloqueado')">⛔ Bloqueado</button>
-        </div>
-
-        <div id="passengerPanel" style="display:grid; grid-template-columns:1fr; gap:8px"></div>
-      </div>
+    <div class="stat-box" style="background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.05));">
+      <div class="stat-label">Assentos Ocupados</div>
+      <div class="stat-value" id="statOcupados" style="background:linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">0</div>
     </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+    <!-- CANVAS -->
+    <section class="canvas-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">🎨</span>
+          Editor de Layout
+        </h2>
+        <div class="toolbar">
+          <button class="btn btn-primary" onclick="addSeat()">
+            <span>➕</span> Adicionar Assento
+          </button>
+          <button class="btn" onclick="toggleSnap()" id="btnSnap">
+            <span>🧲</span> Snap: ON
+          </button>
+          <button class="btn" onclick="toggleVan()" id="btnVan">
+            <span>🖼️</span> Van: 30%
+          </button>
+          <button class="btn" onclick="toggleLock()" id="btnLock">
+            <span>🔓</span> Destravado
+          </button>
+          <button class="btn" onclick="managePresets()">
+            <span>⭐</span> Presets
+          </button>
+          <button class="btn btn-danger" onclick="clearAll()">
+            <span>🗑️</span> Limpar
+          </button>
+          <button class="btn btn-success" onclick="saveLayout()">
+            <span>💾</span> Salvar Layout
+          </button>
+          <button class="btn" style="background:var(--purple); border:none; color:#fff" onclick="exportLayout()">
+            <span>📥</span> Exportar
+          </button>
+          <button class="btn" style="background:#25d366; border:none; color:#fff" onclick="shareWhatsApp()">
+            <span>📱</span> WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <div class="canvas" id="canvas">
+        <img src="assets/images/van.png" alt="Van" class="canvas-bg" id="vanBg">
+        <div class="canvas-hint" id="hint">
+          Clique em <strong>Adicionar Assento</strong> para começar<br>
+          Arraste para posicionar • Duplo clique para renomear
+        </div>
+      </div>
+
+      <div class="canvas-info">
+        <div class="info-item">
+          <span class="info-label">Assentos configurados:</span>
+          <span class="info-value" id="canvasCount">0</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Clique direito para travar/destravar</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3 class="side-title">⚡ Ações Rápidas</h3>
+        <div class="quick-grid">
+          <button class="btn" onclick="setAll('livre')">🟢 Livre</button>
+          <button class="btn" onclick="setAll('reservado')">🟠 Reservado</button>
+          <button class="btn" onclick="setAll('confirmado')">✅ Confirmado</button>
+          <button class="btn" onclick="setAll('bloqueado')">⛔ Bloqueado</button>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3 class="side-title">👥 Passageiros</h3>
+        <div class="passenger-list" id="passengerList"></div>
+      </div>
+    </aside>
   </div>
 </div>
 
-<div id="modalOverlay" class="modal-overlay">
+<!-- TOAST -->
+<div id="toast" class="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Sucesso</span>
+</div>
+
+<!-- EXPORT MODAL -->
+<div id="exportModal" class="modal-overlay">
   <div class="modal">
-    <h3 class="modal-title">🚐 MÓDULO EM PAUSA</h3>
-    <div class="modal-content">
-      O sistema de van está temporariamente desativado. Quando você quiser reativar, podemos implementar:
-      <ul style="margin-top:12px; margin-left:20px; color:var(--text-dim)">
-        <li>Reserva de assentos em tempo real</li>
-        <li>Bloqueio automático durante reserva</li>
-        <li>Expiração de reservas</li>
-        <li>Painel administrativo</li>
-        <li>Sincronização via Apps Script</li>
-      </ul>
+    <div class="modal-header">
+      <h3 class="modal-title">📥 Exportar Layout</h3>
+      <button class="modal-close" onclick="closeExportModal()">✕</button>
     </div>
-    <button class="btn btn-primary" onclick="closeModal()">Entendi</button>
+    <div class="modal-content">
+      <p style="margin-bottom:20px; color:var(--text-dim)">
+        Escolha o formato de exportação do layout da van com os assentos e passageiros:
+      </p>
+      <div class="export-options">
+        <button class="export-btn" onclick="exportAsPDF()">
+          <span class="export-icon">📄</span>
+          <div class="export-info">
+            <strong>PDF Completo</strong>
+            <small>Layout visual + lista de passageiros</small>
+          </div>
+        </button>
+        <button class="export-btn" onclick="exportAsImage()">
+          <span class="export-icon">🖼️</span>
+          <div class="export-info">
+            <strong>Imagem PNG</strong>
+            <small>Apenas o layout visual dos assentos</small>
+          </div>
+        </button>
+        <button class="export-btn" onclick="exportAsExcel()">
+          <span class="export-icon">📊</span>
+          <div class="export-info">
+            <strong>Planilha Excel</strong>
+            <small>Lista completa de passageiros</small>
+          </div>
+        </button>
+        <button class="export-btn" onclick="exportAsJSON()">
+          <span class="export-icon">💾</span>
+          <div class="export-info">
+            <strong>Backup JSON</strong>
+            <small>Arquivo de backup completo</small>
+          </div>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="toast" class="toast">✅ Sucesso</div>
+<!-- PRESETS MODAL -->
+<div id="presetsModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">⭐ Gerenciar Presets</h3>
+      <button class="modal-close" onclick="closePresetsModal()">✕</button>
+    </div>
+    <div class="modal-content">
+      <p style="margin-bottom:20px; color:var(--text-dim)">
+        Salve layouts como presets para reutilizar rapidamente:
+      </p>
+      
+      <div style="margin-bottom:24px">
+        <label style="display:block; font-size:13px; font-weight:700; color:var(--text-dim); margin-bottom:8px">
+          SALVAR PRESET ATUAL
+        </label>
+        <div style="display:flex; gap:10px">
+          <input 
+            type="text" 
+            id="presetName" 
+            placeholder="Nome do preset (ex: Van 15 lugares)"
+            style="flex:1; background:var(--elevated); border:1px solid var(--border); border-radius:8px; padding:12px; color:var(--text); font-size:13px; font-weight:600"
+          />
+          <button class="btn btn-primary" onclick="savePreset()">
+            <span>💾</span> Salvar
+          </button>
+        </div>
+      </div>
+
+      <label style="display:block; font-size:13px; font-weight:700; color:var(--text-dim); margin-bottom:12px">
+        PRESETS SALVOS
+      </label>
+      <div id="presetsList" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto">
+        <p style="color:var(--text-muted); font-size:13px; text-align:center; padding:20px">
+          Nenhum preset salvo ainda
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:10000;
+    padding:20px;
+  }
+
+  .modal{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:0;
+    max-width:600px;
+    width:100%;
+    box-shadow:0 40px 100px rgba(0,0,0,0.9);
+    animation:modalIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  @keyframes modalIn{
+    from{
+      transform:scale(0.9);
+      opacity:0;
+    }
+    to{
+      transform:scale(1);
+      opacity:1;
+    }
+  }
+
+  .modal-header{
+    padding:28px 32px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .modal-title{
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:0.5px;
+  }
+
+  .modal-close{
+    width:36px;
+    height:36px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--elevated);
+    color:var(--text);
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all 0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .modal-close:hover{
+    background:var(--danger);
+    border-color:var(--danger);
+    color:#fff;
+  }
+
+  .modal-content{
+    padding:28px 32px;
+  }
+
+  .export-options{
+    display:grid;
+    gap:14px;
+  }
+
+  .export-btn{
+    background:var(--elevated);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    cursor:pointer;
+    transition:all 0.2s;
+    text-align:left;
+  }
+
+  .export-btn:hover{
+    background:var(--hover);
+    border-color:var(--primary);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(167,139,250,0.3);
+  }
+
+  .export-icon{
+    font-size:36px;
+    flex-shrink:0;
+  }
+
+  .export-info strong{
+    display:block;
+    font-size:16px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+
+  .export-info small{
+    display:block;
+    font-size:13px;
+    color:var(--text-muted);
+    font-weight:600;
+  }
+
+  .preset-item{
+    background:var(--elevated);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    transition:all 0.2s;
+  }
+
+  .preset-item:hover{
+    background:var(--hover);
+    border-color:var(--primary);
+  }
+
+  .preset-info{
+    flex:1;
+  }
+
+  .preset-info strong{
+    display:block;
+    font-size:14px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+
+  .preset-info small{
+    display:block;
+    font-size:11px;
+    color:var(--text-muted);
+    font-weight:600;
+  }
+
+  .preset-actions{
+    display:flex;
+    gap:8px;
+  }
+
+  .preset-btn{
+    width:36px;
+    height:36px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--elevated);
+    color:var(--text);
+    font-size:14px;
+    cursor:pointer;
+    transition:all 0.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .preset-btn:hover{
+    transform:translateY(-2px);
+  }
+
+  .preset-btn.load{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  .preset-btn.load:hover{
+    background:var(--primary-light);
+  }
+
+  .preset-btn.delete{
+    background:var(--danger);
+    border-color:var(--danger);
+    color:#fff;
+  }
+
+  @media(max-width:768px){
+    .modal{
+      max-width:calc(100vw - 24px);
+    }
+
+    .modal-header{
+      padding:20px;
+    }
+
+    .modal-content{
+      padding:20px;
+    }
+
+    .export-btn{
+      padding:16px;
+    }
+
+    .export-icon{
+      font-size:28px;
+    }
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
-  const GRID = 2;
-  let snapEnabled = true;
-  let vanOpacity = 0.35;
-  let editorLocked = false;
+const GRID = 2;
+let snap = true;
+let vanOpacity = 0.3;
+let locked = false;
+let counter = 1;
+let seats = [];
 
-  let seatCounter = 1;
-  let seats = [];
+function toast(msg, icon = '✅'){
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
 
-  function toast(msg){
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.classList.add("show");
-    setTimeout(() => t.classList.remove("show"), 1800);
+function toggleSnap(){
+  snap = !snap;
+  document.getElementById('btnSnap').innerHTML = 
+    `<span>🧲</span> Snap: ${snap ? 'ON' : 'OFF'}`;
+  toast(snap ? 'Snap ativado' : 'Snap desativado', '🧲');
+}
+
+function toggleVan(){
+  const img = document.getElementById('vanBg');
+  vanOpacity = vanOpacity === 0.3 ? 0.15 : vanOpacity === 0.15 ? 0.5 : 0.7;
+  img.style.opacity = vanOpacity;
+  document.getElementById('btnVan').innerHTML = 
+    `<span>🖼️</span> Van: ${Math.round(vanOpacity * 100)}%`;
+  toast(`Opacidade: ${Math.round(vanOpacity * 100)}%`, '🖼️');
+}
+
+function toggleLock(){
+  locked = !locked;
+  document.getElementById('btnLock').innerHTML = 
+    locked ? '<span>🔒</span> Travado' : '<span>🔓</span> Destravado';
+  toast(locked ? 'Editor travado' : 'Editor destravado', locked ? '🔒' : '🔓');
+}
+
+function addSeat(){
+  const canvas = document.getElementById('canvas');
+  const hint = document.getElementById('hint');
+  if(hint) hint.style.display = 'none';
+
+  const seat = document.createElement('div');
+  seat.className = 'seat status-livre';
+  seat.id = `seat-${counter}`;
+  seat.innerHTML = `
+    <div class="seat-num">#${counter}</div>
+    <div class="seat-tag">ASSENTO</div>
+    <div class="seat-delete" onclick="removeSeat('${seat.id}')">✕</div>
+  `;
+
+  const rect = canvas.getBoundingClientRect();
+  const x = (rect.width / 2) - 22;
+  const y = (rect.height / 2) - 24;
+
+  seat.style.left = x + 'px';
+  seat.style.top = y + 'px';
+
+  canvas.appendChild(seat);
+  makeDraggable(seat);
+
+  seats.push({
+    id: seat.id,
+    number: counter,
+    x: x,
+    y: y,
+    status: 'livre',
+    name: '',
+    locked: false
+  });
+
+  counter++;
+  updateAll();
+  toast(`Assento #${counter - 1} criado`, '➕');
+}
+
+function removeSeat(id){
+  if(locked){
+    toast('Editor travado', '🔒');
+    return;
   }
 
-  function openModal(){
-    document.getElementById("modalOverlay").style.display = "flex";
+  const seat = document.getElementById(id);
+  if(seat){
+    seat.remove();
+    seats = seats.filter(s => s.id !== id);
+    updateAll();
+    toast('Assento removido', '🗑️');
+
+    if(seats.length === 0){
+      document.getElementById('hint').style.display = 'block';
+    }
+  }
+}
+
+function clearAll(){
+  if(!confirm('Limpar todos os assentos?')) return;
+
+  document.querySelectorAll('.seat').forEach(s => s.remove());
+  seats = [];
+  counter = 1;
+  updateAll();
+  document.getElementById('hint').style.display = 'block';
+  toast('Layout limpo', '🗑️');
+}
+
+function saveLayout(){
+  if(seats.length === 0){
+    toast('Nenhum assento para salvar', '⚠️');
+    return;
   }
 
-  function closeModal(){
-    document.getElementById("modalOverlay").style.display = "none";
+  const data = {
+    seats,
+    config: { snap, vanOpacity, locked },
+    timestamp: new Date().toISOString()
+  };
+
+  localStorage.setItem('vanLayoutNobreak', JSON.stringify(data));
+  toast('Layout salvo com sucesso!', '💾');
+}
+
+function loadLayout(){
+  const saved = localStorage.getItem('vanLayoutNobreak');
+  if(!saved) return;
+
+  try{
+    const data = JSON.parse(saved);
+    const canvas = document.getElementById('canvas');
+
+    document.querySelectorAll('.seat').forEach(s => s.remove());
+
+    if(data.config){
+      snap = data.config.snap ?? true;
+      vanOpacity = data.config.vanOpacity ?? 0.3;
+      locked = data.config.locked ?? false;
+
+      document.getElementById('vanBg').style.opacity = vanOpacity;
+      document.getElementById('btnSnap').innerHTML = 
+        `<span>🧲</span> Snap: ${snap ? 'ON' : 'OFF'}`;
+      document.getElementById('btnVan').innerHTML = 
+        `<span>🖼️</span> Van: ${Math.round(vanOpacity * 100)}%`;
+      document.getElementById('btnLock').innerHTML = 
+        locked ? '<span>🔒</span> Travado' : '<span>🔓</span> Destravado';
+    }
+
+    data.seats.forEach(sd => {
+      const seat = document.createElement('div');
+      seat.className = `seat status-${sd.status}`;
+      seat.id = sd.id;
+      seat.innerHTML = `
+        <div class="seat-num">#${sd.number}</div>
+        <div class="seat-tag">ASSENTO</div>
+        <div class="seat-delete" onclick="removeSeat('${sd.id}')">✕</div>
+      `;
+
+      seat.style.left = sd.x + 'px';
+      seat.style.top = sd.y + 'px';
+
+      if(sd.locked) seat.classList.add('locked');
+
+      canvas.appendChild(seat);
+      makeDraggable(seat);
+    });
+
+    seats = data.seats;
+    counter = Math.max(...seats.map(s => s.number), 0) + 1;
+
+    if(seats.length > 0){
+      document.getElementById('hint').style.display = 'none';
+    }
+
+    updateAll();
+    toast('Layout carregado', '✅');
+  }catch(e){
+    console.error('Erro ao carregar layout:', e);
+    toast('Erro ao carregar layout', '❌');
   }
+}
 
-  function toggleSnap(){
-    snapEnabled = !snapEnabled;
-    const btn = document.getElementById("btnSnap");
-    if(btn) btn.textContent = snapEnabled ? "🧲 Snap: ON" : "🧲 Snap: OFF";
-    toast(snapEnabled ? "🧲 Snap ativado" : "🧲 Snap desativado");
+function makeDraggable(el){
+  let dragging = false;
+  let offsetX, offsetY;
+
+  el.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const sd = seats.find(s => s.id === el.id);
+    if(sd){
+      sd.locked = !sd.locked;
+      el.classList.toggle('locked', sd.locked);
+      toast(sd.locked ? `#${sd.number} travado` : `#${sd.number} destravado`, sd.locked ? '🔒' : '🔓');
+    }
+  });
+
+  el.addEventListener('pointerdown', (e) => {
+    if(e.target.classList.contains('seat-delete')) return;
+    if(locked) return;
+
+    dragging = true;
+    const rect = el.getBoundingClientRect();
+    const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    el.classList.add('dragging');
+    el.setPointerCapture(e.pointerId);
+  });
+
+  document.addEventListener('pointermove', (e) => {
+    if(!dragging) return;
+
+    const canvas = document.getElementById('canvas');
+    const rect = canvas.getBoundingClientRect();
+
+    let x = e.clientX - rect.left - offsetX;
+    let y = e.clientY - rect.top - offsetY;
+
+    x = Math.max(0, Math.min(x, rect.width - el.offsetWidth));
+    y = Math.max(0, Math.min(y, rect.height - el.offsetHeight));
+
+    if(snap){
+      x = Math.round((x + el.offsetWidth/2) / GRID) * GRID - el.offsetWidth/2;
+      y = Math.round((y + el.offsetHeight/2) / GRID) * GRID - el.offsetHeight/2;
+      x = Math.max(0, Math.min(x, rect.width - el.offsetWidth));
+      y = Math.max(0, Math.min(y, rect.height - el.offsetHeight));
+    }
+
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+  });
+
+  document.addEventListener('pointerup', (e) => {
+    if(!dragging) return;
+
+    dragging = false;
+    el.classList.remove('dragging');
+
+    const sd = seats.find(s => s.id === el.id);
+    if(sd){
+      sd.x = parseFloat(el.style.left);
+      sd.y = parseFloat(el.style.top);
+    }
+  });
+
+  el.addEventListener('dblclick', () => {
+    if(locked) return;
+
+    const sd = seats.find(s => s.id === el.id);
+    if(!sd) return;
+
+    const num = prompt('Novo número:', sd.number);
+    if(!num) return;
+
+    sd.number = parseInt(num);
+    el.querySelector('.seat-num').textContent = '#' + num;
+
+    renderList();
+    toast(`Renomeado para #${num}`, '✏️');
+  });
+}
+
+function updateAll(){
+  const total = seats.length;
+  const livre = seats.filter(s => s.status === 'livre').length;
+  const reservado = seats.filter(s => s.status === 'reservado').length;
+  const confirmado = seats.filter(s => s.status === 'confirmado').length;
+  const bloqueado = seats.filter(s => s.status === 'bloqueado').length;
+  const ocupados = reservado + confirmado + bloqueado;
+
+  console.log('Stats:', { total, livre, reservado, confirmado, bloqueado, ocupados });
+
+  const totalEl = document.getElementById('statTotal');
+  const livresEl = document.getElementById('statLivres');
+  const ocupadosEl = document.getElementById('statOcupados');
+  const countEl = document.getElementById('canvasCount');
+
+  if(totalEl) totalEl.textContent = total;
+  if(livresEl) livresEl.textContent = livre;
+  if(ocupadosEl) ocupadosEl.textContent = ocupados;
+  if(countEl) countEl.textContent = total;
+
+  renderList();
+}
+
+function renderList(){
+  const list = document.getElementById('passengerList');
+  list.innerHTML = '';
+
+  seats
+    .sort((a, b) => a.number - b.number)
+    .forEach(s => {
+      const card = document.createElement('div');
+      card.className = `passenger-card status-${s.status}`;
+      card.innerHTML = `
+        <div class="passenger-num">#${s.number}</div>
+        <input 
+          type="text" 
+          class="passenger-input"
+          placeholder="Nome do passageiro"
+          value="${s.name || ''}"
+          onchange="updateName('${s.id}', this.value)"
+        />
+        <select class="passenger-select" onchange="updateStatus('${s.id}', this.value)">
+          <option value="livre" ${s.status === 'livre' ? 'selected' : ''}>🟢 Livre</option>
+          <option value="reservado" ${s.status === 'reservado' ? 'selected' : ''}>🟠 Reservado</option>
+          <option value="confirmado" ${s.status === 'confirmado' ? 'selected' : ''}>✅ Confirmado</option>
+          <option value="bloqueado" ${s.status === 'bloqueado' ? 'selected' : ''}>⛔ Bloqueado</option>
+        </select>
+      `;
+      list.appendChild(card);
+    });
+}
+
+function updateName(id, name){
+  const s = seats.find(x => x.id === id);
+  if(s){
+    s.name = name;
+    toast('Nome atualizado', '👤');
   }
+}
 
-  function toggleVanOpacity(){
-    const img = document.getElementById("vanBg");
-    if(!img) return;
+function updateStatus(id, status){
+  const s = seats.find(x => x.id === id);
+  const el = document.getElementById(id);
 
-    vanOpacity = (vanOpacity === 0.35) ? 0.15 : (vanOpacity === 0.15 ? 0.55 : 0.75);
-    img.style.opacity = vanOpacity;
+  if(s && el){
+    s.status = status;
+    el.className = `seat status-${status}`;
+    if(s.locked) el.classList.add('locked');
 
-    const btn = document.getElementById("btnVan");
-    if(btn) btn.textContent = `🖼️ Van: ${Math.round(vanOpacity*100)}%`;
-    toast(`🖼️ Opacidade ${Math.round(vanOpacity*100)}%`);
+    updateAll();
+    toast(`#${s.number} → ${status}`, '🎫');
   }
+}
 
-  function setEditorLockedState(){
-    const canvas = document.getElementById("editorCanvas");
-    const btn = document.getElementById("btnLock");
+function setAll(status){
+  seats.forEach(s => {
+    s.status = status;
+    const el = document.getElementById(s.id);
+    if(el){
+      el.className = `seat status-${status}`;
+      if(s.locked) el.classList.add('locked');
+    }
+  });
 
-    if(canvas) canvas.classList.toggle("editor-locked", editorLocked);
-    if(btn) btn.textContent = editorLocked ? "🔒 Travado" : "🔓 Destravado";
+  updateAll();
+  toast(`Todos os assentos → ${status}`, '⚡');
+}
+
+// EXPORT FUNCTIONS
+function exportLayout(){
+  if(seats.length === 0){
+    toast('Nenhum assento para exportar', '⚠️');
+    return;
   }
+  document.getElementById('exportModal').style.display = 'flex';
+}
 
-  function toggleEditorLock(){
-    editorLocked = !editorLocked;
-    setEditorLockedState();
-    toast(editorLocked ? "🔒 Edição travada" : "🔓 Edição destravada");
-  }
+function closeExportModal(){
+  document.getElementById('exportModal').style.display = 'none';
+}
 
-  function normalizeStatus(st){
-    if(st === "reservado" || st === "confirmado" || st === "bloqueado") return st;
-    return "livre";
-  }
+async function exportAsPDF(){
+  closeExportModal();
+  toast('Gerando PDF...', '⏳');
 
-  function applySeatVisual(seatEl, seatData){
-    if(!seatEl || !seatData) return;
+  try{
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-    seatEl.classList.remove("status-livre","status-reservado","status-confirmado","status-bloqueado");
-    seatEl.classList.add(`status-${normalizeStatus(seatData.status)}`);
+    // Header
+    doc.setFillColor(20, 24, 37);
+    doc.rect(0, 0, 210, 40, 'F');
+    
+    doc.setTextColor(167, 139, 250);
+    doc.setFontSize(28);
+    doc.setFont('helvetica', 'bold');
+    doc.text('VAN NOBREAK', 105, 20, { align: 'center' });
+    
+    doc.setTextColor(148, 163, 184);
+    doc.setFontSize(12);
+    doc.text('Layout de Assentos - ' + new Date().toLocaleDateString('pt-BR'), 105, 30, { align: 'center' });
 
-    seatEl.classList.toggle("locked", !!seatData.locked);
-  }
+    // Stats
+    const total = seats.length;
+    const livre = seats.filter(s => s.status === 'livre').length;
+    const ocupados = total - livre;
 
-  function toggleSeatLock(seatId){
-    const seatEl = document.getElementById(seatId);
-    const seatData = seats.find(s => s.id === seatId);
-    if(!seatEl || !seatData) return;
+    doc.setTextColor(241, 245, 249);
+    doc.setFontSize(11);
+    doc.text(`Total: ${total}   |   Livres: ${livre}   |   Ocupados: ${ocupados}`, 105, 48, { align: 'center' });
 
-    seatData.locked = !seatData.locked;
-    applySeatVisual(seatEl, seatData);
-    toast(seatData.locked ? `🔒 Assento #${seatData.number} travado` : `🔓 Assento #${seatData.number} destravado`);
-  }
+    // Canvas screenshot
+    const canvas = document.getElementById('canvas');
+    const canvasData = await html2canvas(canvas, {
+      backgroundColor: '#1a1f2e',
+      scale: 2
+    });
+    
+    const imgData = canvasData.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 15, 55, 180, 100);
 
-  const vanImg = document.getElementById('vanBg');
-  const paths = [
-    'assets/images/van.png',
-    './assets/images/van.png',
-    'assets/images/van.png',
-    'van.png'
-  ];
-  let currentPath = 0;
+    // Passenger list
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Lista de Passageiros', 15, 165);
 
-  if(vanImg){
-    vanImg.onerror = function(){
-      currentPath++;
-      if(currentPath < paths.length){
-        vanImg.src = paths[currentPath];
-      }else{
-        vanImg.style.display = 'none';
-        toast("❌ Não carregou a imagem da van");
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    
+    let y = 175;
+    const sortedSeats = seats.sort((a, b) => a.number - b.number);
+
+    sortedSeats.forEach((s, idx) => {
+      if(y > 280){
+        doc.addPage();
+        y = 20;
       }
+
+      const statusColors = {
+        livre: [59, 130, 246],
+        reservado: [245, 158, 11],
+        confirmado: [16, 185, 129],
+        bloqueado: [239, 68, 68]
+      };
+
+      const color = statusColors[s.status] || [148, 163, 184];
+      doc.setFillColor(...color);
+      doc.circle(18, y - 2, 2, 'F');
+
+      doc.setTextColor(241, 245, 249);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`#${s.number}`, 25, y);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(148, 163, 184);
+      const name = s.name || 'Sem passageiro';
+      doc.text(name, 45, y);
+
+      doc.setTextColor(100, 116, 139);
+      const statusText = {
+        livre: 'Livre',
+        reservado: 'Reservado',
+        confirmado: 'Confirmado',
+        bloqueado: 'Bloqueado'
+      }[s.status];
+      doc.text(statusText, 160, y);
+
+      y += 8;
+    });
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setTextColor(100, 116, 139);
+    doc.text('Gerado por Sistema Van Nobreak - ' + new Date().toLocaleString('pt-BR'), 105, 290, { align: 'center' });
+
+    doc.save(`van-layout-${Date.now()}.pdf`);
+    toast('PDF exportado com sucesso!', '📄');
+  }catch(e){
+    console.error(e);
+    toast('Erro ao gerar PDF', '❌');
+  }
+}
+
+async function exportAsImage(){
+  closeExportModal();
+  toast('Gerando imagem...', '⏳');
+
+  try{
+    const canvas = document.getElementById('canvas');
+    const canvasData = await html2canvas(canvas, {
+      backgroundColor: '#1a1f2e',
+      scale: 3
+    });
+
+    canvasData.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `van-layout-${Date.now()}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('Imagem exportada com sucesso!', '🖼️');
+    });
+  }catch(e){
+    console.error(e);
+    toast('Erro ao gerar imagem', '❌');
+  }
+}
+
+function exportAsExcel(){
+  closeExportModal();
+  toast('Gerando planilha...', '⏳');
+
+  try{
+    const sortedSeats = seats.sort((a, b) => a.number - b.number);
+
+    const data = sortedSeats.map(s => ({
+      'Assento': `#${s.number}`,
+      'Passageiro': s.name || 'Sem passageiro',
+      'Status': {
+        livre: 'Livre',
+        reservado: 'Reservado',
+        confirmado: 'Confirmado',
+        bloqueado: 'Bloqueado'
+      }[s.status],
+      'Travado': s.locked ? 'Sim' : 'Não'
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    
+    // Column widths
+    ws['!cols'] = [
+      { wch: 10 },
+      { wch: 25 },
+      { wch: 15 },
+      { wch: 10 }
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Passageiros');
+
+    // Summary sheet
+    const summary = [
+      ['RESUMO DO LAYOUT'],
+      [''],
+      ['Total de Assentos', seats.length],
+      ['Assentos Livres', seats.filter(s => s.status === 'livre').length],
+      ['Assentos Reservados', seats.filter(s => s.status === 'reservado').length],
+      ['Assentos Confirmados', seats.filter(s => s.status === 'confirmado').length],
+      ['Assentos Bloqueados', seats.filter(s => s.status === 'bloqueado').length],
+      [''],
+      ['Gerado em', new Date().toLocaleString('pt-BR')]
+    ];
+
+    const wsSummary = XLSX.utils.aoa_to_sheet(summary);
+    wsSummary['!cols'] = [{ wch: 25 }, { wch: 15 }];
+    XLSX.utils.book_append_sheet(wb, wsSummary, 'Resumo');
+
+    XLSX.writeFile(wb, `van-passageiros-${Date.now()}.xlsx`);
+    toast('Planilha exportada com sucesso!', '📊');
+  }catch(e){
+    console.error(e);
+    toast('Erro ao gerar planilha', '❌');
+  }
+}
+
+function exportAsJSON(){
+  closeExportModal();
+  toast('Gerando backup...', '⏳');
+
+  try{
+    const backup = {
+      metadata: {
+        exportDate: new Date().toISOString(),
+        totalSeats: seats.length,
+        version: '1.0'
+      },
+      config: {
+        snap,
+        vanOpacity,
+        locked
+      },
+      seats: seats.map(s => ({
+        id: s.id,
+        number: s.number,
+        x: s.x,
+        y: s.y,
+        status: s.status,
+        name: s.name,
+        locked: s.locked
+      }))
     };
 
-    vanImg.onload = function(){
-      vanImg.style.opacity = vanOpacity;
-    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `van-backup-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    toast('Backup exportado com sucesso!', '💾');
+  }catch(e){
+    console.error(e);
+    toast('Erro ao gerar backup', '❌');
+  }
+}
+
+// PRESET FUNCTIONS
+function managePresets(){
+  document.getElementById('presetsModal').style.display = 'flex';
+  loadPresetsList();
+}
+
+function closePresetsModal(){
+  document.getElementById('presetsModal').style.display = 'none';
+  document.getElementById('presetName').value = '';
+}
+
+function savePreset(){
+  if(seats.length === 0){
+    toast('Adicione assentos antes de salvar preset', '⚠️');
+    return;
   }
 
-  function placeSeatFromSaved(seatEl, seatData){
-    const canvas = document.getElementById("editorCanvas");
-    if(!canvas) return;
-
-    const canvasRect = canvas.getBoundingClientRect();
-    const w = seatEl.offsetWidth;
-    const h = seatEl.offsetHeight;
-
-    const maxX = Math.max(1, canvasRect.width  - w);
-    const maxY = Math.max(1, canvasRect.height - h);
-
-    let x;
-    let y;
-
-    if(typeof seatData.x === "string" && seatData.x.includes("%")){
-      const xPct = parseFloat(seatData.x) || 0;
-      const yPct = parseFloat(seatData.y) || 0;
-      x = (xPct / 100) * maxX;
-      y = (yPct / 100) * maxY;
-    }else{
-      x = parseFloat(seatData.x) || 0;
-      y = parseFloat(seatData.y) || 0;
-    }
-
-    x = Math.max(0, Math.min(x, maxX));
-    y = Math.max(0, Math.min(y, maxY));
-
-    if(snapEnabled){
-      x = Math.round((x + w/2) / GRID) * GRID - w/2;
-      y = Math.round((y + h/2) / GRID) * GRID - h/2;
-      x = Math.max(0, Math.min(x, maxX));
-      y = Math.max(0, Math.min(y, maxY));
-    }
-
-    seatEl.style.left = x + "px";
-    seatEl.style.top  = y + "px";
+  const name = document.getElementById('presetName').value.trim();
+  if(!name){
+    toast('Digite um nome para o preset', '⚠️');
+    return;
   }
 
-  function addSeat(){
-    const canvas = document.getElementById("editorCanvas");
-    const placeholder = document.getElementById("canvasPlaceholder");
-    if(!canvas) return;
+  const presets = JSON.parse(localStorage.getItem('vanPresets') || '[]');
 
-    if(placeholder) placeholder.style.display = "none";
+  const preset = {
+    id: Date.now(),
+    name: name,
+    seats: seats.map(s => ({...s})),
+    config: { snap, vanOpacity, locked },
+    createdAt: new Date().toISOString(),
+    totalSeats: seats.length
+  };
 
-    const seat = document.createElement("div");
-    seat.className = "draggable-seat";
-    seat.id = `seat-${seatCounter}`;
+  presets.push(preset);
+  localStorage.setItem('vanPresets', JSON.stringify(presets));
+
+  document.getElementById('presetName').value = '';
+  loadPresetsList();
+  toast(`Preset "${name}" salvo!`, '⭐');
+}
+
+function loadPresetsList(){
+  const presets = JSON.parse(localStorage.getItem('vanPresets') || '[]');
+  const list = document.getElementById('presetsList');
+
+  if(presets.length === 0){
+    list.innerHTML = `
+      <p style="color:var(--text-muted); font-size:13px; text-align:center; padding:20px">
+        Nenhum preset salvo ainda
+      </p>
+    `;
+    return;
+  }
+
+  list.innerHTML = presets.map(p => `
+    <div class="preset-item">
+      <div class="preset-info">
+        <strong>${p.name}</strong>
+        <small>${p.totalSeats} assentos • ${new Date(p.createdAt).toLocaleDateString('pt-BR')}</small>
+      </div>
+      <div class="preset-actions">
+        <button class="preset-btn load" onclick="loadPreset(${p.id})" title="Carregar">
+          📂
+        </button>
+        <button class="preset-btn delete" onclick="deletePreset(${p.id})" title="Excluir">
+          🗑️
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadPreset(id){
+  const presets = JSON.parse(localStorage.getItem('vanPresets') || '[]');
+  const preset = presets.find(p => p.id === id);
+
+  if(!preset){
+    toast('Preset não encontrado', '❌');
+    return;
+  }
+
+  if(!confirm(`Carregar preset "${preset.name}"? O layout atual será substituído.`)){
+    return;
+  }
+
+  // Clear current
+  document.querySelectorAll('.seat').forEach(s => s.remove());
+
+  // Load config
+  snap = preset.config.snap ?? true;
+  vanOpacity = preset.config.vanOpacity ?? 0.3;
+  locked = preset.config.locked ?? false;
+
+  document.getElementById('vanBg').style.opacity = vanOpacity;
+  document.getElementById('btnSnap').innerHTML = 
+    `<span>🧲</span> Snap: ${snap ? 'ON' : 'OFF'}`;
+  document.getElementById('btnVan').innerHTML = 
+    `<span>🖼️</span> Van: ${Math.round(vanOpacity * 100)}%`;
+  document.getElementById('btnLock').innerHTML = 
+    locked ? '<span>🔒</span> Travado' : '<span>🔓</span> Destravado';
+
+  // Load seats
+  const canvas = document.getElementById('canvas');
+  preset.seats.forEach(sd => {
+    const seat = document.createElement('div');
+    seat.className = `seat status-${sd.status}`;
+    seat.id = sd.id;
     seat.innerHTML = `
-      <div class="seat-num">#${seatCounter}</div>
-      <div class="seat-label">ASSENTO</div>
-      <div class="delete-btn" onclick="deleteSeat('${seat.id}')">✕</div>
+      <div class="seat-num">#${sd.number}</div>
+      <div class="seat-tag">ASSENTO</div>
+      <div class="seat-delete" onclick="removeSeat('${sd.id}')">✕</div>
     `;
 
-    seat.style.left = "0px";
-    seat.style.top  = "0px";
+    seat.style.left = sd.x + 'px';
+    seat.style.top = sd.y + 'px';
+
+    if(sd.locked) seat.classList.add('locked');
+
     canvas.appendChild(seat);
-
-    const canvasRect = canvas.getBoundingClientRect();
-    const w = seat.offsetWidth;
-    const h = seat.offsetHeight;
-
-    let x = (canvasRect.width  / 2) - (w / 2);
-    let y = (canvasRect.height / 2) - (h / 2);
-
-    if(snapEnabled){
-      x = Math.round(x / GRID) * GRID;
-      y = Math.round(y / GRID) * GRID;
-    }
-
-    x = Math.max(0, Math.min(x, canvasRect.width  - w));
-    y = Math.max(0, Math.min(y, canvasRect.height - h));
-
-    seat.style.left = x + "px";
-    seat.style.top  = y + "px";
-
     makeDraggable(seat);
+  });
 
-    const maxX = Math.max(1, canvasRect.width  - w);
-    const maxY = Math.max(1, canvasRect.height - h);
+  seats = preset.seats.map(s => ({...s}));
+  counter = Math.max(...seats.map(s => s.number), 0) + 1;
 
-    const xPct = (x / maxX) * 100;
-    const yPct = (y / maxY) * 100;
+  document.getElementById('hint').style.display = 'none';
 
-    const seatData = {
-      id: seat.id,
-      number: String(seatCounter),
-      x: `${xPct.toFixed(2)}%`,
-      y: `${yPct.toFixed(2)}%`,
-      locked: false,
-      status: "livre",
-      name: ""
-    };
+  updateAll();
+  closePresetsModal();
+  toast(`Preset "${preset.name}" carregado!`, '⭐');
+}
 
-    seats.push(seatData);
-    applySeatVisual(seat, seatData);
+function deletePreset(id){
+  const presets = JSON.parse(localStorage.getItem('vanPresets') || '[]');
+  const preset = presets.find(p => p.id === id);
 
-    seatCounter++;
-    updateSeatCount();
-    toast(`✅ Assento #${seatCounter - 1} adicionado`);
+  if(!preset){
+    toast('Preset não encontrado', '❌');
+    return;
   }
 
-  function rectsOverlap(a,b){
-    return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+  if(!confirm(`Excluir preset "${preset.name}"?`)){
+    return;
   }
 
-  function isOverlapping(element, x, y){
-    const w = element.offsetWidth;
-    const h = element.offsetHeight;
-    const r1 = { left:x, top:y, right:x+w, bottom:y+h };
+  const filtered = presets.filter(p => p.id !== id);
+  localStorage.setItem('vanPresets', JSON.stringify(filtered));
 
-    return Array.from(document.querySelectorAll('.draggable-seat')).some(el => {
-      if(el === element) return false;
-      const ex = parseFloat(el.style.left)||0;
-      const ey = parseFloat(el.style.top)||0;
-      const ew = el.offsetWidth;
-      const eh = el.offsetHeight;
-      const r2 = { left:ex, top:ey, right:ex+ew, bottom:ey+eh };
-      return rectsOverlap(r1, r2);
-    });
+  loadPresetsList();
+  toast('Preset excluído', '🗑️');
+}
+
+// WHATSAPP SHARE
+async function shareWhatsApp(){
+  if(seats.length === 0){
+    toast('Nenhum assento para compartilhar', '⚠️');
+    return;
   }
 
-  function makeDraggable(element){
-    element.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      toggleSeatLock(element.id);
-    });
+  toast('Gerando PDF para WhatsApp...', '⏳');
 
-    let isDragging = false;
-    let pointerId = null;
+  try{
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-    element.addEventListener("pointerdown", dragStart);
-    document.addEventListener("pointermove", drag);
-    document.addEventListener("pointerup", dragEnd);
-    document.addEventListener("pointercancel", dragEnd);
+    // Header
+    doc.setFillColor(20, 24, 37);
+    doc.rect(0, 0, 210, 40, 'F');
+    
+    doc.setTextColor(167, 139, 250);
+    doc.setFontSize(28);
+    doc.setFont('helvetica', 'bold');
+    doc.text('VAN NOBREAK', 105, 20, { align: 'center' });
+    
+    doc.setTextColor(148, 163, 184);
+    doc.setFontSize(12);
+    doc.text('Layout de Assentos - ' + new Date().toLocaleDateString('pt-BR'), 105, 30, { align: 'center' });
 
-    function dragStart(e){
-      if(e.target.classList.contains("delete-btn")) return;
-      if(editorLocked) return;
-
-      if(e.pointerType === "touch"){
-        e.preventDefault();
-      }
-
-      isDragging = true;
-      pointerId = e.pointerId;
-      element.setPointerCapture?.(pointerId);
-      element.classList.add("dragging");
-    }
-
-    function drag(e){
-      if(!isDragging) return;
-      if(pointerId !== null && e.pointerId !== pointerId) return;
-
-      const canvas = document.getElementById("editorCanvas");
-      const canvasRect = canvas.getBoundingClientRect();
-
-      let currentX = e.clientX - canvasRect.left - element.offsetWidth / 2;
-      let currentY = e.clientY - canvasRect.top  - element.offsetHeight / 2;
-
-      currentX = Math.max(0, Math.min(currentX, canvasRect.width  - element.offsetWidth));
-      currentY = Math.max(0, Math.min(currentY, canvasRect.height - element.offsetHeight));
-
-      if(snapEnabled){
-        currentX = Math.round((currentX + element.offsetWidth/2) / GRID) * GRID - element.offsetWidth/2;
-        currentY = Math.round((currentY + element.offsetHeight/2) / GRID) * GRID - element.offsetHeight/2;
-        currentX = Math.max(0, Math.min(currentX, canvasRect.width  - element.offsetWidth));
-        currentY = Math.max(0, Math.min(currentY, canvasRect.height - element.offsetHeight));
-      }
-
-      if(!isOverlapping(element, currentX, currentY)){
-        element.style.left = currentX + "px";
-        element.style.top  = currentY + "px";
-      }
-    }
-
-    function dragEnd(e){
-      if(!isDragging) return;
-      if(pointerId !== null && e.pointerId !== pointerId) return;
-
-      isDragging = false;
-      element.classList.remove("dragging");
-      try{ element.releasePointerCapture?.(pointerId); }catch(_e){}
-      pointerId = null;
-
-      const canvas = document.getElementById("editorCanvas");
-      const canvasRect = canvas.getBoundingClientRect();
-
-      const leftPx = parseFloat(element.style.left) || 0;
-      const topPx  = parseFloat(element.style.top)  || 0;
-
-      const maxX = Math.max(1, canvasRect.width  - element.offsetWidth);
-      const maxY = Math.max(1, canvasRect.height - element.offsetHeight);
-
-      const xPct = (leftPx / maxX) * 100;
-      const yPct = (topPx  / maxY) * 100;
-
-      const seatData = seats.find(s => s.id === element.id);
-      if(seatData){
-        seatData.x = `${xPct.toFixed(2)}%`;
-        seatData.y = `${yPct.toFixed(2)}%`;
-      }
-    }
-
-    element.addEventListener("dblclick", function(){
-      if(editorLocked) return;
-      if(element.classList.contains("locked")) return;
-
-      const numEl = element.querySelector(".seat-num");
-      const currentNum = (numEl?.textContent || "").replace('#','').trim();
-      const newNumber = prompt("Digite o novo número do assento:", currentNum);
-      if(!newNumber) return;
-
-      const deleteBtn = element.querySelector('.delete-btn');
-      element.innerHTML = `
-        <div class="seat-num">#${newNumber}</div>
-        <div class="seat-label">ASSENTO</div>
-      `;
-      if(deleteBtn) element.appendChild(deleteBtn);
-
-      const seatData = seats.find(s => s.id === element.id);
-      if(seatData) seatData.number = String(newNumber);
-
-      toast(`✅ Assento renomeado para #${newNumber}`);
-      renderPassengerList();
-    });
-  }
-
-  function deleteSeat(seatId){
-    const seat = document.getElementById(seatId);
-    if(!seat) return;
-
-    if(editorLocked || seat.classList.contains("locked")){
-      toast("🔒 Assento travado — destrave para remover");
-      return;
-    }
-
-    seat.remove();
-    seats = seats.filter(s => s.id !== seatId);
-    updateSeatCount();
-    toast("🗑️ Assento removido");
-
-    const canvas = document.getElementById("editorCanvas");
-    if(canvas && canvas.querySelectorAll(".draggable-seat").length === 0){
-      const placeholder = document.getElementById("canvasPlaceholder");
-      if(placeholder) placeholder.style.display = "block";
-    }
-  }
-
-  function clearMap(){
-    if(!confirm("Tem certeza que deseja limpar todos os assentos?")) return;
-
-    const canvas = document.getElementById("editorCanvas");
-    if(!canvas) return;
-
-    canvas.querySelectorAll(".draggable-seat").forEach(s => s.remove());
-
-    seats = [];
-    seatCounter = 1;
-    updateSeatCount();
-
-    const placeholder = document.getElementById("canvasPlaceholder");
-    if(placeholder) placeholder.style.display = "block";
-
-    toast("🗑️ Mapa limpo");
-  }
-
-  function saveMap(){
-    if(seats.length === 0){
-      toast("⚠️ Adicione assentos primeiro");
-      return;
-    }
-
-    const mapData = {
-      seats,
-      editorLocked,
-      timestamp: new Date().toISOString(),
-      grid: GRID,
-      snapEnabled,
-      vanOpacity
-    };
-
-    localStorage.setItem("vanSeatMap", JSON.stringify(mapData));
-    toast("💾 Mapa salvo com sucesso!");
-  }
-
-  function loadSavedMap(){
-    const saved = localStorage.getItem("vanSeatMap");
-    if(!saved) return;
-
-    try{
-      const mapData = JSON.parse(saved);
-      const canvas = document.getElementById("editorCanvas");
-      const placeholder = document.getElementById("canvasPlaceholder");
-
-      if(typeof mapData.editorLocked === "boolean"){
-        editorLocked = mapData.editorLocked;
-        setEditorLockedState();
-      }
-
-      if(typeof mapData.snapEnabled === "boolean"){
-        snapEnabled = mapData.snapEnabled;
-        const btn = document.getElementById("btnSnap");
-        if(btn) btn.textContent = snapEnabled ? "🧲 Snap: ON" : "🧲 Snap: OFF";
-      }
-
-      if(typeof mapData.vanOpacity === "number"){
-        vanOpacity = mapData.vanOpacity;
-        const img = document.getElementById("vanBg");
-        if(img) img.style.opacity = vanOpacity;
-        const btnVan = document.getElementById("btnVan");
-        if(btnVan) btnVan.textContent = `🖼️ Van: ${Math.round(vanOpacity*100)}%`;
-      }
-
-      if(!canvas) return;
-      canvas.querySelectorAll(".draggable-seat").forEach(el => el.remove());
-
-      const loadedSeats = (mapData.seats || []).map(s => ({
-        id: String(s.id),
-        number: String(s.number ?? ""),
-        x: String(s.x ?? "0%"),
-        y: String(s.y ?? "0%"),
-        locked: !!s.locked,
-        status: normalizeStatus(s.status),
-        name: typeof s.name === "string" ? s.name : ""
-      }));
-
-      loadedSeats.forEach(seatData => {
-        const seat = document.createElement("div");
-        seat.className = "draggable-seat";
-        seat.id = seatData.id;
-        seat.innerHTML = `
-          <div class="seat-num">#${seatData.number}</div>
-          <div class="seat-label">ASSENTO</div>
-          <div class="delete-btn" onclick="deleteSeat('${seatData.id}')">✕</div>
-        `;
-
-        makeDraggable(seat);
-        canvas.appendChild(seat);
-        placeSeatFromSaved(seat, seatData);
-        applySeatVisual(seat, seatData);
-      });
-
-      seats = loadedSeats;
-
-      const nums = seats.map(s => parseInt(s.number, 10)).filter(n => !Number.isNaN(n));
-      seatCounter = (nums.length ? Math.max(...nums) : 0) + 1;
-
-      if(placeholder) placeholder.style.display = seats.length ? "none" : "block";
-      updateSeatCount();
-
-      toast("✅ Mapa carregado");
-    }catch(e){
-      toast("❌ Erro ao carregar mapa");
-    }
-  }
-
-  function updateSeatCount(){
-    const totalEditor = document.getElementById("totalSeatsEditor");
-    if(totalEditor) totalEditor.textContent = seats.length;
-
-    renderPassengerList();
-    updateStats();
-  }
-
-  function updateStats(){
-    const totalEl = document.getElementById("totalSeats");
-    const freeEl = document.getElementById("freeSeats");
-    const takenEl = document.getElementById("takenSeats");
-
+    // Stats
     const total = seats.length;
-    const free = seats.filter(s => normalizeStatus(s.status) === "livre").length;
-    const taken = total - free;
+    const livre = seats.filter(s => s.status === 'livre').length;
+    const reservado = seats.filter(s => s.status === 'reservado').length;
+    const confirmado = seats.filter(s => s.status === 'confirmado').length;
+    const bloqueado = seats.filter(s => s.status === 'bloqueado').length;
+    const ocupados = reservado + confirmado + bloqueado;
 
-    if(totalEl) totalEl.textContent = total;
-    if(freeEl) freeEl.textContent = free;
-    if(takenEl) takenEl.textContent = taken;
-  }
+    doc.setTextColor(241, 245, 249);
+    doc.setFontSize(11);
+    doc.text(`Total: ${total}   |   Livres: ${livre}   |   Ocupados: ${ocupados}`, 105, 48, { align: 'center' });
 
-  function renderPassengerList(){
-    const panel = document.getElementById("passengerPanel");
-    if(!panel) return;
+    // Canvas screenshot
+    const canvas = document.getElementById('canvas');
+    const canvasData = await html2canvas(canvas, {
+      backgroundColor: '#1a1f2e',
+      scale: 2
+    });
+    
+    const imgData = canvasData.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 15, 55, 180, 100);
 
-    panel.innerHTML = "";
+    // Passenger list
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Lista de Passageiros', 15, 165);
 
-    seats
-      .slice()
-      .sort((a,b) => String(a.number).localeCompare(String(b.number), undefined, {numeric:true}))
-      .forEach(seat => {
-        const st = normalizeStatus(seat.status);
-        const row = document.createElement("div");
-        row.className = `passenger-row status-${st}`;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    
+    let y = 175;
+    const sortedSeats = seats.sort((a, b) => a.number - b.number);
 
-        row.innerHTML = `
-          <div style="font-weight:900; color:var(--primary-light)">#${seat.number}</div>
-          <input type="text" placeholder="Nome" value="${seat.name || ""}" onchange="updatePassengerName('${seat.id}', this.value)" />
-          <select onchange="updateSeatStatus('${seat.id}', this.value)">
-            <option value="livre" ${st==='livre'?'selected':''}>Livre</option>
-            <option value="reservado" ${st==='reservado'?'selected':''}>Reservado</option>
-            <option value="confirmado" ${st==='confirmado'?'selected':''}>Confirmado</option>
-            <option value="bloqueado" ${st==='bloqueado'?'selected':''}>Bloqueado</option>
-          </select>
-        `;
+    sortedSeats.forEach((s, idx) => {
+      if(y > 280){
+        doc.addPage();
+        y = 20;
+      }
 
-        panel.appendChild(row);
+      const statusColors = {
+        livre: [59, 130, 246],
+        reservado: [245, 158, 11],
+        confirmado: [16, 185, 129],
+        bloqueado: [239, 68, 68]
+      };
+
+      const color = statusColors[s.status] || [148, 163, 184];
+      doc.setFillColor(...color);
+      doc.circle(18, y - 2, 2, 'F');
+
+      doc.setTextColor(241, 245, 249);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`#${s.number}`, 25, y);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(148, 163, 184);
+      const name = s.name || 'Sem passageiro';
+      doc.text(name, 45, y);
+
+      doc.setTextColor(100, 116, 139);
+      const statusText = {
+        livre: 'Livre',
+        reservado: 'Reservado',
+        confirmado: 'Confirmado',
+        bloqueado: 'Bloqueado'
+      }[s.status];
+      doc.text(statusText, 160, y);
+
+      y += 8;
+    });
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setTextColor(100, 116, 139);
+    doc.text('Gerado por Sistema Van Nobreak - ' + new Date().toLocaleString('pt-BR'), 105, 290, { align: 'center' });
+
+    // Convert to blob
+    const pdfBlob = doc.output('blob');
+    const file = new File([pdfBlob], `van-layout-${Date.now()}.pdf`, { type: 'application/pdf' });
+
+    // Check if Web Share API is available
+    if(navigator.share && navigator.canShare && navigator.canShare({ files: [file] })){
+      await navigator.share({
+        title: 'Layout Van Nobreak',
+        text: `Layout da van com ${total} assentos (${livre} livres, ${ocupados} ocupados)`,
+        files: [file]
       });
+      toast('Compartilhado com sucesso!', '✅');
+    }else{
+      // Fallback: download and show instructions
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `van-layout-${Date.now()}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      setTimeout(() => {
+        alert('PDF baixado! Abra o WhatsApp e envie o arquivo baixado.');
+      }, 500);
+      toast('PDF baixado - envie pelo WhatsApp', '📱');
+    }
+  }catch(e){
+    console.error(e);
+    toast('Erro ao gerar PDF', '❌');
   }
+}
 
-  function updatePassengerName(seatId, name){
-    const seat = seats.find(s => s.id === seatId);
-    if(!seat) return;
-    seat.name = name;
-    toast(name ? "👤 Passageiro atualizado" : "👤 Nome removido");
-  }
-
-  function updateSeatStatus(seatId, status){
-    const seat = seats.find(s => s.id === seatId);
-    const seatEl = document.getElementById(seatId);
-    if(!seat || !seatEl) return;
-
-    seat.status = normalizeStatus(status);
-    applySeatVisual(seatEl, seat);
-    updateStats();
-    renderPassengerList();
-    toast(`🎫 Assento #${seat.number} → ${seat.status}`);
-  }
-
-  function setAllStatus(status){
-    const st = normalizeStatus(status);
-
-    seats.forEach(s => {
-      s.status = st;
-      const el = document.getElementById(s.id);
-      if(el) applySeatVisual(el, s);
-    });
-
-    updateStats();
-    renderPassengerList();
-    toast(`⚡ Status aplicado: ${st}`);
-  }
-
-  document.getElementById("modalOverlay").addEventListener("click", (e) => {
-    if(e.target.id === "modalOverlay") closeModal();
-  });
-
-  window.addEventListener("DOMContentLoaded", () => {
-    setEditorLockedState();
-    loadSavedMap();
-    updateSeatCount();
-  });
-
-  window.addEventListener("resize", () => {
-    seats.forEach(s => {
-      const el = document.getElementById(s.id);
-      if(el) placeSeatFromSaved(el, s);
-    });
-  });
+window.addEventListener('DOMContentLoaded', () => {
+  loadLayout();
+  // Initialize stats even if no seats
+  updateAll();
+});
 </script>
 </body>
 </html>

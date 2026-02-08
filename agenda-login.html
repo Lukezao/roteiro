@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Login | Nobreak Company</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  @font-face{
+    font-family:"Rokiest";
+    src:url("https://raw.githubusercontent.com/WAYCOMPANYGG/roteiro/main/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
+    font-weight:800; font-display:swap;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0}
+  
+  html,body{
+    height:100%;
+    font-family:'Poppins', sans-serif;
+    color:#f8fafc;
+    background:#0a0f1a;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 0, 128, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: gradientShift 10s ease infinite;
+  }
+
+  @keyframes gradientShift{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0.8; }
+  }
+
+  .login-container{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    position:relative;
+    z-index:1;
+  }
+
+  .login-box{
+    background:#1a1f2e;
+    border-radius:30px;
+    padding:0;
+    width:100%;
+    max-width:450px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+    animation:slideUp 0.6s ease;
+    overflow:hidden;
+  }
+
+  @keyframes slideUp{
+    from{ opacity:0; transform:translateY(30px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .login-header{
+    background:linear-gradient(135deg, #FF0080 0%, #7928CA 100%);
+    padding:60px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .login-header::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    right:-30%;
+    width:400px;
+    height:400px;
+    background:radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    border-radius:50%;
+    animation:rotate 20s linear infinite;
+  }
+
+  @keyframes rotate{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+  }
+
+  .login-header-content{
+    position:relative;
+  }
+
+  .logo{
+    display:inline-flex;
+    align-items:center;
+    gap:2px;
+    font-family:'Rokiest', sans-serif;
+    font-size:32px;
+    letter-spacing:0.5px;
+    margin-bottom:20px;
+  }
+
+  .logo-k{position:relative; margin-right:-3px}
+
+  .logo-lightning{
+    position:absolute;
+    right:-8px;
+    top:50%;
+    transform:translateY(-50%);
+    width:20px;
+    filter:drop-shadow(0 0 10px #ffd700);
+  }
+
+  .login-title{
+    font-size:28px;
+    font-weight:900;
+    margin-bottom:8px;
+    text-shadow:2px 2px 10px rgba(0,0,0,0.3);
+  }
+
+  .login-subtitle{
+    font-size:14px;
+    opacity:0.9;
+    font-weight:600;
+  }
+
+  .login-body{
+    padding:40px;
+  }
+
+  .form-field{
+    margin-bottom:25px;
+  }
+
+  .form-field label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:700;
+    color:#94a3b8;
+    margin-bottom:10px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+
+  .form-input{
+    width:100%;
+    padding:16px 20px;
+    background:rgba(255,255,255,0.05);
+    border:2px solid rgba(255,255,255,0.1);
+    border-radius:12px;
+    color:#f8fafc;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    transition:all 0.3s ease;
+    outline:none;
+  }
+
+  .form-input:hover{
+    background:rgba(255,255,255,0.08);
+    border-color:rgba(255,255,255,0.15);
+  }
+
+  .form-input:focus{
+    background:rgba(255,255,255,0.08);
+    border-color:#FF0080;
+    box-shadow:0 0 0 4px rgba(255,0,128,0.15);
+    transform:translateY(-2px);
+  }
+
+  .btn-login{
+    width:100%;
+    background:linear-gradient(135deg, #FF0080, #7928CA);
+    color:white;
+    border:none;
+    padding:18px 32px;
+    border-radius:12px;
+    font-family:'Poppins', sans-serif;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    box-shadow:0 5px 20px rgba(255,0,128,0.3);
+    margin-top:30px;
+  }
+
+  .btn-login:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(255,0,128,0.5);
+  }
+
+  .btn-login:active{
+    transform:translateY(-1px);
+  }
+
+  .demo-accounts{
+    margin-top:30px;
+    padding:20px;
+    background:rgba(0,240,255,0.05);
+    border:2px solid rgba(0,240,255,0.15);
+    border-radius:15px;
+  }
+
+  .demo-title{
+    font-size:13px;
+    font-weight:800;
+    color:#00F0FF;
+    margin-bottom:15px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .demo-account{
+    background:rgba(255,255,255,0.05);
+    padding:12px 15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    border:1px solid rgba(255,255,255,0.1);
+    cursor:pointer;
+    transition:all 0.3s ease;
+  }
+
+  .demo-account:hover{
+    background:rgba(255,255,255,0.08);
+    border-color:rgba(0,240,255,0.3);
+    transform:translateX(5px);
+  }
+
+  .demo-account-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+  }
+
+  .demo-level{
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+
+  .demo-level.admin{
+    color:#FF0080;
+  }
+
+  .demo-level.producer{
+    color:#00F0FF;
+  }
+
+  .demo-level.team{
+    color:#10b981;
+  }
+
+  .demo-credentials{
+    font-size:11px;
+    color:#94a3b8;
+    font-weight:600;
+    font-family:'Courier New', monospace;
+  }
+
+  .error-message{
+    background:rgba(239,68,68,0.15);
+    border:2px solid rgba(239,68,68,0.3);
+    color:#ef4444;
+    padding:12px 16px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:20px;
+    display:none;
+    animation:shake 0.5s ease;
+  }
+
+  .error-message.show{
+    display:block;
+  }
+
+  @keyframes shake{
+    0%, 100%{ transform:translateX(0); }
+    25%{ transform:translateX(-10px); }
+    75%{ transform:translateX(10px); }
+  }
+
+  .permissions-info{
+    margin-top:25px;
+    padding:15px;
+    background:rgba(255,255,255,0.03);
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.05);
+  }
+
+  .permission-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    color:#e2e8f0;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+
+  .permission-item:last-child{
+    margin-bottom:0;
+  }
+
+  @media(max-width:500px){
+    .login-box{
+      max-width:100%;
+    }
+
+    .login-header{
+      padding:40px 25px;
+    }
+
+    .login-body{
+      padding:30px 25px;
+    }
+  }
+</style>
+</head>
+
+<body>
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-header-content">
+        <div class="logo">
+          <span>NOBREA</span>
+          <span class="logo-k">
+            K
+            <svg class="logo-lightning" viewBox="0 0 100 180" fill="none">
+              <path d="M50 0L14 90H40L25 180L75 63H50L65 18L50 0Z" fill="#ffd700"/>
+            </svg>
+          </span>
+        </div>
+        <h1 class="login-title">Agenda</h1>
+        <p class="login-subtitle">Faça login para continuar</p>
+      </div>
+    </div>
+
+    <div class="login-body">
+      <div class="error-message" id="errorMessage">
+        ⚠️ Usuário ou senha incorretos
+      </div>
+
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <div class="form-field">
+          <label>👤 Usuário</label>
+          <input type="text" class="form-input" id="username" placeholder="Digite seu usuário" required autocomplete="username">
+        </div>
+
+        <div class="form-field">
+          <label>🔒 Senha</label>
+          <input type="password" class="form-input" id="password" placeholder="Digite sua senha" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-login">
+          🔓 Entrar
+        </button>
+      </form>
+
+      <!-- Demo Accounts -->
+      <div class="demo-accounts">
+        <div class="demo-title">🎯 Contas de Demonstração</div>
+        
+        <div class="demo-account" onclick="fillLogin('admin', 'admin123')">
+          <div class="demo-account-header">
+            <div class="demo-level admin">👑 ACESSO FULL</div>
+          </div>
+          <div class="demo-credentials">admin / admin123</div>
+          <div class="permissions-info">
+            <div class="permission-item">✅ Edita tudo</div>
+            <div class="permission-item">✅ Cria, edita e deleta eventos</div>
+            <div class="permission-item">✅ Acesso a comparativos e dashboard</div>
+            <div class="permission-item">✅ Gerencia solicitações</div>
+          </div>
+        </div>
+
+        <div class="demo-account" onclick="fillLogin('produtor', 'prod123')">
+          <div class="demo-account-header">
+            <div class="demo-level producer">📊 PRODUTOR</div>
+          </div>
+          <div class="demo-credentials">produtor / prod123</div>
+          <div class="permissions-info">
+            <div class="permission-item">✅ Visualiza eventos completos</div>
+            <div class="permission-item">✅ Acesso a comparativos e dashboard</div>
+            <div class="permission-item">✅ Vê detalhes de contatos e cachês</div>
+            <div class="permission-item">❌ Não pode criar/editar/deletar</div>
+          </div>
+        </div>
+
+        <div class="demo-account" onclick="fillLogin('equipe', 'equipe123')">
+          <div class="demo-account-header">
+            <div class="demo-level team">👥 EQUIPE</div>
+          </div>
+          <div class="demo-credentials">equipe / equipe123</div>
+          <div class="permissions-info">
+            <div class="permission-item">✅ Visualiza agenda (somente leitura)</div>
+            <div class="permission-item">✅ Vê datas, horários e locais</div>
+            <div class="permission-item">❌ Não vê cachês e valores</div>
+            <div class="permission-item">❌ Sem acesso a comparativos e dashboard</div>
+            <div class="permission-item">❌ Não pode criar/editar/deletar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Usuários do sistema
+  const users = [
+    {
+      username: 'admin',
+      password: 'admin123',
+      role: 'admin',
+      name: 'Administrador',
+      permissions: {
+        viewEvents: true,
+        createEvents: true,
+        editEvents: true,
+        deleteEvents: true,
+        viewFinancial: true,
+        viewComparativo: true,
+        viewDashboard: true,
+        manageSolicitacoes: true,
+        viewContacts: true
+      }
+    },
+    {
+      username: 'produtor',
+      password: 'prod123',
+      role: 'producer',
+      name: 'Produtor',
+      permissions: {
+        viewEvents: true,
+        createEvents: false,
+        editEvents: false,
+        deleteEvents: false,
+        viewFinancial: true,
+        viewComparativo: true,
+        viewDashboard: true,
+        manageSolicitacoes: false,
+        viewContacts: true
+      }
+    },
+    {
+      username: 'equipe',
+      password: 'equipe123',
+      role: 'team',
+      name: 'Equipe',
+      permissions: {
+        viewEvents: true,
+        createEvents: false,
+        editEvents: false,
+        deleteEvents: false,
+        viewFinancial: false,
+        viewComparativo: false,
+        viewDashboard: false,
+        manageSolicitacoes: false,
+        viewContacts: false
+      }
+    }
+  ];
+
+  function handleLogin(event){
+    event.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('errorMessage');
+
+    // Verificar credenciais
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if(!user){
+      // Credenciais inválidas
+      errorMsg.classList.add('show');
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+      return false;
+    }
+
+    // Login bem-sucedido
+    errorMsg.classList.remove('show');
+
+    // Salvar sessão
+    const session = {
+      user: {
+        username: user.username,
+        name: user.name,
+        role: user.role
+      },
+      permissions: user.permissions,
+      loginTime: new Date().toISOString()
+    };
+
+    localStorage.setItem('userSession', JSON.stringify(session));
+
+    // Redirecionar para agenda
+    window.location.href = 'agenda-completa-redesign.html';
+
+    return false;
+  }
+
+  function fillLogin(username, password){
+    document.getElementById('username').value = username;
+    document.getElementById('password').value = password;
+    document.getElementById('username').focus();
+  }
+
+  // Verificar se já está logado
+  window.addEventListener('load', () => {
+    const session = localStorage.getItem('userSession');
+    if(session){
+      const parsed = JSON.parse(session);
+      // Verificar se sessão ainda é válida (opcional: adicionar expiração)
+      if(parsed && parsed.user){
+        // Já está logado, redirecionar
+        // window.location.href = 'agenda-completa-redesign.html';
+        // (Comentado para permitir logout e re-login)
+      }
+    }
+  });
+
+  console.log('🔐 Sistema de Login carregado!');
+  console.log('📋 Contas disponíveis:', users.map(u => `${u.username} / ${u.password} [${u.role}]`));
+</script>
+</body>
+</html>

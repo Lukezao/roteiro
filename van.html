@@ -2483,7 +2483,7 @@ async function shareWhatsApp(){
     if(navigator.share && navigator.canShare && navigator.canShare({ files: [file] })){
       await navigator.share({
         title: 'Layout Van Nobreak',
-        text: `Layout da van com ${total} assentos (${livre} livres, ${ocupados} ocupados) - 1920x1080px`,
+        text: `Layout da van com ${total} assentos (${livre} livres, ${ocupados} ocupados)`,
         files: [file]
       });
       toast('Compartilhado com sucesso!', '✅');

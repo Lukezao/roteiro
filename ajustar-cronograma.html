@@ -1,178 +1,461 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ajustar Cronograma | Equipe</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ajustar Cronograma | Nobreak Company</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body{
-      margin:0;
+    @font-face{
+      font-family:"Rokiest";
+      src:url("https://raw.githubusercontent.com/NOBRAKEGG/iMake/main/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
+      font-weight:800;
+      font-display:swap;
+    }
+
+    :root{
+      --bg:#0a0f1a;
+      --surface:#1a1f2e;
+      --surface-elevated:#252b3b;
+
+      --border:rgba(255,255,255,.08);
+      --border-light:rgba(255,255,255,.12);
+
+      --text:#f8fafc;
+      --text-secondary:#e2e8f0;
+      --text-muted:#94a3b8;
+      --text-dim:#64748b;
+
+      --primary:#6366f1;
+      --primary-light:#818cf8;
+      --accent:#06b6d4;
+      --accent-light:#22d3ee;
+      --success:#10b981;
+      --danger:#ef4444;
+
+      --shadow-md:0 8px 24px rgba(0,0,0,.4);
+      --shadow-lg:0 20px 40px rgba(0,0,0,.5);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    html,body{
+      height:100%;
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 30% 20%,rgba(99,102,241,.12) 0%,transparent 50%),
+        radial-gradient(circle at 70% 80%,rgba(6,182,212,.10) 0%,transparent 50%);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    /* HOME FAB */
+    .home-fab{
+      position:fixed;
+      top:20px;
+      left:20px;
+      z-index:9999;
+      background:var(--surface);
+      border:1px solid var(--border-light);
+      color:var(--text);
+      text-decoration:none;
+      font-weight:700;
+      font-size:14px;
+      padding:12px 16px;
+      border-radius:14px;
+      box-shadow:var(--shadow-md);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      backdrop-filter:blur(12px);
+      transition:all .25s ease;
+    }
+    .home-fab:hover{
+      border-color:rgba(99,102,241,.4);
+      box-shadow:var(--shadow-lg),0 0 20px rgba(99,102,241,.15);
+      transform:translateY(-2px);
+    }
+
+    /* LAYOUT */
+    .page{
       min-height:100vh;
       display:flex;
       justify-content:center;
       align-items:center;
-      background:linear-gradient(135deg,#0f0f0f,#1b1b1b);
-      font-family:Arial, sans-serif;
-      color:#fff;
-      padding:16px;
+      padding:24px;
+      position:relative;
+      z-index:1;
     }
+
+    /* CARD PRINCIPAL */
     .card{
       width:100%;
-      max-width:560px;
-      background:#121212;
-      border-radius:16px;
-      padding:18px;
-      box-shadow:0 20px 50px rgba(0,0,0,.6);
+      max-width:520px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:40px 32px;
+      box-shadow:var(--shadow-lg);
       text-align:center;
+      position:relative;
+      overflow:hidden;
+      animation:fadeUp .5s ease;
     }
-    h1{ margin:0 0 8px; font-size:20px; }
-    p{ margin:0 0 14px; opacity:.8; font-size:14px; }
-
-    .input{
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.12);
-      background:#0b0b0b;
-      color:#fff;
-      margin-top:10px;
-      box-sizing:border-box;
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 50% 0%,rgba(99,102,241,.1),transparent 60%);
+      pointer-events:none;
     }
 
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      margin-top:12px;
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(16px)}
+      to{opacity:1;transform:translateY(0)}
     }
 
-    .btn{
+    /* HEADER DO CARD */
+    .card-icon{
+      width:64px;
+      height:64px;
+      border-radius:16px;
+      background:var(--surface-elevated);
+      border:1px solid var(--border);
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
-      padding:12px 14px;
-      border-radius:10px;
+      font-size:32px;
+      margin-bottom:20px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card h1{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:22px;
+      font-weight:600;
+      letter-spacing:-0.3px;
+      color:var(--text);
+      margin-bottom:8px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card-subtitle{
+      font-size:14px;
+      color:var(--text-muted);
+      font-weight:400;
+      line-height:1.6;
+      margin-bottom:28px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* INPUT */
+    .input-group{
+      position:relative;
+      z-index:1;
+      margin-bottom:20px;
+    }
+
+    .input-group label{
+      display:block;
+      text-align:left;
+      font-size:12px;
+      font-weight:600;
+      color:var(--text-dim);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      margin-bottom:8px;
+    }
+
+    .input{
+      width:100%;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid var(--border-light);
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Inter',sans-serif;
+      font-size:15px;
+      font-weight:500;
+      outline:none;
+      transition:all .2s ease;
+    }
+    .input::placeholder{
+      color:var(--text-dim);
+    }
+    .input:focus{
+      border-color:rgba(99,102,241,.5);
+      box-shadow:0 0 0 3px rgba(99,102,241,.15);
+    }
+
+    /* BOTOES */
+    .actions{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 20px;
+      border-radius:12px;
       text-decoration:none;
       color:#fff;
-      font-weight:800;
-      background:#374151;
-      border:none;
+      font-family:'Inter',sans-serif;
+      font-weight:600;
+      font-size:15px;
+      border:1px solid transparent;
       cursor:pointer;
-      min-width:220px;
+      transition:all .2s ease;
+      position:relative;
+      overflow:hidden;
     }
-    .btn:hover{ opacity:.92; }
+    .btn::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.08),transparent);
+      opacity:0;
+      transition:opacity .2s;
+    }
+    .btn:hover::after{opacity:1}
 
-    .btn-open{ background:#2563eb; }
-    .btn-sheet{ background:#16a34a; }
-    .btn-logout{ background:#ef4444; }
+    .btn-primary{
+      background:var(--primary);
+      border-color:var(--primary);
+      box-shadow:0 4px 16px rgba(99,102,241,.35);
+    }
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(99,102,241,.4);
+    }
 
-    .small{
+    .btn-sheet{
+      background:var(--success);
+      border-color:var(--success);
+      box-shadow:0 4px 16px rgba(16,185,129,.3);
+    }
+    .btn-sheet:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(16,185,129,.35);
+    }
+
+    .btn-form{
+      background:var(--accent);
+      color:#0a0f1a;
+      border-color:var(--accent);
+      box-shadow:0 4px 16px rgba(6,182,212,.3);
+    }
+    .btn-form:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(6,182,212,.35);
+    }
+
+    .btn-ghost{
+      background:var(--surface-elevated);
+      border-color:var(--border-light);
+      color:var(--text-muted);
+    }
+    .btn-ghost:hover{
+      border-color:rgba(255,255,255,.2);
+      color:var(--text);
+      transform:translateY(-2px);
+    }
+
+    .btn-danger{
+      background:rgba(239,68,68,.15);
+      border-color:rgba(239,68,68,.3);
+      color:var(--danger);
+    }
+    .btn-danger:hover{
+      background:rgba(239,68,68,.25);
+      transform:translateY(-2px);
+    }
+
+    .btn-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    /* HINT */
+    .hint{
       font-size:12px;
-      opacity:.7;
-      margin-top:10px;
-      line-height:1.35;
+      color:var(--text-dim);
+      margin-top:16px;
+      line-height:1.5;
+      position:relative;
+      z-index:1;
     }
 
-    .box{
-      margin-top:12px;
-      padding:12px;
-      border-radius:12px;
-      background:#0b0b0b;
-      border:1px solid rgba(255,255,255,.08);
-      text-align:left;
+    /* AREA LIBERADA */
+    .area{
       display:none;
+      position:relative;
+      z-index:1;
     }
 
-    /* BOTÃO HOME FIXO */
-    .home-fab{
-      position: fixed;
-      top: 16px;
-      left: 16px;
-      z-index: 9999;
-      background: rgba(17, 24, 39, .92);
-      border: 1px solid rgba(255,255,255,.12);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 14px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.45);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(8px);
+    .access-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 20px;
+      border-radius:24px;
+      background:rgba(16,185,129,.12);
+      border:1px solid rgba(16,185,129,.25);
+      font-size:13px;
+      font-weight:600;
+      color:var(--success);
+      margin-bottom:24px;
     }
-    .home-fab:hover{
-      opacity: .92;
-      transform: translateY(-1px);
+
+    .access-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--success);
+      box-shadow:0 0 12px var(--success);
+      animation:pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{opacity:1;transform:scale(1)}
+      50%{opacity:.6;transform:scale(1.2)}
+    }
+
+    /* DIVIDER */
+    .divider{
+      height:1px;
+      background:var(--border);
+      margin:20px 0;
+      position:relative;
+      z-index:1;
+    }
+
+    /* ERRO TOAST */
+    .toast{
+      position:fixed;
+      top:20px;
+      right:20px;
+      padding:14px 24px;
+      border-radius:12px;
+      background:var(--surface-elevated);
+      border:1px solid rgba(239,68,68,.4);
+      color:var(--danger);
+      font-family:'Inter',sans-serif;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:var(--shadow-lg);
+      z-index:10000;
+      transform:translateX(120%);
+      transition:transform .3s ease;
+    }
+    .toast.show{
+      transform:translateX(0);
+    }
+
+    /* RESPONSIVO */
+    @media(max-width:560px){
+      .card{
+        padding:28px 20px;
+        border-radius:16px;
+      }
+      .card h1{font-size:19px}
+      .btn-row{grid-template-columns:1fr}
+      .home-fab{
+        top:12px;
+        left:12px;
+        padding:10px 12px;
+        font-size:13px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- BOTÃO HOME -->
   <a class="home-fab" href="index.html">🏠 Home</a>
 
-  <div class="card">
-    <h1>🛠️ Ajustar Cronograma (Equipe)</h1>
-    <p>Entre uma vez e abra a planilha ou o formulário.</p>
+  <div class="toast" id="toast">Senha incorreta</div>
 
-    <!-- LOGIN -->
-    <div id="login">
-      <input id="pass" class="input" type="password" placeholder="Senha da equipe" />
-      <div class="row">
-        <button class="btn btn-open" onclick="entrar()">Entrar</button>
-        <a class="btn" href="index.html">⬅ Voltar</a>
-      </div>
-      <div class="small">
-        Depois de entrar, não pede senha novamente até você sair.
-      </div>
-    </div>
+  <div class="page">
+    <div class="card">
+      <div class="card-icon">🗓️</div>
+      <h1>AJUSTAR CRONOGRAMA</h1>
+      <p class="card-subtitle">Acesse a planilha ou o formulario da equipe com a senha de acesso.</p>
 
-    <!-- ÁREA LIBERADA -->
-    <div id="area" class="box">
-      <p style="margin:0 0 10px;"><b>✅ Acesso liberado</b></p>
+      <!-- LOGIN -->
+      <div id="login">
+        <div class="input-group">
+          <label for="pass">Senha da equipe</label>
+          <input id="pass" class="input" type="password" placeholder="Digite a senha..." />
+        </div>
 
-      <div class="row">
-        <!-- ABRIR PLANILHA (via JavaScript) -->
-        <button class="btn btn-sheet" onclick="abrirPlanilha()">
-          📊 Abrir Planilha (Sheets)
-        </button>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="entrar()">Entrar</button>
+          <a class="btn btn-ghost" href="index.html">
+            <span>←</span>
+            <span>Voltar ao Dashboard</span>
+          </a>
+        </div>
 
-        <!-- ABRIR FORMULÁRIO -->
-        <a class="btn btn-open"
-           href="https://script.google.com/macros/s/AKfycbzOBfcv09wJdxM7uIvsS4EVvOJCkhu5ptY5gYY_-PI/exec"
-           target="_blank" rel="noopener">
-          📝 Abrir Formulário
-        </a>
-
-        <button class="btn btn-logout" onclick="sair()">Sair</button>
+        <p class="hint">A sessao permanece ativa enquanto a aba estiver aberta.</p>
       </div>
 
-      <div class="small">
-        A planilha abre na mesma aba. O formulário abre em nova aba.
+      <!-- AREA LIBERADA -->
+      <div id="area" class="area">
+        <div class="access-badge">
+          <span class="access-dot"></span>
+          <span>Acesso liberado</span>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-sheet" onclick="abrirPlanilha()">
+            📊 Abrir Planilha (Sheets)
+          </button>
+          <a class="btn btn-form"
+             href="https://script.google.com/macros/s/AKfycbzOBfcv09wJdxM7uIvsS4EVvOJCkhu5ptY5gYY_-PI/exec"
+             target="_blank" rel="noopener">
+            📝 Abrir Formulario
+          </a>
+
+          <div class="divider"></div>
+
+          <button class="btn btn-danger" onclick="sair()">Sair da sessao</button>
+        </div>
+
+        <p class="hint">A planilha abre na mesma aba. O formulario abre em nova aba.</p>
       </div>
     </div>
   </div>
 
 <script>
-  /* ===== CONFIGURAÇÕES ===== */
-
-  // SENHA DO PORTAL
   const TEAM_PASSWORD = "1234";
 
-  // LINK DA SUA PLANILHA (JÁ CONFIGURADO)
   const SHEETS_URL =
     "https://docs.google.com/spreadsheets/d/1lbYZWkFIGQr9FYd6EATkyymrUf5iupM1H55oxSy0uUg/edit?usp=sharing";
 
-  /* ===== FUNÇÕES ===== */
-
   function abrirPlanilha(){
-    // abre SEMPRE, sem bloqueio
     window.location.href = SHEETS_URL;
   }
 
@@ -181,10 +464,18 @@
     document.getElementById("area").style.display = "block";
   }
 
+  function showToast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=> t.classList.remove("show"), 2500);
+  }
+
   function entrar(){
     const p = document.getElementById("pass").value || "";
     if(p !== TEAM_PASSWORD){
-      alert("Senha incorreta");
+      showToast("Senha incorreta");
+      document.getElementById("pass").focus();
       return;
     }
     sessionStorage.setItem("cronograma_autorizado", "1");
@@ -198,7 +489,12 @@
     document.getElementById("login").style.display = "block";
   }
 
-  // mantém login enquanto a aba estiver aberta
+  // Enter key to submit
+  document.getElementById("pass").addEventListener("keydown", function(e){
+    if(e.key === "Enter") entrar();
+  });
+
+  // Keep session while tab is open
   if(sessionStorage.getItem("cronograma_autorizado") === "1"){
     showArea();
   }

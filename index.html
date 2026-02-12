@@ -3,732 +3,396 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Nobreak Company | Dashboard</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <title>Home | Nobreak Company</title>
+  <link rel="stylesheet" href="assets/off-ui.css"/>
 
   <style>
-    @font-face{
-      font-family:"Rokiest";
-      src:url("https://raw.githubusercontent.com/NOBRAKEGG/iMake/main/assets/fonts/Rokiest-Extrabold.otf") format("opentype");
-      font-weight:800;
-      font-display:swap;
+    /* ===== page-specific ===== */
+    .welcome{
+      padding:8px 0 6px;
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .welcome h1{ margin:0; font-family:Rokiest; letter-spacing:1px; font-size:32px; }
+    .welcome .sub{
+      color:var(--muted); font-size:13px; line-height:1.5;
     }
 
-    :root{
-      --bg:#0a0f1a;
-      --bg-secondary:#111827;
-      --surface:#1a1f2e;
-      --surface-elevated:#252b3b;
-
-      --border:rgba(255,255,255,.08);
-      --border-light:rgba(255,255,255,.12);
-      --border-hover:rgba(255,0,128,.5);
-
-      --text:#f8fafc;
-      --text-secondary:#e2e8f0;
-      --text-muted:#94a3b8;
-      --text-dim:#64748b;
-
-      --primary:#FF0080;
-      --primary-light:#FF3399;
-      --primary-dark:#CC0066;
-      --accent:#00F0FF;
-      --accent-light:#22d3ee;
-      --success:#10b981;
-      --warning:#f59e0b;
-      --danger:#ef4444;
-
-      --shadow-sm:0 2px 8px rgba(0,0,0,.3);
-      --shadow-md:0 8px 24px rgba(0,0,0,.4);
-      --shadow-lg:0 20px 40px rgba(0,0,0,.5);
-
-      --radius-lg:16px;
-      --radius-md:12px;
-      --radius-sm:8px;
+    /* ===== section headings ===== */
+    .sec-head{
+      display:flex; align-items:center; gap:10px;
+      margin:22px 0 14px;
+    }
+    .sec-head h2{
+      margin:0; font-family:Rokiest; letter-spacing:.6px; font-size:16px;
+      color:rgba(229,231,235,.82);
+    }
+    .sec-line{
+      flex:1; height:1px;
+      background:linear-gradient(90deg, rgba(255,255,255,.10), transparent 80%);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-
-    html,body{
-      height:100%;
-      font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
-      color:var(--text);
-      background:var(--bg);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-
-    body::before{
-      content:'';
-      position:fixed;
-      inset:0;
-      background:
-        radial-gradient(circle at 20% 50%,rgba(255,0,128,.10) 0%,transparent 50%),
-        radial-gradient(circle at 80% 80%,rgba(0,240,255,.10) 0%,transparent 50%);
-      pointer-events:none;
-      z-index:0;
-    }
-
-    .container{
-      max-width:1400px;
-      margin:0 auto;
-      padding:24px;
-      animation:fadeIn .6s ease;
-      position:relative;
-      z-index:1;
-    }
-
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(10px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    @keyframes slideDown{
-      from{opacity:0;transform:translateY(-20px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    @keyframes slideUp{
-      from{opacity:0;transform:translateY(20px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    /* HEADER */
-    .header{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius-lg);
-      padding:24px 32px;
-      margin-bottom:24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-      flex-wrap:wrap;
-      animation:slideDown .5s ease;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:20px;
-    }
-
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:2px;
-      font-family:'Rokiest',sans-serif;
-      font-size:24px;
-      letter-spacing:0.5px;
-      color:var(--text);
-    }
-
-    .logo-k{position:relative;margin-right:-3px}
-
-    .logo-lightning{
-      position:absolute;
-      right:-6px;
-      top:50%;
-      transform:translateY(-50%);
-      width:16px;
-      filter:drop-shadow(0 0 8px #ffd700);
-    }
-
-    .header-titles h1{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:24px;
-      font-weight:600;
-      letter-spacing:-0.3px;
-      margin-bottom:4px;
-      color:var(--text);
-    }
-
-    .header-sub{
-      font-size:13px;
-      color:var(--text-dim);
-      font-weight:500;
-    }
-
-    .header-right{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .status-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 20px;
-      border-radius:999px;
-      background:rgba(16,185,129,.12);
-      border:1px solid rgba(16,185,129,.25);
-      font-size:13px;
-      font-weight:600;
-      color:var(--success);
-    }
-
-    .status-dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:var(--success);
-      box-shadow:0 0 12px var(--success);
-      animation:pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse{
-      0%,100%{opacity:1;transform:scale(1)}
-      50%{opacity:.6;transform:scale(1.2)}
-    }
-
-    /* NAV BAR */
-    .nav-bar{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius-lg);
-      padding:16px 24px;
-      margin-bottom:32px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-      animation:slideUp .5s ease .1s both;
-      overflow-x:auto;
-      scrollbar-width:none;
-    }
-    .nav-bar::-webkit-scrollbar{display:none}
-
-    .nav-label{
-      font-size:12px;
-      color:var(--text-dim);
-      font-weight:700;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      margin-right:8px;
-      white-space:nowrap;
-    }
-
-    .nav-pill{
-      height:38px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:var(--surface-elevated);
-      color:var(--text-muted);
-      padding:0 18px;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-weight:600;
-      font-size:13px;
-      cursor:pointer;
-      transition:all .2s;
-      text-decoration:none;
-      white-space:nowrap;
-    }
-
-    .nav-pill:hover{
-      transform:translateY(-1px);
-      border-color:var(--border-light);
-      color:var(--text);
-      box-shadow:var(--shadow-sm);
-    }
-
-    .nav-pill.active{
-      background:linear-gradient(135deg,var(--primary),#7928CA);
-      border-color:transparent;
-      color:#fff;
-      font-weight:700;
-      box-shadow:0 4px 16px rgba(255,0,128,.3);
-    }
-
-    .nav-pill.active:hover{
-      box-shadow:0 6px 20px rgba(255,0,128,.4);
-    }
-
-    .nav-divider{
-      width:1px;
-      height:24px;
-      background:var(--border);
-      margin:0 8px;
-    }
-
-    /* SECTION HEADER */
-    .section-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:24px;
-    }
-
-    .section-title{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:20px;
-      font-weight:600;
-      letter-spacing:-0.3px;
-      color:var(--text);
-    }
-
-    .section-subtitle{
-      font-size:13px;
-      color:var(--text-dim);
-      font-weight:400;
-      margin-top:4px;
-    }
-
-    /* ACTION CARDS */
-    .quick-actions{
+    /* ===== card grid ===== */
+    .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-      gap:20px;
-      margin-bottom:40px;
-      animation:slideUp .6s ease .2s both;
-    }
-
-    .action-card{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius-lg);
-      padding:28px;
-      display:flex;
-      flex-direction:column;
-      gap:20px;
-      text-decoration:none;
-      color:inherit;
-      transition:all .3s cubic-bezier(.4,0,.2,1);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .action-card::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:radial-gradient(circle at 50% 0%,rgba(255,0,128,.06),transparent 60%);
-      opacity:0;
-      transition:opacity .3s;
-    }
-
-    .action-card:hover{
-      transform:translateY(-4px);
-      border-color:var(--border-hover);
-      box-shadow:var(--shadow-md),0 0 30px rgba(255,0,128,.08);
-    }
-
-    .action-card:hover::before{
-      opacity:1;
-    }
-
-    .action-card.featured{
-      background:var(--surface-elevated);
-      border-color:var(--border-light);
-    }
-
-    .action-card.featured::before{
-      background:radial-gradient(circle at 50% 0%,rgba(255,0,128,.10),transparent 60%);
-    }
-
-    .action-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      position:relative;
-      z-index:1;
-    }
-
-    .action-icon{
-      width:52px;
-      height:52px;
-      border-radius:14px;
-      background:var(--surface-elevated);
-      border:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:26px;
-      transition:all .3s;
-    }
-
-    .action-card:hover .action-icon{
-      transform:scale(1.08);
-      border-color:var(--border-hover);
-      box-shadow:0 0 20px rgba(255,0,128,.1);
-    }
-
-    .action-badge{
-      padding:6px 14px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:700;
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      border:1px solid;
-    }
-
-    .badge-primary{
-      background:rgba(255,0,128,.12);
-      color:var(--primary-light);
-      border-color:rgba(255,0,128,.25);
-    }
-
-    .badge-accent{
-      background:rgba(0,240,255,.10);
-      color:var(--accent);
-      border-color:rgba(0,240,255,.20);
-    }
-
-    .badge-success{
-      background:rgba(16,185,129,.12);
-      color:var(--success);
-      border-color:rgba(16,185,129,.25);
-    }
-
-    .action-content{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      position:relative;
-      z-index:1;
-    }
-
-    .action-title{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:17px;
-      font-weight:600;
-      letter-spacing:-0.3px;
-      color:var(--text);
-    }
-
-    .action-desc{
-      font-size:13px;
-      color:var(--text-muted);
-      font-weight:400;
-      line-height:1.6;
-    }
-
-    .action-footer{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:14px;
-      color:var(--primary-light);
-      font-weight:600;
-      position:relative;
-      z-index:1;
-    }
-
-    .action-footer .arrow{
-      transition:transform .3s;
-      display:inline-block;
-    }
-
-    .action-card:hover .action-footer .arrow{
-      transform:translateX(5px);
-    }
-
-    /* STATS */
-    .stats-section{
-      animation:slideUp .6s ease .3s both;
-    }
-
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-      gap:20px;
-    }
-
-    .stat-card{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius-lg);
-      padding:24px;
-      display:flex;
-      flex-direction:column;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap:14px;
-      transition:all .3s;
+    }
+
+    .module{
+      display:flex; align-items:flex-start; gap:14px;
+      padding:18px;
+      background: var(--panel2);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      text-decoration:none; color:inherit;
+      transition:.22s ease;
+      cursor:pointer;
       position:relative;
       overflow:hidden;
     }
+    .module::before{
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(300px 180px at 0% 0%, var(--glow-color, rgba(124,58,237,.06)), transparent 60%);
+      opacity:0; transition:opacity .25s; pointer-events:none;
+    }
+    .module:hover{
+      transform:translateY(-3px);
+      border-color:rgba(255,255,255,.14);
+      box-shadow:0 16px 40px rgba(0,0,0,.40);
+    }
+    .module:hover::before{ opacity:1; }
 
-    .stat-card::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:radial-gradient(circle at 50% 100%,rgba(0,240,255,.04),transparent 60%);
-      opacity:0;
-      transition:opacity .3s;
+    .mod-icon{
+      width:46px; height:46px; flex:0 0 46px;
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid rgba(255,255,255,.08);
+      transition:.22s ease;
+    }
+    .mod-icon svg{ width:22px; height:22px; }
+    .module:hover .mod-icon{
+      transform:scale(1.06);
+      border-color:rgba(255,255,255,.14);
     }
 
-    .stat-card:hover{
-      transform:translateY(-2px);
-      border-color:var(--border-light);
-      box-shadow:var(--shadow-md);
+    .mod-icon.purple{ background:rgba(124,58,237,.12); color:var(--purple); --glow-color:rgba(124,58,237,.08); }
+    .mod-icon.cyan  { background:rgba(6,182,212,.10);   color:var(--cyan);   --glow-color:rgba(6,182,212,.08); }
+    .mod-icon.green { background:rgba(34,197,94,.10);   color:var(--green);  --glow-color:rgba(34,197,94,.08); }
+    .mod-icon.amber { background:rgba(245,158,11,.10);  color:var(--amber);  --glow-color:rgba(245,158,11,.08); }
+    .mod-icon.red   { background:rgba(239,68,68,.10);   color:var(--red);    --glow-color:rgba(239,68,68,.08); }
+
+    /* propagate glow color to card */
+    .module:has(.mod-icon.purple){ --glow-color:rgba(124,58,237,.07); }
+    .module:has(.mod-icon.cyan)  { --glow-color:rgba(6,182,212,.07); }
+    .module:has(.mod-icon.green) { --glow-color:rgba(34,197,94,.07); }
+    .module:has(.mod-icon.amber) { --glow-color:rgba(245,158,11,.07); }
+    .module:has(.mod-icon.red)   { --glow-color:rgba(239,68,68,.07); }
+
+    .mod-info{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+    .mod-name{
+      font-weight:900; font-size:13px; letter-spacing:.3px;
+      color:var(--text);
+    }
+    .mod-desc{
+      font-size:11.5px; color:var(--muted); line-height:1.45;
     }
 
-    .stat-card:hover::before{
-      opacity:1;
+    /* ===== quick-action banner ===== */
+    .banner{
+      display:flex; align-items:center; gap:16px;
+      padding:18px 20px;
+      background:
+        radial-gradient(500px 200px at 0% 50%, rgba(124,58,237,.10), transparent 60%),
+        var(--panel);
+      border:1px solid rgba(124,58,237,.16);
+      border-radius:22px;
+      box-shadow: var(--shadow);
+      margin-bottom:8px;
+      animation: off-enter .35s ease both;
+    }
+    .banner-icon{
+      width:52px; height:52px; flex:0 0 52px;
+      border-radius:16px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(124,58,237,.14);
+      border:1px solid rgba(124,58,237,.22);
+      box-shadow:var(--glow);
+    }
+    .banner-icon svg{ width:26px; height:26px; color:var(--purple); }
+    .banner-body{ flex:1; min-width:0; }
+    .banner-body h3{
+      margin:0 0 2px; font-family:Rokiest; letter-spacing:.5px; font-size:16px;
+    }
+    .banner-body p{ margin:0; font-size:12px; color:var(--muted); }
+    .banner-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+    .sm-btn{
+      height:38px; border-radius:12px; border:0;
+      padding:0 14px; font-weight:900; font-size:12px;
+      cursor:pointer; color:#fff;
+      transition:.16s ease; text-decoration:none;
+      display:inline-flex; align-items:center; gap:6px;
+    }
+    .sm-btn:hover{ transform:translateY(-2px); }
+    .sm-btn.purple{
+      background:linear-gradient(135deg, rgba(124,58,237,.92), rgba(6,182,212,.65));
+      box-shadow:var(--glow);
+    }
+    .sm-btn.ghost{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
     }
 
-    .stat-label{
-      font-size:11px;
-      color:var(--text-dim);
-      text-transform:uppercase;
-      letter-spacing:1px;
-      font-weight:700;
-      position:relative;
-      z-index:1;
+    /* ===== status row ===== */
+    .status-row{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:22px;
     }
+    .status-chip{
+      display:inline-flex; align-items:center; gap:7px;
+      padding:7px 12px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      background:rgba(255,255,255,.03);
+      font-size:11px; font-weight:700;
+      color:var(--muted);
+    }
+    .dot{
+      width:6px; height:6px; border-radius:50%;
+      flex:0 0 6px;
+    }
+    .dot.green{ background:var(--green); box-shadow:0 0 8px var(--green); }
+    .dot.amber{ background:var(--amber); box-shadow:0 0 8px var(--amber); }
 
-    .stat-value{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:28px;
-      font-weight:600;
-      letter-spacing:-0.5px;
-      position:relative;
-      z-index:1;
-    }
+    /* ===== animation stagger ===== */
+    .module{ animation: off-enter .3s ease both; }
+    .module:nth-child(1){ animation-delay:.04s }
+    .module:nth-child(2){ animation-delay:.08s }
+    .module:nth-child(3){ animation-delay:.12s }
+    .module:nth-child(4){ animation-delay:.16s }
+    .module:nth-child(5){ animation-delay:.20s }
+    .module:nth-child(6){ animation-delay:.24s }
 
-    .stat-trend{
-      font-size:12px;
-      color:var(--success);
-      font-weight:600;
-      position:relative;
-      z-index:1;
+    /* ===== responsive ===== */
+    @media(max-width:980px){
+      .banner{ flex-direction:column; text-align:center; }
+      .banner-actions{ justify-content:center; }
     }
-
-    /* FOOTER */
-    .footer{
-      margin-top:40px;
-      padding:20px;
-      text-align:center;
-      font-size:12px;
-      color:var(--text-dim);
-      animation:fadeIn .6s ease .4s both;
-    }
-
-    .footer a{
-      color:var(--primary-light);
-      text-decoration:none;
-      font-weight:600;
-    }
-    .footer a:hover{
-      text-decoration:underline;
-    }
-
-    /* RESPONSIVO */
-    @media(max-width:768px){
-      .container{padding:16px}
-      .header{padding:20px;gap:16px}
-      .header-titles h1{font-size:20px}
-      .nav-bar{padding:12px 16px;gap:6px}
-      .nav-pill{height:34px;padding:0 14px;font-size:12px}
-      .quick-actions{grid-template-columns:1fr}
-      .stats-grid{grid-template-columns:repeat(2,1fr)}
-      .brand{gap:14px}
-      .logo{font-size:20px}
-    }
-
-    @media(max-width:480px){
-      .header{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .stats-grid{grid-template-columns:1fr}
-      .action-card{padding:20px}
-      .nav-divider{display:none}
+    @media(max-width:540px){
+      .grid{ grid-template-columns:1fr; }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <!-- HEADER -->
-    <header class="header">
-      <div class="brand">
-        <div class="logo">
-          <span>NOBREA</span>
-          <span class="logo-k">
-            K
-            <svg class="logo-lightning" viewBox="0 0 100 180" fill="none">
-              <path d="M50 0L14 90H40L25 180L75 63H50L65 18L50 0Z" fill="#ffd700"/>
-            </svg>
-          </span>
-        </div>
-        <div class="header-titles">
-          <h1>DASHBOARD</h1>
-          <div class="header-sub">Central de Controle</div>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="status-badge">
-          <span class="status-dot"></span>
-          <span>Sistema Online</span>
-        </div>
-      </div>
-    </header>
 
-    <!-- NAVIGATION -->
-    <nav class="nav-bar">
-      <span class="nav-label">Menu</span>
-      <a href="index.html" class="nav-pill active">🏠 Dashboard</a>
-      <a href="agenda.html" class="nav-pill">📅 Agenda</a>
-      <div class="nav-divider"></div>
-      <a href="vip.html" class="nav-pill">🎟️ VIP</a>
-      <a href="pix.html" class="nav-pill">💸 PIX</a>
-      <a href="diaria.html" class="nav-pill">📒 Diaria</a>
-      <a href="van.html" class="nav-pill">🚐 Van</a>
-      <div class="nav-divider"></div>
-      <a href="vip-admin.html" class="nav-pill">🧠 VIP Admin</a>
-      <a href="pix-admin.html" class="nav-pill">🛡️ PIX Admin</a>
-      <a href="pix-cadastro.html" class="nav-pill">➕ Cadastro</a>
-      <a href="ajustar-cronograma.html" class="nav-pill">🗓️ Cronograma</a>
+<div class="off-shell">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="off-side">
+    <div class="off-logo">NK</div>
+    <nav class="off-nav">
+
+      <a href="index.html" class="off-navbtn active" aria-label="Home">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 11 4l8 6.5"/><path d="M5 9.5V18a1 1 0 0 0 1 1h3.5v-4.5h3V19H16a1 1 0 0 0 1-1V9.5"/></svg>
+        <span class="tip">Home</span>
+      </a>
+
+      <a href="agenda.html" class="off-navbtn" aria-label="Agenda">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="16" height="16" rx="2"/><path d="M3 9h16M8 2v4M14 2v4"/></svg>
+        <span class="tip">Agenda</span>
+      </a>
+
+      <a href="vip.html" class="off-navbtn" aria-label="VIP">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3 6.5H21l-5.5 4 2 6.5L12 15l-5.5 4 2-6.5L3 8.5h6z"/></svg>
+        <span class="tip">VIP</span>
+      </a>
+
+      <a href="pix.html" class="off-navbtn" aria-label="PIX">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="18" height="13" rx="2"/><path d="M2 10h18"/></svg>
+        <span class="tip">PIX</span>
+      </a>
+
+      <a href="diaria.html" class="off-navbtn" aria-label="Diaria">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 16v4M4.93 4.93l2.83 2.83M14.24 14.24l2.83 2.83M2 12h4M16 12h4M4.93 19.07l2.83-2.83M14.24 7.76l2.83-2.83"/></svg>
+        <span class="tip">Diaria</span>
+      </a>
+
+      <a href="van.html" class="off-navbtn" aria-label="Van">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="20" height="10" rx="2"/><circle cx="6" cy="16" r="2"/><circle cx="16" cy="16" r="2"/><path d="M1 11h20"/></svg>
+        <span class="tip">Van</span>
+      </a>
+
     </nav>
+  </aside>
 
-    <!-- ACESSO RAPIDO -->
-    <section>
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">ACESSO RAPIDO</h2>
-          <p class="section-subtitle">Ferramentas mais usadas</p>
-        </div>
+  <!-- ===== MAIN ===== -->
+  <main class="off-main">
+
+    <!-- topbar -->
+    <div class="off-topbar">
+      <div class="welcome">
+        <h1>NOBREAK</h1>
+        <span class="sub">Painel central &mdash; gerencie tudo em um lugar</span>
       </div>
-
-      <div class="quick-actions">
-        <a href="agenda.html" class="action-card featured">
-          <div class="action-header">
-            <div class="action-icon">📅</div>
-            <div class="action-badge badge-primary">Destaque</div>
-          </div>
-          <div class="action-content">
-            <h3 class="action-title">AGENDA</h3>
-            <p class="action-desc">Visualize e gerencie todos os shows e compromissos em um calendario interativo</p>
-          </div>
-          <div class="action-footer">
-            <span>Acessar Agenda</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-
-        <a href="vip.html" class="action-card">
-          <div class="action-header">
-            <div class="action-icon">🎟️</div>
-            <div class="action-badge badge-accent">Usuario</div>
-          </div>
-          <div class="action-content">
-            <h3 class="action-title">LISTA VIP</h3>
-            <p class="action-desc">Entre com seu codigo e reserve seu slot para eventos exclusivos</p>
-          </div>
-          <div class="action-footer">
-            <span>Acessar VIP</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-
-        <a href="pix.html" class="action-card">
-          <div class="action-header">
-            <div class="action-icon">💸</div>
-            <div class="action-badge badge-accent">Usuario</div>
-          </div>
-          <div class="action-content">
-            <h3 class="action-title">PIX</h3>
-            <p class="action-desc">Consulte informacoes de pagamento e gerencie transacoes</p>
-          </div>
-          <div class="action-footer">
-            <span>Acessar PIX</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-
-        <a href="vip-admin.html" class="action-card">
-          <div class="action-header">
-            <div class="action-icon">🧠</div>
-            <div class="action-badge badge-success">Admin</div>
-          </div>
-          <div class="action-content">
-            <h3 class="action-title">VIP ADMIN</h3>
-            <p class="action-desc">Gerencie pool de convites, codigos e confirmacoes</p>
-          </div>
-          <div class="action-footer">
-            <span>Acessar Admin</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-
-        <a href="diaria.html" class="action-card">
-          <div class="action-header">
-            <div class="action-icon">📒</div>
-            <div class="action-badge badge-accent">Usuario</div>
-          </div>
-          <div class="action-content">
-            <h3 class="action-title">DIARIA</h3>
-            <p class="action-desc">Consulte e controle informacoes de diaria</p>
-          </div>
-          <div class="action-footer">
-            <span>Acessar Diaria</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-
-        <a href="van.html" class="action-card">
-          <div class="action-header">
-            <div class="action-icon">🚐</div>
-            <div class="action-badge badge-accent">Usuario</div>
-          </div>
-          <div class="action-content">
-            <h3 class="action-title">VAN</h3>
-            <p class="action-desc">Acesse o modulo de controle da van</p>
-          </div>
-          <div class="action-footer">
-            <span>Acessar Van</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
+      <div class="off-actions">
+        <span class="off-pill">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="M7 5v3l2 1"/></svg>
+          v2.0
+        </span>
       </div>
-    </section>
+    </div>
 
-    <!-- STATUS -->
-    <section class="stats-section">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">STATUS DO SISTEMA</h2>
-          <p class="section-subtitle">Monitoramento em tempo real</p>
-        </div>
+    <!-- quick-action banner -->
+    <div class="banner">
+      <div class="banner-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="20" height="18" rx="2"/><path d="M3 10h20M10 4v18"/></svg>
       </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Sistema</div>
-          <div class="stat-value" style="color:var(--success)">ONLINE</div>
-          <div class="stat-trend">✓ Operacional</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Modulo VIP</div>
-          <div class="stat-value" style="color:var(--primary)">ATIVO</div>
-          <div class="stat-trend">✓ Funcionando</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">PIX</div>
-          <div class="stat-value" style="color:var(--accent)">OK</div>
-          <div class="stat-trend">✓ Disponivel</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Versao</div>
-          <div class="stat-value" style="color:var(--warning)">2.0</div>
-          <div class="stat-trend">✓ Atualizado</div>
-        </div>
+      <div class="banner-body">
+        <h3>AGENDA DE SHOWS</h3>
+        <p>Visualize e gerencie todos os shows e compromissos da equipe</p>
       </div>
-    </section>
+      <div class="banner-actions">
+        <a href="agenda.html" class="sm-btn purple">Abrir Agenda</a>
+        <a href="vip.html" class="sm-btn ghost">Lista VIP</a>
+      </div>
+    </div>
 
-    <footer class="footer">
-      Nobreak Company &copy; 2025 &mdash; Todos os direitos reservados
-    </footer>
-  </div>
+    <!-- MODULOS (usuario) -->
+    <div class="sec-head">
+      <h2>MODULOS</h2>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="grid">
+
+      <a href="agenda.html" class="module">
+        <div class="mod-icon purple">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="16" height="16" rx="2"/><path d="M3 9h16M8 2v4M14 2v4"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">Agenda</span>
+          <span class="mod-desc">Shows, compromissos e calendario interativo</span>
+        </div>
+      </a>
+
+      <a href="vip.html" class="module">
+        <div class="mod-icon cyan">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3 6.5H21l-5.5 4 2 6.5L12 15l-5.5 4 2-6.5L3 8.5h6z"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">Lista VIP</span>
+          <span class="mod-desc">Entre com seu codigo e reserve seu slot</span>
+        </div>
+      </a>
+
+      <a href="pix.html" class="module">
+        <div class="mod-icon green">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="18" height="13" rx="2"/><path d="M2 10h18"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">PIX</span>
+          <span class="mod-desc">Pagamentos e consultas financeiras</span>
+        </div>
+      </a>
+
+      <a href="diaria.html" class="module">
+        <div class="mod-icon amber">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 16v4M4.93 4.93l2.83 2.83M14.24 14.24l2.83 2.83M2 12h4M16 12h4M4.93 19.07l2.83-2.83M14.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">Diaria</span>
+          <span class="mod-desc">Controle de diarias da equipe</span>
+        </div>
+      </a>
+
+      <a href="van.html" class="module">
+        <div class="mod-icon purple">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="20" height="10" rx="2"/><circle cx="6" cy="16" r="2"/><circle cx="16" cy="16" r="2"/><path d="M1 11h20"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">Van</span>
+          <span class="mod-desc">Reservas e controle de transporte</span>
+        </div>
+      </a>
+
+      <a href="dashboardsocial.html" class="module">
+        <div class="mod-icon cyan">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">Dashboard Social</span>
+          <span class="mod-desc">Metricas e analytics das redes</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ADMINISTRACAO -->
+    <div class="sec-head">
+      <h2>ADMINISTRACAO</h2>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="grid">
+
+      <a href="vip-admin.html" class="module">
+        <div class="mod-icon red">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">VIP Admin</span>
+          <span class="mod-desc">Gerenciar pool de convites e codigos</span>
+        </div>
+      </a>
+
+      <a href="pix-admin.html" class="module">
+        <div class="mod-icon green">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">PIX Admin</span>
+          <span class="mod-desc">Aprovacoes e gestao de pagamentos</span>
+        </div>
+      </a>
+
+      <a href="ajustar-cronograma.html" class="module">
+        <div class="mod-icon amber">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">Ajustar Cronograma</span>
+          <span class="mod-desc">Editar cronograma via planilha</span>
+        </div>
+      </a>
+
+      <a href="pix-cadastro.html" class="module">
+        <div class="mod-icon green">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        </div>
+        <div class="mod-info">
+          <span class="mod-name">PIX Cadastro</span>
+          <span class="mod-desc">Cadastrar novos destinatarios PIX</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- status chips -->
+    <div class="status-row">
+      <div class="status-chip"><span class="dot green"></span> Sistema operacional</div>
+      <div class="status-chip"><span class="dot green"></span> VIP ativo</div>
+      <div class="status-chip"><span class="dot green"></span> PIX disponivel</div>
+    </div>
+
+    <!-- footer -->
+    <div class="off-footer" style="margin-top:28px;">
+      <span>Nobreak Company &copy; 2025</span>
+      <span>Todos os direitos reservados</span>
+    </div>
+
+  </main>
+</div>
+
 </body>
 </html>
